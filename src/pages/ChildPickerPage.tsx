@@ -1,0 +1,410 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
+import { useAuthStore } from '../stores/useAuthStore';
+import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
+import type { AvatarConfig } from '../types/user';
+import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
+import { LogOut } from 'lucide-react';
+
+const CHARACTER_EMOJIS: Record<string, string> = {
+  cat: '🐱',
+  owl: '🦉',
+  robot: '🤖',
+  unicorn: '🦄',
+  dragon: '🐉',
+  fox: '🦊',
+};
+
+const CHARACTER_LABELS: Record<string, string> = {
+  cat: 'Cat',
+  owl: 'Owl',
+  robot: 'Robot',
+  unicorn: 'Unicorn',
+  dragon: 'Dragon',
+  fox: 'Fox',
+};
+
+interface ChildProfile {
+  id: string;
+  name: string;
+  avatar: AvatarConfig;
+  programme_start_date: string;
+  has_seen_onboarding: boolean;
+  created_at: string;
+}
+
+export function ChildPickerPage() {
+  const navigate = useNavigate();
+  const { selectChild, setChildren, logout } = useAuthStore();
+  const [children, setLocalChildren] = useState<ChildProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Add child form state
+  const [name, setName] = useState('');
+  const [selectedCharacter, setSelectedCharacter] = useState<typeof AVATAR_CHARACTERS[number]>(AVATAR_CHARACTERS[0]);
+  const [selectedColour, setSelectedColour] = useState<typeof AVATAR_COLOURS[number]>(AVATAR_COLOURS[0]);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetchChildren();
+  }, []);
+
+  const fetchChildren = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('child_profiles')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (fetchError) throw fetchError;
+
+      const profiles = (data ?? []) as ChildProfile[];
+      setLocalChildren(profiles);
+      setChildren(profiles.map(p => ({
+        id: p.id,
+        name: p.name,
+        avatar: p.avatar,
+        createdAt: p.created_at,
+        programmeStartDate: p.programme_start_date,
+        hasSeenOnboarding: p.has_seen_onboarding,
+      })));
+
+      // Auto-show add form if no children yet
+      if (profiles.length === 0) {
+        setIsAdding(true);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load profiles');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectChild = (childId: string) => {
+    selectChild(childId);
+    navigate('/');
+  };
+
+  const handleAddChild = async () => {
+    if (!name.trim()) return;
+    setSaving(true);
+    setError(null);
+
+    const avatar: AvatarConfig = {
+      baseCharacter: selectedCharacter,
+      colour: selectedColour,
+      accessories: [],
+      background: 'bg-focus-100',
+    };
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error: insertError } = await supabase
+        .from('child_profiles')
+        .insert({
+          parent_id: user.id,
+          name: name.trim(),
+          avatar,
+          programme_start_date: new Date().toISOString().split('T')[0],
+        })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+
+      const newChild = data as ChildProfile;
+
+      // Update local state
+      setLocalChildren(prev => [...prev, newChild]);
+      setChildren([...children.map(p => ({
+        id: p.id,
+        name: p.name,
+        avatar: p.avatar,
+        createdAt: p.created_at,
+        programmeStartDate: p.programme_start_date,
+        hasSeenOnboarding: p.has_seen_onboarding,
+      })), {
+        id: newChild.id,
+        name: newChild.name,
+        avatar: newChild.avatar,
+        createdAt: newChild.created_at,
+        programmeStartDate: newChild.programme_start_date,
+        hasSeenOnboarding: newChild.has_seen_onboarding,
+      }]);
+
+      // Auto-select the new child
+      selectChild(newChild.id);
+      navigate('/');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create profile');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    logout();
+    navigate('/auth');
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          className="text-4xl"
+        >
+          🦉
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Floating background emojis */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {['🦉', '📚', '⭐', '🌟', '🎯', '✨'].map((emoji, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-3xl opacity-[0.1]"
+            style={{
+              left: `${10 + (i * 15) % 75}%`,
+              top: `${5 + (i * 17) % 80}%`,
+            }}
+            animate={{
+              y: [0, -12, 0],
+              rotate: [0, i % 2 === 0 ? 8 : -8, 0],
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          >
+            {emoji}
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-6"
+        >
+          <div className="flex justify-center mb-3">
+            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+          </div>
+          <h1 className="font-display text-2xl font-extrabold text-white drop-shadow-lg mb-1">
+            Who's practising today?
+          </h1>
+          <p className="text-white/90 font-display text-sm">
+            Choose a player or add a new one
+          </p>
+        </motion.div>
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-red-600 text-sm font-display font-semibold bg-red-50 p-3 rounded-lg mb-4"
+          >
+            {error}
+          </motion.p>
+        )}
+
+        {!isAdding ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30"
+          >
+            {/* Existing children */}
+            <div className="space-y-3 mb-5">
+              {children.map((child, i) => (
+                <motion.button
+                  key={child.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  onClick={() => handleSelectChild(child.id)}
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-purple-100 hover:border-purple-400 hover:shadow-md transition-all text-left group"
+                >
+                  <div
+                    className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shadow-sm group-hover:scale-105 transition-transform"
+                    style={{
+                      backgroundColor: (child.avatar.colour || '#8b5cf6') + '25',
+                      borderColor: child.avatar.colour || '#8b5cf6',
+                      borderWidth: 2,
+                    }}
+                  >
+                    {CHARACTER_EMOJIS[child.avatar.baseCharacter] || child.name[0]}
+                  </div>
+                  <span className="font-display font-bold text-lg flex-1 text-gray-800">
+                    {child.name}
+                  </span>
+                  <span className="text-purple-400 font-display text-sm font-semibold group-hover:text-purple-600">
+                    Play →
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setIsAdding(true)}
+              className="w-full py-3 rounded-button font-display font-bold text-purple-600 border-2 border-dashed border-purple-300 hover:bg-purple-50 hover:border-purple-400 transition-all"
+            >
+              + Add New Player
+            </button>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              className="w-full mt-4 py-2 text-center text-sm text-gray-400 hover:text-gray-600 font-display font-semibold flex items-center justify-center gap-1.5"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Sign out
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30"
+          >
+            <h2 className="font-display text-xl font-bold text-purple-800 mb-5 text-center">
+              Create a Player Profile
+            </h2>
+
+            <div className="space-y-5">
+              {/* Name input */}
+              <div>
+                <label className="block text-sm font-display font-semibold text-gray-600 mb-1.5">
+                  What's your name?
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Type your name here..."
+                  maxLength={30}
+                  className="w-full px-4 py-3 rounded-button border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                  autoFocus
+                />
+              </div>
+
+              {/* Character selection */}
+              <div>
+                <label className="block text-sm font-display font-semibold text-gray-600 mb-2">
+                  Choose your lucky charm!
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {AVATAR_CHARACTERS.map((char, i) => (
+                    <motion.button
+                      key={char}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      onClick={() => setSelectedCharacter(char)}
+                      className={`relative flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all ${
+                        selectedCharacter === char
+                          ? 'ring-3 ring-purple-400 bg-purple-50 scale-105 shadow-md'
+                          : 'bg-gray-50 hover:bg-gray-100 hover:shadow-sm'
+                      }`}
+                    >
+                      <span className="text-4xl">{CHARACTER_EMOJIS[char]}</span>
+                      <span className="text-xs font-display font-semibold text-gray-500">
+                        {CHARACTER_LABELS[char]}
+                      </span>
+                      {selectedCharacter === char && (
+                        <motion.div
+                          layoutId="character-check"
+                          className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center"
+                        >
+                          <span className="text-white text-xs">✓</span>
+                        </motion.div>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Colour selection */}
+              <div>
+                <label className="block text-sm font-display font-semibold text-gray-600 mb-2">
+                  Choose your colour!
+                </label>
+                <div className="flex gap-3 justify-center">
+                  {AVATAR_COLOURS.map(colour => (
+                    <motion.button
+                      key={colour}
+                      whileHover={{ scale: 1.15 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setSelectedColour(colour)}
+                      className={`w-11 h-11 rounded-full transition-all shadow-sm ${
+                        selectedColour === colour
+                          ? 'ring-3 ring-offset-2 ring-purple-400 scale-110'
+                          : 'hover:shadow-md'
+                      }`}
+                      style={{ backgroundColor: colour }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Preview */}
+              <div className="flex justify-center">
+                <motion.div
+                  key={`${selectedCharacter}-${selectedColour}`}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-5xl shadow-inner"
+                  style={{
+                    backgroundColor: selectedColour + '25',
+                    borderColor: selectedColour,
+                    borderWidth: 2,
+                  }}
+                >
+                  {CHARACTER_EMOJIS[selectedCharacter]}
+                </motion.div>
+              </div>
+
+              {/* Submit button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleAddChild}
+                disabled={!name.trim() || saving}
+                className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+              >
+                {saving ? 'Creating...' : "Let's Go! 🦉"}
+              </motion.button>
+
+              {children.length > 0 && (
+                <button
+                  onClick={() => setIsAdding(false)}
+                  className="w-full text-center text-sm text-purple-500 hover:text-purple-700 font-display font-semibold"
+                >
+                  ← Back to player list
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}

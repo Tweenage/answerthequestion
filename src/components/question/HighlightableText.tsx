@@ -1,0 +1,199 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import type { ScaffoldingLevel } from '../../types/programme';
+import { isNumberWord, toDigit } from '../../utils/numberWords';
+
+// Research-backed "danger words" that children most commonly miss when rushing
+// (SL Ager 2025, EEF comprehension strategies). These change the meaning of a question.
+const DANGER_WORDS = new Set([
+  'not', 'never', 'except', 'without', 'unless',       // negatives
+  'only', 'always', 'every', 'exactly', 'at',           // qualifiers/limits
+  'least', 'most', 'fewer', 'less', 'more',             // comparatives
+  'each', 'altogether', 'remaining', 'total',            // hidden operations
+  'however', 'although', 'despite', 'but', 'instead',   // reversal words
+  'before', 'after', 'between', 'until',                 // time/sequence
+]);
+
+function isDangerWord(token: string): boolean {
+  const cleaned = token.toLowerCase().replace(/[.,!?;:"'()]/g, '');
+  return DANGER_WORDS.has(cleaned);
+}
+
+interface HighlightableTextProps {
+  tokens: string[];
+  highlightedIndices: number[];
+  onToggleHighlight: (index: number) => void;
+  disabled: boolean;
+  correctKeyWordIndices?: number[];
+  showFeedback: boolean;
+  scaffoldingLevel: ScaffoldingLevel;
+  numberExtractionMode?: boolean;
+  convertedNumberIndices?: number[];
+  onConvertNumber?: (index: number) => void;
+}
+
+export function HighlightableText({
+  tokens,
+  highlightedIndices,
+  onToggleHighlight,
+  disabled,
+  correctKeyWordIndices,
+  showFeedback,
+  scaffoldingLevel,
+  numberExtractionMode = false,
+  convertedNumberIndices = [],
+  onConvertNumber,
+}: HighlightableTextProps) {
+  // Track which tokens have been animated (for the pop effect)
+  const [justConverted, setJustConverted] = useState<Set<number>>(new Set());
+
+  const getTokenStyle = (index: number) => {
+    const isHighlighted = highlightedIndices.includes(index);
+    const isCorrectKeyWord = correctKeyWordIndices?.includes(index);
+
+    if (showFeedback && correctKeyWordIndices) {
+      if (isHighlighted && isCorrectKeyWord) {
+        return 'bg-calm-200 border-b-3 border-calm-500 font-semibold';
+      }
+      if (!isHighlighted && isCorrectKeyWord) {
+        return 'border-b-3 border-dashed border-celebrate-orange';
+      }
+      if (isHighlighted && !isCorrectKeyWord) {
+        return 'bg-gray-100 line-through text-gray-400';
+      }
+      return '';
+    }
+
+    if (isHighlighted) {
+      return 'bg-highlighter font-semibold shadow-sm';
+    }
+
+    return '';
+  };
+
+  const getNumberExtractionStyle = (index: number) => {
+    if (!numberExtractionMode) return '';
+    if (!isNumberWord(tokens[index])) return '';
+
+    if (convertedNumberIndices.includes(index)) {
+      return 'bg-rainbow-blue/15 text-rainbow-blue font-bold rounded-lg border-2 border-rainbow-blue/40';
+    }
+
+    // Unconverted number word — pulsing blue border
+    return 'border-2 border-rainbow-blue/60 rounded-lg cursor-pointer animate-pulse bg-blue-50';
+  };
+
+  const handleTokenClick = (index: number) => {
+    if (numberExtractionMode) {
+      if (isNumberWord(tokens[index]) && !convertedNumberIndices.includes(index) && onConvertNumber) {
+        onConvertNumber(index);
+        setJustConverted(prev => new Set(prev).add(index));
+        setTimeout(() => {
+          setJustConverted(prev => {
+            const next = new Set(prev);
+            next.delete(index);
+            return next;
+          });
+        }, 500);
+      }
+      return;
+    }
+
+    if (!disabled) {
+      onToggleHighlight(index);
+    }
+  };
+
+  // Show danger word styling only during highlighting (not disabled) and not during feedback
+  const showDangerWords = !disabled && !showFeedback && !numberExtractionMode;
+
+  // Get the display text for a token (converted digit or original)
+  const getDisplayText = (token: string, index: number) => {
+    if (numberExtractionMode && convertedNumberIndices.includes(index)) {
+      return toDigit(token);
+    }
+    return token;
+  };
+
+  return (
+    <div className="leading-[2.0] text-[1.3rem] font-display">
+      {tokens.map((token, index) => {
+        const danger = showDangerWords && isDangerWord(token) && !highlightedIndices.includes(index);
+        const isClickable = numberExtractionMode
+          ? (isNumberWord(token) && !convertedNumberIndices.includes(index))
+          : !disabled;
+        const wasJustConverted = justConverted.has(index);
+
+        return (
+          <motion.span
+            key={index}
+            onClick={() => handleTokenClick(index)}
+            whileTap={isClickable ? { scale: 0.95 } : undefined}
+            animate={wasJustConverted ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+            transition={wasJustConverted ? { duration: 0.3 } : undefined}
+            className={`
+              inline-block px-1 py-0.5
+              rounded transition-all duration-150 select-none
+              ${isClickable ? 'cursor-pointer hover:bg-focus-100 active:bg-focus-200' : ''}
+              ${getTokenStyle(index)}
+              ${getNumberExtractionStyle(index)}
+              ${danger ? 'border-b-2 border-dotted border-rainbow-red/50' : ''}
+            `}
+            style={{ touchAction: 'manipulation', minHeight: '44px', lineHeight: 'inherit' }}
+          >
+            {getDisplayText(token, index)}
+            {numberExtractionMode && isNumberWord(token) && !convertedNumberIndices.includes(index) && (
+              <span className="ml-0.5 text-[10px] text-rainbow-blue font-bold align-super">123</span>
+            )}
+          </motion.span>
+        );
+      })}
+
+      {numberExtractionMode && scaffoldingLevel === 'heavy' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 text-sm text-rainbow-blue font-display bg-blue-50 rounded-xl p-3 border border-blue-200 space-y-1"
+        >
+          <p className="font-bold text-base">🔢 Tap the number words to turn them into digits!</p>
+          <p className="text-xs text-gray-500">
+            In your exam, always circle numbers and write the digit next to any number words.
+          </p>
+        </motion.div>
+      )}
+      {numberExtractionMode && scaffoldingLevel === 'medium' && (
+        <p className="mt-3 text-sm text-rainbow-blue font-display font-semibold">
+          🔢 Tap number words to convert them to digits.
+        </p>
+      )}
+
+      {!numberExtractionMode && !disabled && scaffoldingLevel === 'heavy' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 text-sm text-focus-600 font-display bg-focus-50 rounded-xl p-3 border border-focus-200 space-y-2"
+        >
+          <p className="font-bold text-base">👆 Tap the important words!</p>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Names</span>
+            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Numbers</span>
+            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Places</span>
+            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Times</span>
+            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Key details</span>
+          </div>
+          <p className="text-xs text-gray-500">
+            Look for <span className="font-bold text-rainbow-red">who</span>, <span className="font-bold text-rainbow-blue">what</span>, <span className="font-bold text-rainbow-green">when</span> and <span className="font-bold text-rainbow-violet">where</span>
+          </p>
+          <p className="text-xs text-rainbow-red font-semibold">
+            Watch out for <span className="border-b-2 border-dotted border-rainbow-red/50 px-0.5">danger words</span> like NOT, never, except, only, although, however!
+          </p>
+        </motion.div>
+      )}
+      {!numberExtractionMode && !disabled && scaffoldingLevel === 'medium' && (
+        <p className="mt-3 text-sm text-gray-500 font-display">
+          Tap key words. <span className="border-b-2 border-dotted border-rainbow-red/50 px-0.5">Dotted words</span> are danger words — don't miss them!
+        </p>
+      )}
+    </div>
+  );
+}

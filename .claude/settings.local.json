@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install react-router zustand framer-motion lucide-react date-fns nanoid)",
+      "Bash(npm install -D tailwindcss @tailwindcss/vite)",
+      "Bash(npx tsc --noEmit)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx tsc --noEmit src/data/questions/maths.ts)",
+      "Bash(node -e \":*)",
+      "Bash(npx tsc --noEmit src/data/questions/verbal-reasoning.ts)",
+      "Bash(node -e ':*)",
+      "Bash(node .claude/tmp_check.js)",
+      "Bash(npx vite build)",
+      "Bash(/tmp/danger_words.txt:*)",
+      "Bash(python3:*)",
+      "Bash(node /tmp/verify_danger.js)",
+      "Bash(node /tmp/verify_tokens.js)",
+      "Bash(npm run build)",
+      "Bash(ipconfig getifaddr en0)",
+      "Bash(ipconfig getifaddr en1)",
+      "Bash(npm install @supabase/supabase-js)",
+      "Bash(pbcopy)",
+      "Bash(xargs -I {} basename {})",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(wc -l src/data/questions/*.ts src/data/questions/**/*.ts)",
+      "Bash(xargs cat)",
+      "Bash(open -a Safari http://localhost:5173)",
+      "Bash(timeout 5 npm run dev)",
+      "Bash(ls -lh src/pages/*.tsx)",
+      "Bash(grep \"from ''lucide-react''\" src/pages/TipsPage.tsx)",
+      "Bash(npm ls lucide-react)",
+      "Bash(wc -l \"/Users/rebeccaeverton/11+ Read the Question/src/data/questions\"/*.ts)"
+    ]
+  }
+}

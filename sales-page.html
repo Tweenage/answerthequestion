@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11+ Read the Question — The Habit-Building App for Exam Success</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:wght@700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #1a1f4e;
+      --deep-blue: #2d3a8c;
+      --bright-blue: #4f6df5;
+      --sky: #e8f0fe;
+      --mint: #e6f7f2;
+      --coral: #ff6b5b;
+      --warm-orange: #ff8c42;
+      --gold: #ffc857;
+      --green: #2ecc71;
+      --text: #2c3e50;
+      --text-light: #64748b;
+      --white: #ffffff;
+      --off-white: #fafbff;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--deep-blue) 50%, #4338ca 100%);
+      color: white;
+      padding: 100px 24px 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(79,109,245,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(255,107,91,0.1) 0%, transparent 40%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 2%); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--gold), var(--warm-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: rgba(255,255,255,0.85);
+      max-width: 620px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--coral), var(--warm-orange));
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 18px 48px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(255,107,91,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(255,107,91,0.45);
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 16px;
+    }
+
+    /* ===== PROBLEM SECTION ===== */
+    .problem {
+      padding: 100px 24px;
+      background: var(--off-white);
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; }
+    .container-narrow { max-width: 760px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--bright-blue);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 20px;
+      color: var(--navy);
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .problem-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #e8ecf4;
+      transition: box-shadow 0.2s;
+    }
+
+    .problem-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+
+    .problem-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .problem-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--navy);
+    }
+
+    .problem-card p {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ===== STATS BANNER ===== */
+    .stats-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--deep-blue) 100%);
+      padding: 72px 24px;
+      color: white;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--warm-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-item p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+
+    .stat-source {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works {
+      padding: 100px 24px;
+      background: white;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--bright-blue), #6366f1);
+      color: white;
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .step h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--navy);
+    }
+
+    .step p {
+      font-size: 0.93rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ===== FEATURES ===== */
+    .features {
+      padding: 100px 24px;
+      background: var(--off-white);
+    }
+
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .feature-row:last-child { margin-bottom: 0; }
+    .feature-row.reverse { direction: rtl; }
+    .feature-row.reverse > * { direction: ltr; }
+
+    .feature-visual {
+      background: linear-gradient(135deg, #f0f4ff, #e8f0fe);
+      border-radius: 20px;
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-visual-inner {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .mini-question {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .mini-question strong { color: var(--navy); }
+
+    .mini-highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 600;
+      color: #8a6d00;
+    }
+
+    .mini-options { list-style: none; }
+
+    .mini-options li {
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      border: 1.5px solid #e8ecf4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-options li.correct {
+      border-color: var(--green);
+      background: #f0fdf4;
+    }
+
+    .mini-options li.wrong {
+      border-color: var(--coral);
+      background: #fef2f2;
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+
+    .mini-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--bright-blue);
+      margin-bottom: 16px;
+    }
+
+    .timer-bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: #e8ecf4;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timer-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 65%;
+      background: linear-gradient(90deg, var(--bright-blue), #6366f1);
+      border-radius: 3px;
+    }
+
+    .feature-text h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--navy);
+    }
+
+    .feature-text p {
+      font-size: 1rem;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 6px 0;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .feature-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ===== SUBJECTS ===== */
+    .subjects {
+      padding: 100px 24px;
+      background: white;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .subject-card {
+      border-radius: 16px;
+      padding: 32px 28px;
+      border: 1px solid #e8ecf4;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .subject-card .subject-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .subject-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    .subject-card p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    .subject-trap {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #fff8f0;
+      border-left: 3px solid var(--warm-orange);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.82rem;
+      color: #9a6700;
+      line-height: 1.6;
+    }
+
+    /* ===== SCIENCE ===== */
+    .science {
+      padding: 100px 24px;
+      background: var(--mint);
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .evidence-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #d4edda;
+    }
+
+    .evidence-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .evidence-card p {
+      font-size: 0.93rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .evidence-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #e6f7f2;
+      color: #1a7a5a;
+    }
+
+    /* ===== DAILY PLAN ===== */
+    .daily-plan {
+      padding: 100px 24px;
+      background: white;
+    }
+
+    .plan-timeline {
+      max-width: 640px;
+      margin: 48px auto 0;
+    }
+
+    .plan-item {
+      display: flex;
+      gap: 24px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+
+    .plan-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 27px;
+      top: 56px;
+      bottom: 0;
+      width: 2px;
+      background: #e8ecf4;
+    }
+
+    .plan-time {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .plan-content h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+      margin-top: 4px;
+    }
+
+    .plan-content p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    .plan-duration {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--bright-blue);
+    }
+
+    /* ===== TESTIMONIAL / QUOTE ===== */
+    .parent-quote {
+      padding: 80px 24px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--deep-blue) 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .parent-quote blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      line-height: 1.5;
+      max-width: 700px;
+      margin: 0 auto 24px;
+      font-style: italic;
+    }
+
+    .parent-quote cite {
+      font-style: normal;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ===== CTA SECTION ===== */
+    .final-cta {
+      padding: 100px 24px;
+      background: var(--off-white);
+      text-align: center;
+    }
+
+    .cta-box {
+      background: white;
+      border-radius: 24px;
+      padding: 64px 48px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+      border: 1px solid #e8ecf4;
+    }
+
+    .cta-box h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .cta-box .hero-cta { font-size: 1.1rem; }
+
+    .cta-checklist {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cta-checklist li {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cta-checklist li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid #e8ecf4;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero { padding: 72px 20px 88px; }
+      .feature-row, .feature-row.reverse {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        direction: ltr;
+      }
+      .feature-row.reverse > * { direction: ltr; }
+      .stats-grid { gap: 28px; }
+      .cta-box { padding: 40px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Evidence-Based 11+ Exam Preparation</div>
+      <h1>Your child <span>knows the answers.</span><br>Let's make sure they <span>get the marks.</span></h1>
+      <p>11+ Read the Question builds the focus, calm, and question-reading habits that turn knowledge into exam results. Daily micro-exercises backed by cognitive science — just 15 minutes a day.</p>
+      <a href="#" class="hero-cta">Start Free Trial</a>
+      <p class="hero-sub">No card required. Cancel anytime.</p>
+    </div>
+  </section>
+
+  <!-- ===== THE PROBLEM ===== -->
+  <section class="problem">
+    <div class="container">
+      <div class="container-narrow">
+        <p class="section-label">The Hidden Problem</p>
+        <h2 class="section-title">Most 11+ marks aren't lost through lack of knowledge. They're lost through lack of focus.</h2>
+        <p class="section-subtitle">Tricky wording, hidden steps, and cleverly designed distractors catch children out — even the brightest ones. The 11+ doesn't just test what your child knows. It tests whether they can stay calm, read carefully, and avoid the traps.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon" style="background: #fef2f2; color: #ef4444;">&#128161;</div>
+          <h3>Misreading the question</h3>
+          <p>Words like "not", "never", "only", and "always" reverse or limit what's being asked. Under pressure, children skip past them — and choose the opposite answer.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon" style="background: #fff8f0; color: var(--warm-orange);">&#9201;</div>
+          <h3>Rushing under time pressure</h3>
+          <p>Anxiety makes children race through questions. They grab the first plausible answer instead of reading all options and eliminating wrong ones methodically.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon" style="background: #f0f4ff; color: var(--bright-blue);">&#129504;</div>
+          <h3>Cognitive overload</h3>
+          <p>Multi-step maths problems, complex verbal reasoning codes, and dense comprehension passages overwhelm working memory — causing careless mistakes on questions they could solve.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon" style="background: #f0fdf4; color: var(--green);">&#127919;</div>
+          <h3>Falling for clever distractors</h3>
+          <p>11+ exams are designed with plausible-sounding wrong answers. Children pick options that "feel right" without proving them against the text or checking their working.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS BANNER ===== -->
+  <section class="stats-banner">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <h3>+7 months</h3>
+        <p>progress from explicit comprehension strategy teaching</p>
+        <p class="stat-source">Education Endowment Foundation</p>
+      </div>
+      <div class="stat-item">
+        <h3>+3 months</h3>
+        <p>progress in maths from working memory training</p>
+        <p class="stat-source">EEF / Oxford University trial</p>
+      </div>
+      <div class="stat-item">
+        <h3>+3 months</h3>
+        <p>progress from self-regulation and "stop-and-think" strategies</p>
+        <p class="stat-source">EEF Teaching & Learning Toolkit</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how-it-works">
+    <div class="container" style="text-align: center;">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">15 minutes a day. One subject at a time.<br>Habits that stick.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Breathe &amp; Focus</h3>
+          <p>Each session starts with a short calming exercise — breathing or guided attention — to settle nerves and sharpen concentration before a single question is touched.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Read the Question</h3>
+          <p>Timed drills teach children to underline key words, spot negatives, count how many answers are needed, and rephrase the question in their own words before answering.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Answer &amp; Prove</h3>
+          <p>Children select their answer, then the app walks through the reasoning — showing which traps were set, why distractors were wrong, and how to find evidence in the text or working.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Reflect &amp; Streak</h3>
+          <p>A quick self-check: "Did I read all options? Did I underline key words?" Then their daily streak updates — building the habit loop that makes exam technique automatic.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features">
+    <div class="container">
+      <div class="container-narrow" style="text-align: center; margin-bottom: 64px;">
+        <p class="section-label">Core Features</p>
+        <h2 class="section-title">Built around how children actually learn</h2>
+      </div>
+
+      <!-- Feature 1: Timed Drills -->
+      <div class="feature-row">
+        <div class="feature-visual">
+          <div class="feature-visual-inner">
+            <div class="mini-timer">
+              <span>0:42</span>
+              <div class="timer-bar"><div class="timer-bar-fill"></div></div>
+            </div>
+            <p class="mini-question">Which <span class="mini-highlight">TWO</span> statements are <span class="mini-highlight">NOT</span> true according to the passage?</p>
+            <ul class="mini-options">
+              <li class="wrong">A) The knight was brave</li>
+              <li class="correct">B) His horse shied suddenly</li>
+              <li class="correct">C) He hesitated at the gate</li>
+              <li class="wrong">D) The dragon was large</li>
+            </ul>
+          </div>
+        </div>
+        <div class="feature-text">
+          <h3>Timed drills that reward careful reading, not speed</h3>
+          <p>Every drill highlights command words, qualifiers, and negatives. The app teaches children to spot "TWO", "NOT", "only", and "always" before they even look at the answers. Research shows reading all options before choosing leads to significantly better accuracy.</p>
+          <ul class="feature-list">
+            <li>Keyword highlighting trains attention to critical words</li>
+            <li>Rephrase prompts: "What is this question really asking?"</li>
+            <li>Elimination practice: cross out wrong answers first</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Feature 2: Mindfulness -->
+      <div class="feature-row reverse">
+        <div class="feature-visual" style="background: linear-gradient(135deg, #f0fdf4, #e6f7f2);">
+          <div class="feature-visual-inner" style="text-align: center; padding: 40px 28px;">
+            <div style="font-size: 3rem; margin-bottom: 16px;">&#129695;</div>
+            <p style="font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px;">Breathe In... 4 seconds</p>
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #86efac, #4ade80); margin: 16px auto; opacity: 0.7;"></div>
+            <p style="font-size: 0.85rem; color: var(--text-light);">Hold... 4 seconds</p>
+          </div>
+        </div>
+        <div class="feature-text">
+          <h3>Calm techniques that reduce exam anxiety</h3>
+          <p>A 2023 meta-analysis of over 53,000 children found test anxiety is directly linked to lower achievement. Our guided breathing and focus exercises — based on classroom mindfulness research — help children regulate their nerves before and during practice.</p>
+          <ul class="feature-list">
+            <li>Pre-session breathing exercises (research-backed 4-week mindfulness model)</li>
+            <li>In-drill "pause and re-read" prompts when rushing is detected</li>
+            <li>Positive self-talk cues to build exam-day confidence</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Feature 3: Habit Tracking -->
+      <div class="feature-row">
+        <div class="feature-visual" style="background: linear-gradient(135deg, #fffbeb, #fef3c7);">
+          <div class="feature-visual-inner">
+            <p style="font-weight: 700; color: var(--navy); margin-bottom: 16px; font-size: 0.95rem;">This Week</p>
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Mon</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Tue</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Wed</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--gold); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Thu</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: #e8ecf4; color: var(--text-light); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Fri</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: #e8ecf4; color: var(--text-light); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Sat</div>
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: #e8ecf4; color: var(--text-light); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">Sun</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="font-size: 1.3rem;">&#128293;</span>
+              <span style="font-weight: 700; font-size: 1.1rem; color: var(--navy);">4 day streak!</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-light);">Keep going — you're building great habits</p>
+          </div>
+        </div>
+        <div class="feature-text">
+          <h3>Daily streaks and habit tracking that children love</h3>
+          <p>EEF research shows self-regulation — planning, monitoring, and reflecting on your own learning — adds an average of 3 months' progress. Our streak system makes this automatic: check in daily, complete your session, reflect on what worked.</p>
+          <ul class="feature-list">
+            <li>Daily streak counter motivates consistency</li>
+            <li>End-of-session reflection: "Which strategy helped today?"</li>
+            <li>Progress tracking by question type and trap category</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ALL SUBJECTS ===== -->
+  <section class="subjects">
+    <div class="container">
+      <div class="container-narrow" style="text-align: center;">
+        <p class="section-label">All 11+ Subjects</p>
+        <h2 class="section-title">One topic per day. Every trap covered.</h2>
+        <p class="section-subtitle">Each day focuses on a single subject, keeping sessions fresh and building well-rounded exam technique across everything the 11+ throws at them.</p>
+      </div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <div class="subject-icon">&#128218;</div>
+          <h3>English Comprehension</h3>
+          <p>Literal and inferential understanding, vocabulary in context, and multi-answer questions.</p>
+          <div class="subject-trap"><strong>Common trap:</strong> Choosing answers that reuse passage phrases without fully answering the question.</div>
+        </div>
+        <div class="subject-card">
+          <div class="subject-icon">&#128290;</div>
+          <h3>Maths</h3>
+          <p>Multi-step word problems, data interpretation, fractions, percentages, and unit conversions.</p>
+          <div class="subject-trap"><strong>Common trap:</strong> Missing hidden operations — "each" implies multiplication, "remaining" implies subtraction.</div>
+        </div>
+        <div class="subject-card">
+          <div class="subject-icon">&#128300;</div>
+          <h3>Verbal Reasoning</h3>
+          <p>Analogies, letter codes, synonyms/antonyms, word puzzles, and multi-answer word clues.</p>
+          <div class="subject-trap"><strong>Common trap:</strong> Picking the first plausible answer without checking it against all the clue conditions.</div>
+        </div>
+        <div class="subject-card">
+          <div class="subject-icon">&#128311;</div>
+          <h3>Non-Verbal Reasoning</h3>
+          <p>Pattern sequences, rotations, reflections, odd-one-out, and embedded shapes.</p>
+          <div class="subject-trap"><strong>Common trap:</strong> Confusing mirror images — misidentifying which axis the reflection uses.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCIENCE SECTION ===== -->
+  <section class="science">
+    <div class="container">
+      <div class="container-narrow" style="text-align: center;">
+        <p class="section-label">Backed by Research</p>
+        <h2 class="section-title">Every technique grounded in cognitive science</h2>
+        <p class="section-subtitle">We didn't guess what works. We built this app on peer-reviewed research and the UK's most rigorous education evidence — the EEF Teaching and Learning Toolkit.</p>
+      </div>
+      <div class="evidence-grid">
+        <div class="evidence-card">
+          <h3>Comprehension strategy instruction</h3>
+          <p>Teaching children to predict, question, summarise, and visualise as they read produces an average of +7 months' additional progress.</p>
+          <span class="evidence-tag">EEF — High Impact</span>
+        </div>
+        <div class="evidence-card">
+          <h3>Focus and attention training</h3>
+          <p>Structured attention exercises improved focused and selective attention in primary pupils. Over half reported better concentration in class.</p>
+          <span class="evidence-tag">Lai & Chang, 2020</span>
+        </div>
+        <div class="evidence-card">
+          <h3>Working memory training</h3>
+          <p>Brief TA-led memory training sessions produced +3 months' progress in maths, alongside improvements in attention and classroom behaviour.</p>
+          <span class="evidence-tag">EEF / Oxford Trial</span>
+        </div>
+        <div class="evidence-card">
+          <h3>Mindfulness for attention</h3>
+          <p>A 4-week classroom mindfulness programme (40 minutes/week) significantly enhanced pupils' attentional focus and self-awareness.</p>
+          <span class="evidence-tag">Lin et al., 2025</span>
+        </div>
+        <div class="evidence-card">
+          <h3>Test anxiety reduction</h3>
+          <p>A systematic review of over 53,000 children confirmed that test anxiety is negatively associated with achievement — and that targeted interventions improve outcomes.</p>
+          <span class="evidence-tag">Robson et al., 2023</span>
+        </div>
+        <div class="evidence-card">
+          <h3>Read-the-passage-first strategy</h3>
+          <p>Eye-tracking research shows reading the full passage before tackling questions is more efficient — children needed less time and achieved comparable or better accuracy.</p>
+          <span class="evidence-tag">Zawoyski et al., 2023</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DAILY PLAN ===== -->
+  <section class="daily-plan">
+    <div class="container">
+      <div class="container-narrow" style="text-align: center;">
+        <p class="section-label">The Daily Session</p>
+        <h2 class="section-title">Just 15 minutes. Built into any routine.</h2>
+        <p class="section-subtitle">Short enough to fit before school, after dinner, or on the way home. Long enough to build real habits that last until exam day and beyond.</p>
+      </div>
+      <div class="plan-timeline">
+        <div class="plan-item">
+          <div class="plan-time" style="background: #e6f7f2; color: #1a7a5a;">&#127793;</div>
+          <div class="plan-content">
+            <span class="plan-duration">2 minutes</span>
+            <h4>Calm &amp; Focus</h4>
+            <p>A guided breathing exercise or short attention game to settle the mind and signal "it's focus time."</p>
+          </div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-time" style="background: #e8f0fe; color: var(--bright-blue);">&#128270;</div>
+          <div class="plan-content">
+            <span class="plan-duration">8 minutes</span>
+            <h4>Timed Drill — Today's Subject</h4>
+            <p>5-10 questions on one topic. Each question prompts: "Underline key words. How many answers needed? Rephrase it." Timer visible but not pressured.</p>
+          </div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-time" style="background: #fef3c7; color: #8a6d00;">&#128161;</div>
+          <div class="plan-content">
+            <span class="plan-duration">3 minutes</span>
+            <h4>Review &amp; Learn from Traps</h4>
+            <p>See which questions had traps, why each distractor was wrong, and what to look for next time. The "teach-back" prompt asks: "Can you explain why B was wrong?"</p>
+          </div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-time" style="background: #fef2f2; color: #ef4444;">&#128293;</div>
+          <div class="plan-content">
+            <span class="plan-duration">2 minutes</span>
+            <h4>Reflect &amp; Update Streak</h4>
+            <p>Quick self-check: "Did I read all options? Did I pause before answering?" Streak updates and a motivational nudge to come back tomorrow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PARENT QUOTE ===== -->
+  <section class="parent-quote">
+    <div class="container-narrow">
+      <blockquote>"She knew the material. She just kept losing marks on silly mistakes. This app taught her to slow down, read properly, and trust her own brain. Her mock scores jumped in three weeks."</blockquote>
+      <cite>— Parent of Year 5 pupil, London</cite>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="final-cta">
+    <div class="cta-box">
+      <h2>Give your child the exam habits that make the difference</h2>
+      <p>The 11+ rewards children who read carefully, stay calm, and think methodically. 15 minutes a day is all it takes to build those habits — backed by science, designed for children.</p>
+      <a href="#" class="hero-cta">Start Free Trial</a>
+      <ul class="cta-checklist">
+        <li>All 4 subjects covered</li>
+        <li>15 minutes a day</li>
+        <li>Evidence-based techniques</li>
+        <li>Cancel anytime</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2026 11+ Read the Question. All rights reserved. Built with evidence-based research from the EEF Teaching and Learning Toolkit.</p>
+  </footer>
+
+</body>
+</html>
