@@ -147,7 +147,7 @@ function useBreathingSound() {
 /*  Mode type                                                          */
 /* ------------------------------------------------------------------ */
 
-type Mode = null | 'script' | 'breathing';
+type Mode = null | 'script-intro' | 'script' | 'breathing-intro' | 'breathing';
 
 /* ------------------------------------------------------------------ */
 /*  Main page                                                          */
@@ -253,7 +253,7 @@ export function VisualisationPage() {
             onClick={() => {
               setSelectedScript(script);
               setCurrentSectionIndex(0);
-              setMode('script');
+              setMode('script-intro');
             }}
             className="w-full bg-white rounded-card p-5 shadow-sm border-2 border-purple-100 hover:border-purple-300 transition-colors text-left"
           >
@@ -273,7 +273,7 @@ export function VisualisationPage() {
 
           {/* Box breathing */}
           <button
-            onClick={() => setMode('breathing')}
+            onClick={() => setMode('breathing-intro')}
             className="w-full bg-white rounded-card p-5 shadow-sm border-2 border-purple-100 hover:border-purple-300 transition-colors text-left"
           >
             <div className="flex items-center gap-4">
@@ -290,6 +290,143 @@ export function VisualisationPage() {
                 </p>
               </div>
             </div>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------- Visualisation intro ---------- */
+  if (mode === 'script-intro') {
+    const script = selectedScript ?? visualisationScripts[0];
+    return (
+      <div className="space-y-6 py-2">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={handleBack}
+            className="text-sm text-purple-500 font-display font-semibold flex items-center gap-1"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center text-center px-4 pt-4">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-4xl mb-5">
+            🌅
+          </div>
+
+          <h2 className="font-display text-2xl font-bold text-purple-700 mb-2">
+            Guided Visualisation
+          </h2>
+
+          <p className="text-purple-400 font-display text-sm mb-6">
+            {script.durationMinutes} minutes
+          </p>
+
+          <div className="bg-purple-50 rounded-2xl p-5 max-w-sm space-y-3 text-left">
+            <p className="font-display text-gray-700 text-base leading-relaxed">
+              This short guided exercise will help your child imagine exam day going well &mdash;
+              arriving calm, reading carefully, and using their technique with confidence.
+            </p>
+            <p className="font-display text-gray-700 text-base leading-relaxed">
+              Practising this regularly helps the brain rehearse success, so when the real day comes it
+              already feels familiar.
+            </p>
+          </div>
+
+          <div className="bg-amber-50 rounded-2xl p-5 max-w-sm mt-4 text-left">
+            <p className="font-display font-semibold text-gray-800 text-sm mb-2">Before you start:</p>
+            <ul className="space-y-1.5 text-sm text-gray-600 font-display">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🪑</span> Find a comfortable place to sit
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🤫</span> Somewhere quiet, with no distractions
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🎧</span> Headphones are ideal but not essential
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">😌</span> Close your eyes when the audio begins
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => setMode('script')}
+            className="mt-8 w-full max-w-sm py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+          >
+            <Play className="w-5 h-5" />
+            I&rsquo;m ready &mdash; play
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------- Breathing intro ---------- */
+  if (mode === 'breathing-intro') {
+    return (
+      <div className="space-y-6 py-2">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={handleBack}
+            className="text-sm text-purple-500 font-display font-semibold flex items-center gap-1"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center text-center px-4 pt-4">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-100 to-indigo-100 flex items-center justify-center mb-5">
+            <Wind className="w-10 h-10 text-violet-500" />
+          </div>
+
+          <h2 className="font-display text-2xl font-bold text-purple-700 mb-2">
+            Box Breathing
+          </h2>
+
+          <p className="text-purple-400 font-display text-sm mb-6">
+            Go for as long as you like
+          </p>
+
+          <div className="bg-purple-50 rounded-2xl p-5 max-w-sm space-y-3 text-left">
+            <p className="font-display text-gray-700 text-base leading-relaxed">
+              Box breathing is a simple technique used by athletes and astronauts to calm nerves and
+              sharpen focus. Breathe in, hold, breathe out, hold &mdash; each for 4 seconds.
+            </p>
+            <p className="font-display text-gray-700 text-base leading-relaxed">
+              Even a minute or two makes a real difference. It&rsquo;s a brilliant tool to use just
+              before an exam &mdash; or any time you feel the wobbles.
+            </p>
+          </div>
+
+          <div className="bg-amber-50 rounded-2xl p-5 max-w-sm mt-4 text-left">
+            <p className="font-display font-semibold text-gray-800 text-sm mb-2">Before you start:</p>
+            <ul className="space-y-1.5 text-sm text-gray-600 font-display">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🪑</span> Sit comfortably with both feet on the floor
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🙌</span> Rest your hands in your lap
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">😌</span> Close your eyes or soften your gaze
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">🔵</span> Follow the circle &mdash; it will guide you
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => setMode('breathing')}
+            className="mt-8 w-full max-w-sm py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-violet-500 via-purple-600 to-indigo-600 hover:from-violet-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+          >
+            <Play className="w-5 h-5" />
+            I&rsquo;m ready &mdash; let&rsquo;s breathe
           </button>
         </div>
       </div>

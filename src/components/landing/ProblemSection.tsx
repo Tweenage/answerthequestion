@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const PAIN_POINTS = [
-  'They circle the smallest number when the question said largest.',
-  'They answer three questions beautifully — then skip the fourth because they didn\'t see it.',
-  'They write a paragraph when the question asked for one word.',
-  'They come out of the exam confident — and you already know what happened.',
-  'You\'ve said "read the question" so many times it\'s lost all meaning.',
+  { emoji: '🤦', text: 'The question said "two reasons" — they gave one and moved on.' },
+  { emoji: '😤', text: 'They ace practice papers at home — then panic under timed conditions.' },
+  { emoji: '🚗', text: 'On the way to school they know it all. In the exam hall, it vanishes.' },
+  { emoji: '😬', text: 'They come out of the exam confident — and you already know what happened.' },
+  { emoji: '🔁', text: 'You\'ve said "read the question" so many times it\'s lost all meaning.' },
 ];
 
 export function ProblemSection() {
@@ -18,19 +18,38 @@ export function ProblemSection() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
         >
+          {/* Age badge */}
+          <div className="flex justify-center mb-4">
+            <span className="inline-block bg-purple-100 text-purple-700 font-display font-bold text-sm px-4 py-1.5 rounded-full">
+              Ages 7&ndash;11+
+            </span>
+          </div>
+
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-3 leading-tight">
-            Your child knows the material.
+            Tutors teach the curriculum.
             <br />
-            That&rsquo;s not the problem.
+            But who teaches them how to <span className="text-purple-700">use&nbsp;it</span> under pressure?
           </h2>
 
-          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-8">
-            The problem is what happens under pressure. The timer starts. The nerves kick in.
-            They skim, spot a familiar word, and write the first thing that comes to mind.
+          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-4 leading-relaxed">
+            Your child is already learning the content &mdash; at home, with tutors, workbooks and practice papers.
+            You&rsquo;ve got that side covered.
+          </p>
+
+          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-4 leading-relaxed">
+            What&rsquo;s missing is the bit <strong className="text-gray-700">between</strong> knowing
+            the answer and writing it down: staying calm, reading carefully, and not throwing away marks
+            on questions they actually know.
+          </p>
+
+          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-8 leading-relaxed">
+            <strong className="text-purple-700">AnswerTheQuestion!</strong> is the missing piece &mdash;
+            exam-day visualisation, breathing exercises, focus practice, instant feedback
+            and progress tracking, all in one place. Just a few minutes a day.
           </p>
 
           <p className="font-display font-extrabold text-xl md:text-2xl text-purple-700 text-center mb-10">
-            Wrong answer. Right knowledge. Lost marks.
+            That&rsquo;s the gap. And that&rsquo;s what we train.
           </p>
 
           {/* Pain points */}
@@ -49,8 +68,8 @@ export function ProblemSection() {
                   transition={{ delay: i * 0.08 }}
                   className="flex items-start gap-3 text-gray-700 font-display text-sm md:text-base leading-relaxed"
                 >
-                  <span className="text-amber-500 shrink-0 mt-0.5 text-lg">&bull;</span>
-                  {item}
+                  <span className="shrink-0 mt-0.5 text-lg">{item.emoji}</span>
+                  {item.text}
                 </motion.li>
               ))}
             </ul>
