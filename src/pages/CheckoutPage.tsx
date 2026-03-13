@@ -46,7 +46,19 @@ export function CheckoutPage() {
         body,
       });
 
-      if (fnError) throw fnError;
+      // supabase.functions.invoke returns a generic message on non-2xx.
+      // Try to extract the real error from the response context first.
+      if (fnError) {
+        let detail = '';
+        try {
+          const ctx = (fnError as any).context;
+          if (ctx && typeof ctx.json === 'function') {
+            const body = await ctx.json();
+            if (body?.error) detail = body.error;
+          }
+        } catch { /* ignore — fall back to generic message */ }
+        throw new Error(detail || fnError.message);
+      }
       if (data?.error) throw new Error(data.error);
       if (data?.url) {
         window.location.href = data.url;

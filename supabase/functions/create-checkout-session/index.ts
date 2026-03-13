@@ -21,14 +21,26 @@ const PROD_ORIGINS = [
   'https://www.answerthequestion.co.uk',
 ];
 
-// localhost is only included when ALLOW_LOCALHOST=true (for local dev with `supabase functions serve`)
-const ALLOWED_ORIGINS = Deno.env.get('ALLOW_LOCALHOST') === 'true'
-  ? [...PROD_ORIGINS, 'http://localhost:5173']
-  : PROD_ORIGINS;
+/**
+ * Check whether an origin is trusted for CORS and redirect validation.
+ * Accepts: production domains, Vercel preview/production deployments,
+ * and localhost when ALLOW_LOCALHOST=true.
+ */
+function isTrustedOrigin(origin: string): boolean {
+  if (PROD_ORIGINS.includes(origin)) return true;
+  // Vercel preview & production deployments (*.vercel.app)
+  if (/^https:\/\/[\w-]+\.vercel\.app$/.test(origin)) return true;
+  // localhost for local dev
+  if (
+    Deno.env.get('ALLOW_LOCALHOST') === 'true' &&
+    /^http:\/\/localhost(:\d+)?$/.test(origin)
+  ) return true;
+  return false;
+}
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('Origin') ?? '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowedOrigin = isTrustedOrigin(origin) ? origin : PROD_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -76,11 +88,11 @@ serve(async (req) => {
       customerEmail = email.trim().toLowerCase();
     }
 
-    // Validate redirect URLs against allowed origins to prevent open redirects
+    // Validate redirect URLs — must be HTTPS from a trusted origin (or localhost in dev)
     const isAllowedUrl = (url: string) => {
       try {
         const parsed = new URL(url);
-        return ALLOWED_ORIGINS.some(origin => parsed.origin === new URL(origin).origin);
+        return isTrustedOrigin(parsed.origin);
       } catch {
         return false;
       }
