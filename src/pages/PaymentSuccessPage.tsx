@@ -2,11 +2,184 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
+import { jsPDF } from 'jspdf';
 import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
 import { useAuthStore } from '../stores/useAuthStore';
 import { supabase } from '../lib/supabase';
 
 const CRIB_SHEET_STORAGE_KEY = 'atq-crib-sheet-purchased';
+
+/**
+ * Generate and download a one-page A4 CLEAR Method crib sheet PDF.
+ * Uses jsPDF drawing primitives — no external images or fonts required.
+ */
+function generateCribSheetPdf() {
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const W = 210;
+  const H = 297;
+
+  // ─── Background ───────────────────────────────────────────────
+  doc.setFillColor(253, 251, 255); // very light purple
+  doc.rect(0, 0, W, H, 'F');
+
+  // ─── Border ───────────────────────────────────────────────────
+  doc.setDrawColor(124, 58, 237); // purple-600
+  doc.setLineWidth(1.5);
+  doc.rect(8, 8, W - 16, H - 16);
+  doc.setDrawColor(200, 160, 50); // gold
+  doc.setLineWidth(0.5);
+  doc.rect(11, 11, W - 22, H - 22);
+
+  // ─── Header ───────────────────────────────────────────────────
+  doc.setFontSize(20);
+  doc.text('🦉', W / 2, 26, { align: 'center' });
+
+  doc.setFontSize(8);
+  doc.setTextColor(124, 58, 237);
+  doc.setFont('helvetica', 'bold');
+  doc.text('AnswerTheQuestion!', W / 2, 33, { align: 'center' });
+
+  doc.setFontSize(24);
+  doc.setTextColor(55, 30, 100);
+  doc.setFont('helvetica', 'bold');
+  doc.text('The CLEAR Method', W / 2, 46, { align: 'center' });
+
+  // TM symbol
+  doc.setFontSize(8);
+  doc.setTextColor(124, 58, 237);
+  const titleWidth = doc.getTextWidth('The CLEAR Method');
+  doc.setFont('helvetica', 'normal');
+  // Position TM slightly adjusted
+  doc.text('TM', W / 2 + titleWidth / 2 + 1, 40, { align: 'left' });
+
+  doc.setFontSize(11);
+  doc.setTextColor(100, 100, 100);
+  doc.setFont('helvetica', 'normal');
+  doc.text('5 Steps to Answer Every Question Properly', W / 2, 55, { align: 'center' });
+
+  // ─── Divider ──────────────────────────────────────────────────
+  doc.setDrawColor(200, 160, 50);
+  doc.setLineWidth(0.5);
+  doc.line(40, 60, W - 40, 60);
+
+  // ─── The 5 CLEAR steps ────────────────────────────────────────
+  const steps = [
+    {
+      letter: 'C',
+      name: 'Calm',
+      emoji: '🧘',
+      color: [124, 58, 237] as [number, number, number],
+      instruction: 'Take a slow breath before you begin.',
+      detail: 'Put your pen down. Breathe in for 3, out for 3. A calm mind reads better than a rushing one.',
+    },
+    {
+      letter: 'L',
+      name: 'Look',
+      emoji: '👀',
+      color: [147, 51, 234] as [number, number, number],
+      instruction: 'Read the whole question carefully.',
+      detail: 'Read it all the way to the end — even if you think you know the answer halfway through.',
+    },
+    {
+      letter: 'E',
+      name: 'Extract',
+      emoji: '✏️',
+      color: [168, 85, 247] as [number, number, number],
+      instruction: 'Underline the key words.',
+      detail: 'Circle or underline the important words: numbers, command words (explain, list, compare), and any tricky details.',
+    },
+    {
+      letter: 'A',
+      name: 'Answer',
+      emoji: '❓',
+      color: [180, 140, 50] as [number, number, number],
+      instruction: 'Answer what is actually being asked.',
+      detail: 'Check: does your answer match the question? If it says "explain", don\'t just state. If it says "two reasons", give two.',
+    },
+    {
+      letter: 'R',
+      name: 'Review',
+      emoji: '✅',
+      color: [217, 119, 6] as [number, number, number],
+      instruction: 'Check your answer makes sense.',
+      detail: 'Re-read the question one more time. Does your answer actually answer it? Is it complete? Fix anything that\'s missing.',
+    },
+  ];
+
+  let y = 72;
+  const cardH = 38;
+  const cardMargin = 20;
+
+  for (const step of steps) {
+    // Card background
+    doc.setFillColor(248, 246, 255); // light purple tint
+    doc.setDrawColor(step.color[0], step.color[1], step.color[2]);
+    doc.setLineWidth(0.6);
+    doc.roundedRect(cardMargin, y, W - cardMargin * 2, cardH, 4, 4, 'FD');
+
+    // Coloured circle with letter
+    const circleX = cardMargin + 14;
+    const circleY = y + cardH / 2;
+    doc.setFillColor(step.color[0], step.color[1], step.color[2]);
+    doc.circle(circleX, circleY, 8, 'F');
+    doc.setFontSize(14);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.text(step.letter, circleX, circleY + 1.5, { align: 'center' });
+
+    // Emoji
+    doc.setFontSize(14);
+    doc.text(step.emoji, circleX, circleY - 9, { align: 'center' });
+
+    // Step name + instruction
+    const textX = cardMargin + 30;
+    doc.setFontSize(13);
+    doc.setTextColor(step.color[0], step.color[1], step.color[2]);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${step.name}`, textX, y + 11);
+
+    doc.setFontSize(9.5);
+    doc.setTextColor(55, 30, 100);
+    doc.setFont('helvetica', 'bold');
+    doc.text(step.instruction, textX, y + 19);
+
+    // Detail text (wrap if needed)
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('helvetica', 'normal');
+    const maxWidth = W - cardMargin * 2 - 35;
+    const lines = doc.splitTextToSize(step.detail, maxWidth);
+    doc.text(lines, textX, y + 26);
+
+    y += cardH + 5;
+  }
+
+  // ─── Bottom reminder ──────────────────────────────────────────
+  y += 5;
+  doc.setDrawColor(200, 160, 50);
+  doc.setLineWidth(0.5);
+  doc.line(40, y, W - 40, y);
+
+  y += 10;
+  doc.setFontSize(10);
+  doc.setTextColor(124, 58, 237);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Before every question, remember: CLEAR!', W / 2, y, { align: 'center' });
+
+  y += 8;
+  doc.setFontSize(8);
+  doc.setTextColor(150, 150, 150);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Stick this on the fridge, inside a pencil case, or beside practice papers.', W / 2, y, { align: 'center' });
+
+  y += 12;
+  doc.setFontSize(7);
+  doc.setTextColor(180, 180, 180);
+  doc.text('answerthequestion.co.uk', W / 2, y, { align: 'center' });
+
+  // ─── Download ─────────────────────────────────────────────────
+  doc.save('CLEAR-Method-Crib-Sheet.pdf');
+}
 
 export function PaymentSuccessPage() {
   const navigate = useNavigate();
@@ -78,11 +251,11 @@ export function PaymentSuccessPage() {
   const handleDownloadCribSheet = async () => {
     setDownloading(true);
     try {
+      // Try downloading the professionally designed PDF from Supabase Storage
       const { data } = supabase.storage
         .from('assets')
         .getPublicUrl('crib-sheet/clear-method-crib-sheet.pdf');
 
-      // Fetch the PDF and trigger a download
       const response = await fetch(data.publicUrl);
       if (!response.ok) throw new Error('Download failed');
 
@@ -96,11 +269,8 @@ export function PaymentSuccessPage() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch {
-      // Fallback: open the URL directly
-      const { data } = supabase.storage
-        .from('assets')
-        .getPublicUrl('crib-sheet/clear-method-crib-sheet.pdf');
-      window.open(data.publicUrl, '_blank');
+      // Fallback: generate a PDF client-side with jsPDF
+      generateCribSheetPdf();
     } finally {
       setDownloading(false);
     }
@@ -242,7 +412,7 @@ export function PaymentSuccessPage() {
                 {downloading ? 'Downloading\u2026' : 'Download Crib Sheet'}
               </motion.button>
               <p className="font-display text-xs text-gray-400">
-                We&rsquo;ve also emailed a copy to you
+                You can re-download this anytime from your dashboard
               </p>
             </div>
           </motion.div>
