@@ -164,7 +164,7 @@ export function CheckoutPage() {
                 type="text"
                 value={promoCode}
                 onChange={e => setPromoCode(e.target.value.toUpperCase())}
-                placeholder="e.g. ATQWELCOME10"
+                placeholder="Enter code"
                 className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 font-display text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 uppercase placeholder:normal-case"
               />
               {promoCode.trim() && (
