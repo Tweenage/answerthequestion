@@ -104,8 +104,17 @@ export function CheckoutPage() {
             </div>
 
             {/* Crib Sheet Bump */}
-            <div className="mb-6">
-              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-dashed border-purple-200 bg-purple-50/50 cursor-pointer hover:bg-purple-50 transition-colors">
+            <motion.div
+              className="mb-6"
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 2, repeat: 2, delay: 1.5 }}
+            >
+              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-fuchsia-400 bg-gradient-to-br from-fuchsia-50 via-purple-50 to-white cursor-pointer hover:from-fuchsia-100 hover:via-purple-100 transition-colors shadow-md shadow-fuchsia-100/50 relative overflow-hidden">
+                {/* Attention ribbon */}
+                <span className="absolute -top-0.5 -right-0.5 bg-fuchsia-500 text-white text-[10px] font-display font-extrabold px-2.5 py-0.5 rounded-bl-lg rounded-tr-lg uppercase tracking-wide">
+                  Only at checkout
+                </span>
                 <input
                   type="checkbox"
                   checked={includeCribSheet}
@@ -114,22 +123,25 @@ export function CheckoutPage() {
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-display font-bold text-base text-gray-800">
+                    <p className="font-display font-extrabold text-base text-gray-900">
                       📋 Add the CLEAR Method&trade; Crib Sheet
                     </p>
-                    <p className="font-display font-bold text-base text-fuchsia-600 shrink-0">
+                    <p className="font-display font-extrabold text-base text-fuchsia-600 shrink-0">
                       &pound;{cribSheetPrice.toFixed(2)}
                     </p>
                   </div>
-                  <p className="font-display text-sm text-gray-600 mt-2 leading-relaxed">
-                    A beautifully designed, printable one-page PDF of the 5 CLEAR Method&trade; steps
-                    your child practises in every session. Stick it on the wall next to their desk,
-                    tuck it into a pencil case, or keep it beside practice papers. When the screens
-                    are off and the pen is in hand, the technique stays close.
+                  <p className="font-display text-sm text-gray-700 mt-2 leading-relaxed">
+                    A printable one-page PDF of the 5 CLEAR Method&trade; steps &mdash; designed to live
+                    on the fridge, inside a pencil case, or beside practice papers.
+                    <strong className="text-purple-700"> When the screens are off and the pen is in hand,
+                    the technique stays close.</strong>
+                  </p>
+                  <p className="font-display text-xs text-fuchsia-600 font-semibold mt-2">
+                    This is the only time you can add it &mdash; it&rsquo;s not available separately.
                   </p>
                 </div>
               </label>
-            </div>
+            </motion.div>
 
             {/* Discount Code */}
             <div className="mb-6">
