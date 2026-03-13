@@ -62,7 +62,11 @@ export function ChildPickerPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetchChildren();
+    // Try to claim any guest checkout payment first (gives webhook extra time),
+    // then fetch children. Non-blocking if claim fails.
+    supabase.functions.invoke('claim-payment').catch(() => {}).finally(() => {
+      fetchChildren();
+    });
   }, []);
 
   const fetchChildren = async () => {

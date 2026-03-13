@@ -28,6 +28,17 @@ export function useSupabaseAuth() {
           setPasswordRecovery(true);
         }
         setParentSession(session);
+
+        // On sign-in/sign-up, try to claim any guest checkout payments.
+        // This is a background, non-blocking call — if it fails or finds
+        // nothing, it's silently ignored. It provides a safety net in case
+        // the claim-payment call in ChildPickerPage runs before the Stripe
+        // webhook has set the payment status to 'completed'.
+        if (event === 'SIGNED_IN' && session) {
+          supabase.functions.invoke('claim-payment').catch(() => {
+            // Non-critical — ChildPickerPage will also try on child creation
+          });
+        }
       }
     );
 
