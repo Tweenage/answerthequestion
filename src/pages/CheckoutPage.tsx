@@ -8,7 +8,6 @@ export function CheckoutPage() {
   const parentSession = useAuthStore(s => s.parentSession);
 
   const [includeCribSheet, setIncludeCribSheet] = useState(false);
-  const [promoCode, setPromoCode] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +33,6 @@ export function CheckoutPage() {
         successUrl: `${window.location.origin}/payment-success`,
         cancelUrl: `${window.location.origin}/checkout`,
         includeCribSheet,
-        promoCode: promoCode.trim() || undefined,
       };
 
       // For guest checkout, send email in the body
@@ -155,25 +153,6 @@ export function CheckoutPage() {
               </label>
             </motion.div>
 
-            {/* Discount Code */}
-            <div className="mb-6">
-              <label className="block text-sm font-display font-semibold text-gray-600 mb-1.5">
-                Discount code
-              </label>
-              <input
-                type="text"
-                value={promoCode}
-                onChange={e => setPromoCode(e.target.value.toUpperCase())}
-                placeholder="Enter code"
-                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 font-display text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 uppercase placeholder:normal-case"
-              />
-              {promoCode.trim() && (
-                <p className="font-display text-xs text-purple-600 mt-1.5">
-                  ✓ Code will be applied at checkout
-                </p>
-              )}
-            </div>
-
             {/* Email — only shown for guests */}
             {!parentSession && (
               <div className="mb-6">
@@ -193,19 +172,17 @@ export function CheckoutPage() {
               </div>
             )}
 
+            {/* Discount code note */}
+            <p className="font-display text-xs text-purple-600 mb-4">
+              🏷️ Have a discount code? You can add it at checkout.
+            </p>
+
             {/* Total */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200 mb-6">
               <p className="font-display font-extrabold text-lg text-gray-900">Total</p>
-              <div className="text-right">
-                <p className="font-display font-extrabold text-2xl text-fuchsia-600">
-                  &pound;{total.toFixed(2)}
-                </p>
-                {promoCode.trim() && (
-                  <p className="font-display text-xs text-purple-600">
-                    Discount applied at checkout
-                  </p>
-                )}
-              </div>
+              <p className="font-display font-extrabold text-2xl text-fuchsia-600">
+                &pound;{total.toFixed(2)}
+              </p>
             </div>
 
             {/* CTA — always show Pay button */}
