@@ -141,6 +141,7 @@ serve(async (req) => {
       payment_method_types: ['card'],
       mode: 'payment',
       allow_promotion_codes: true,
+      customer_creation: 'if_required',
       line_items: lineItems,
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}${includeCribSheet ? '&crib_sheet=1' : ''}`,
       cancel_url: cancelUrl,

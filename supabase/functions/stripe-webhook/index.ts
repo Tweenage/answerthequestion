@@ -89,7 +89,7 @@ async function sendCribSheetEmail(customerEmail: string): Promise<void> {
   // Fetch the PDF from Supabase Storage and base64-encode it for the attachment.
   // Path: <SUPABASE_URL>/storage/v1/object/public/assets/crib-sheet/clear-method-crib-sheet.pdf
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-  const pdfStorageUrl = `${supabaseUrl}/storage/v1/object/public/assets/crib-sheet/clear-method-crib-sheet.pdf`;
+  const pdfStorageUrl = `${supabaseUrl}/storage/v1/object/public/assets/crib-sheet/CLEAR-Method-Crib-Sheet.pdf`;
 
   let pdfBase64: string | null = null;
   try {
