@@ -1,53 +1,57 @@
 import type { Question } from '../types/question';
 
 /**
- * A simple English comprehension question used in the guided first-session tutorial.
+ * A tutorial English comprehension question used in the guided first-session tutorial.
  * Designed to clearly demonstrate every technique step:
- * - Has obvious key words ("NOT")
+ * - Requires inference (the answer is NOT stated directly)
+ * - Has obvious key words ("NOT", "before")
  * - Has clearly eliminatable wrong answers with reasons
- * - Tests a danger word (negation trap)
+ * - Tests careful reading and deduction
  */
 export const TUTORIAL_QUESTION: Question = {
   id: 'tutorial-demo',
   subject: 'english',
   difficulty: 1,
   questionText:
-    'Sam had three pets: a cat called Whiskers, a dog called Patch, and a hamster called Nibbles. Sam loved all of his pets, but Whiskers was NOT his favourite. Which pet was NOT Sam\'s favourite?',
+    'Lily always walks to school with her best friend. On Monday, her best friend was ill, so Lily\'s mum drove her instead. Lily felt sad because she had nobody to talk to on the way. Who does Lily normally walk to school with?',
   questionTokens: [
-    'Sam', ' ', 'had', ' ', 'three', ' ', 'pets:', ' ',
-    'a', ' ', 'cat', ' ', 'called', ' ', 'Whiskers,', ' ',
-    'a', ' ', 'dog', ' ', 'called', ' ', 'Patch,', ' ',
-    'and', ' ', 'a', ' ', 'hamster', ' ', 'called', ' ', 'Nibbles.', ' ',
-    'Sam', ' ', 'loved', ' ', 'all', ' ', 'of', ' ', 'his', ' ', 'pets,', ' ',
-    'but', ' ', 'Whiskers', ' ', 'was', ' ', 'NOT', ' ', 'his', ' ', 'favourite.', ' ',
-    'Which', ' ', 'pet', ' ', 'was', ' ', 'NOT', ' ', "Sam's", ' ', 'favourite?',
+    'Lily', ' ', 'always', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
+    'with', ' ', 'her', ' ', 'best', ' ', 'friend.', ' ',
+    'On', ' ', 'Monday,', ' ', 'her', ' ', 'best', ' ', 'friend', ' ',
+    'was', ' ', 'ill,', ' ', 'so', ' ', "Lily's", ' ', 'mum', ' ',
+    'drove', ' ', 'her', ' ', 'instead.', ' ',
+    'Lily', ' ', 'felt', ' ', 'sad', ' ', 'because', ' ', 'she', ' ',
+    'had', ' ', 'nobody', ' ', 'to', ' ', 'talk', ' ', 'to', ' ',
+    'on', ' ', 'the', ' ', 'way.', ' ',
+    'Who', ' ', 'does', ' ', 'Lily', ' ', 'normally', ' ', 'walk', ' ',
+    'to', ' ', 'school', ' ', 'with?',
   ],
-  keyWordIndices: [50, 62], // "NOT" in both places
+  keyWordIndices: [4, 70], // "always" and "normally"
   options: [
     {
-      text: 'Patch',
+      text: 'Her mum',
       isEliminatable: true,
-      eliminationReason: 'The passage says Whiskers was NOT his favourite — it does not say anything about Patch.',
+      eliminationReason: 'Her mum only drove her on Monday because her friend was ill — that was NOT the normal routine.',
     },
     {
-      text: 'Whiskers',
+      text: 'Her teacher',
+      isEliminatable: true,
+      eliminationReason: 'A teacher is never mentioned in the passage at all.',
+    },
+    {
+      text: 'Her best friend',
       isEliminatable: false,
     },
     {
-      text: 'Nibbles',
+      text: 'Nobody',
       isEliminatable: true,
-      eliminationReason: 'The passage says Whiskers was NOT his favourite — it does not mention Nibbles being or not being the favourite.',
-    },
-    {
-      text: 'Sam',
-      isEliminatable: true,
-      eliminationReason: 'Sam is the owner, not a pet! This is a trick answer designed to catch you if you rush.',
+      eliminationReason: 'She had "nobody to talk to" only on Monday — that is a trap! The question asks about her NORMAL routine.',
     },
   ],
-  correctOptionIndex: 1,
+  correctOptionIndex: 2,
   explanation:
-    'The passage clearly says "Whiskers was NOT his favourite." The danger word NOT tells us the answer is Whiskers. Did you spot it?',
-  category: 'comprehension-who',
+    'The passage says Lily "always walks to school with her best friend." The key word "normally" in the question matches "always" in the passage. Her mum only drove her on Monday — that was the exception, not the rule!',
+  category: 'comprehension-inference',
   trickType: 'negation-trap',
 };
 
@@ -73,7 +77,7 @@ export const TUTORIAL_STEPS = [
     id: 'read-again',
     hootMood: 'thinking' as const,
     title: 'Step 2: Read It Again',
-    message: 'Brilliant! Now read it one more time. Can you work out what it is REALLY asking? Say it in your head.',
+    message: 'Now, read it again to check your understanding. What is the question REALLY asking? Say it in your head.',
     showQuestion: true,
     showAnswers: false,
   },
@@ -81,7 +85,7 @@ export const TUTORIAL_STEPS = [
     id: 'key-words',
     hootMood: 'teaching' as const,
     title: 'Step 3: Spot the Key Words',
-    message: 'See the word "NOT"? That is a DANGER WORD! It changes the whole question. In the app, you will tap these words to highlight them.',
+    message: 'See the word "normally"? That is a KEY WORD! It tells you the question is about what USUALLY happens — not what happened on Monday. In the app, you will tap these words to highlight them.',
     showQuestion: true,
     showAnswers: false,
     highlightKeyWords: true,
@@ -90,7 +94,7 @@ export const TUTORIAL_STEPS = [
     id: 'on-paper',
     hootMood: 'encouraging' as const,
     title: '🖊️ In Your Real Exam...',
-    message: 'Cover the answers with your hand and read the question twice first — no peeking! Then underline key words like "NOT" with your pencil.',
+    message: 'Cover the answers with your hand and read the question twice first — no peeking! Then underline key words like "normally" and "always" with your pencil.',
     showQuestion: true,
     showAnswers: false,
   },
@@ -98,25 +102,25 @@ export const TUTORIAL_STEPS = [
     id: 'show-answers',
     hootMood: 'warning' as const,
     title: 'Step 4: Now Eliminate!',
-    message: "Here are the answers. Let's cross out the wrong ones! \"Sam\" is the owner, not a pet — cross it out! \"Patch\" and \"Nibbles\" are not mentioned as NOT being the favourite.",
+    message: "Here are the answers. Let's cross out the wrong ones! \"Her teacher\" is never mentioned. \"Her mum\" only drove her on Monday. \"Nobody\" is a trap — she only had nobody to talk to on that one day!",
     showQuestion: true,
     showAnswers: true,
-    eliminateIndices: [0, 2, 3],
+    eliminateIndices: [0, 1, 3],
   },
   {
     id: 'lock-in',
     hootMood: 'celebrating' as const,
     title: 'Step 5: Lock It In!',
-    message: "Only Whiskers is left — and the passage says Whiskers was NOT Sam's favourite. That is your answer! In the app, you'll hit the Lock In button.",
+    message: "Only \"Her best friend\" is left — and the passage says she ALWAYS walks with her best friend. That is your answer! In the app, you'll hit the Lock In button.",
     showQuestion: true,
     showAnswers: true,
-    correctIndex: 1,
+    correctIndex: 2,
   },
   {
     id: 'complete',
     hootMood: 'celebrating' as const,
     title: 'Hoo-ray! You Did It! 🎉',
-    message: "You just used the full technique: Read → Key Words → Eliminate → Lock In. Now you try it yourself! Remember, it is not about getting every answer right — it is about building the HABIT.",
+    message: "You just used the full technique: Read → Key Words → Eliminate → Lock In. Did you notice the traps? The question tried to trick you with Monday's events! Now you try it yourself. Remember, it is not about getting every answer right — it is about building the HABIT.",
     showQuestion: false,
     showAnswers: false,
   },
