@@ -71,7 +71,7 @@ const STEP_CONFIGS: Record<string, StepConfig> = {
   SELECTING: {
     step: 6,
     label: 'LOCK YOUR ANSWER!',
-    instruction: 'The right answer is the last one standing!',
+    instruction: 'Tap the answer you think is correct, then lock it in!',
     bgColour: 'bg-emerald-100',
     borderColour: 'border-emerald-400',
     textColour: 'text-emerald-900',

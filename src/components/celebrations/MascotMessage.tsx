@@ -50,11 +50,11 @@ export function getMascotTip(state: string, scaffoldingLevel: string): string {
     return 'Highlight key words. Watch for danger words!';
   }
   if (state === 'ELIMINATING') {
-    if (scaffoldingLevel === 'heavy') return "Cross out ALL the wrong answers! The right one will be the last one standing. Even I get tricked sometimes, so let's be careful!";
+    if (scaffoldingLevel === 'heavy') return "Cross out all the wrong answers first! Then tap the one you think is right. Even I get tricked sometimes, so let's be careful!";
     return 'Eliminate all the wrong answers.';
   }
   if (state === 'SELECTING') {
-    return "Hoo-ray! You've found your answer! Lock it in when you're ready!";
+    return "Now tap the answer you think is correct and lock it in!";
   }
   return '';
 }

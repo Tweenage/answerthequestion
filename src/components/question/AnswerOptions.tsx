@@ -105,7 +105,7 @@ export function AnswerOptions({
           animate={{ opacity: 1, y: 0 }}
           className="text-center font-display text-sm text-calm-600 font-bold mb-2"
         >
-          🎯 Your answer is the last one standing!
+          🎯 Now tap the answer you think is correct!
         </motion.p>
       )}
 

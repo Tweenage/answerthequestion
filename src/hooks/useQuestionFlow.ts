@@ -168,18 +168,15 @@ export function useQuestionFlow(question: Question | null, weekConfig: WeekConfi
         newEliminated = [...prev.eliminatedAnswers, optionIndex];
       }
 
-      // When all wrong answers are eliminated, auto-select the remaining one
+      // When all wrong answers are eliminated, move to SELECTING state
+      // but do NOT auto-select — the child must tap the remaining answer
       const allWrongEliminated = newEliminated.length === question.options.length - 1;
-      let selectedAnswer = prev.selectedAnswer;
-      if (allWrongEliminated) {
-        selectedAnswer = question.options.findIndex((_, i) => !newEliminated.includes(i));
-      }
 
       return {
         ...prev,
         eliminatedAnswers: newEliminated,
-        selectedAnswer,
-        canAdvance: allWrongEliminated,
+        selectedAnswer: prev.selectedAnswer,
+        canAdvance: false,
         state: allWrongEliminated ? 'SELECTING' : 'ELIMINATING',
       };
     });
