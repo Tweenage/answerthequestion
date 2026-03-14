@@ -91,6 +91,8 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
                     const isEliminated = 'eliminateIndices' in step &&
                       (step.eliminateIndices as number[])?.includes(i);
                     const isCorrect = 'correctIndex' in step && step.correctIndex === i;
+                    // On the "lock-in" step, show eliminated answers as faded with transparent crosses
+                    const hasCorrectOnThisStep = 'correctIndex' in step && step.correctIndex !== undefined;
 
                     return (
                       <div
@@ -98,6 +100,8 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
                         className={`flex items-center gap-2 py-2 px-3 rounded-lg border text-sm ${
                           isCorrect
                             ? 'bg-green-50 border-green-300 text-green-700 font-bold'
+                            : isEliminated && hasCorrectOnThisStep
+                            ? 'bg-red-50/40 border-red-200/40 text-gray-300 line-through opacity-50'
                             : isEliminated
                             ? 'bg-red-50 border-red-200 text-gray-400 line-through'
                             : 'bg-gray-50 border-gray-200 text-gray-700'
@@ -108,10 +112,10 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
                         </span>
                         {opt.text}
                         {isEliminated && (
-                          <span className="ml-auto text-red-400 text-xs">❌</span>
+                          <span className={`ml-auto text-xs ${hasCorrectOnThisStep ? 'text-red-300 opacity-50' : 'text-red-400'}`}>❌</span>
                         )}
                         {isCorrect && (
-                          <span className="ml-auto text-green-500 text-xs">✅</span>
+                          <span className="ml-auto text-green-500 text-lg">✅</span>
                         )}
                       </div>
                     );
