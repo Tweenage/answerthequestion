@@ -36,7 +36,7 @@ async function sendEmail(options: {
 
   const client = new SMTPClient({
     connection: {
-      hostname: 'smtp.zoho.com',
+      hostname: 'smtppro.zoho.eu',
       port: 465,
       tls: true,
       auth: {

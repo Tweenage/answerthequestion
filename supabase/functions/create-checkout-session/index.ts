@@ -10,9 +10,11 @@
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import Stripe from 'https://esm.sh/stripe@14?target=deno';
+import Stripe from 'https://esm.sh/stripe@14.21.0?target=deno';
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+  apiVersion: '2023-10-16',
+});
 
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
@@ -135,30 +137,21 @@ serve(async (req) => {
 
     // Create Stripe Checkout Session
     // allow_promotion_codes lets Stripe show its own "Add promotion code" field
-    const sessionParams: Record<string, unknown> = {
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      mode: 'payment',
+      mode: 'payment' as const,
       allow_promotion_codes: true,
       line_items: lineItems,
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}${includeCribSheet ? '&crib_sheet=1' : ''}`,
       cancel_url: cancelUrl,
+      // Pre-fill email on checkout page — customer_email only, no customer_data
+      ...(customerEmail ? { customer_email: customerEmail } : {}),
       metadata: {
-        // parentId is only set for authenticated users; null for guests
         ...(userId ? { parentId: userId } : {}),
         includeCribSheet: includeCribSheet ? 'true' : 'false',
-        // Store email in metadata so webhook can retrieve it even without customer_email
         ...(customerEmail ? { customerEmail } : {}),
       },
-    };
-
-    // Only set customer_email if we have one — avoids Stripe customer_data errors
-    if (customerEmail) {
-      sessionParams.customer_email = customerEmail;
-    }
-
-    const session = await stripe.checkout.sessions.create(
-      sessionParams as Stripe.Checkout.SessionCreateParams
-    );
+    } as Stripe.Checkout.SessionCreateParams);
 
     // Record pending payment in database
     const supabaseAdmin = createClient(

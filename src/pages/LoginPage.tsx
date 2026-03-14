@@ -169,9 +169,12 @@ export function LoginPage() {
             <h2 className="font-display text-xl font-bold text-purple-800 mb-3">
               Reset link sent! 📧
             </h2>
-            <p className="text-gray-600 font-display mb-4">
+            <p className="text-gray-600 font-display mb-2">
               We've sent a password reset link to <strong>{email}</strong>.
               Check your inbox and follow the link to set a new password.
+            </p>
+            <p className="text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mb-4 font-display">
+              📬 Can't see it? Check your <strong>spam</strong> or <strong>junk</strong> folder — it sometimes ends up there!
             </p>
             <button
               onClick={() => {

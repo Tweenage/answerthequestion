@@ -97,9 +97,12 @@ export function SignupPage() {
             <h2 className="font-display text-xl font-bold text-purple-800 mb-3">
               Check your email! 📧
             </h2>
-            <p className="text-gray-600 font-display mb-4">
+            <p className="text-gray-600 font-display mb-2">
               We've sent a confirmation link to <strong>{email}</strong>.
               Click the link to activate your account, then come back and sign in.
+            </p>
+            <p className="text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mb-4 font-display">
+              📬 Can't see it? Check your <strong>spam</strong> or <strong>junk</strong> folder — it sometimes ends up there!
             </p>
             <Link
               to="/login"

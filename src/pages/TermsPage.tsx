@@ -116,8 +116,8 @@ export function TermsPage() {
         <Section title="11. Contact">
           <p>
             If you have any questions about these Terms, please contact us at{' '}
-            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
-              hello@answerthequestion.co.uk
+            <a href="mailto:rebecca@answerthequestion.co.uk" className="text-purple-600 underline">
+              rebecca@answerthequestion.co.uk
             </a>.
           </p>
         </Section>

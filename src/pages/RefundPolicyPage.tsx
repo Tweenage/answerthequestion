@@ -39,8 +39,8 @@ export function RefundPolicyPage() {
         <Section title="How to Request a Refund">
           <p>
             To request a refund, simply email us at{' '}
-            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
-              hello@answerthequestion.co.uk
+            <a href="mailto:rebecca@answerthequestion.co.uk" className="text-purple-600 underline">
+              rebecca@answerthequestion.co.uk
             </a>{' '}
             with the email address associated with your account. Please include "Refund Request"
             in the subject line.
@@ -58,8 +58,8 @@ export function RefundPolicyPage() {
           <p>
             If you have any questions about our refund policy, please don't hesitate to contact us
             at{' '}
-            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
-              hello@answerthequestion.co.uk
+            <a href="mailto:rebecca@answerthequestion.co.uk" className="text-purple-600 underline">
+              rebecca@answerthequestion.co.uk
             </a>.
             We're happy to help.
           </p>
