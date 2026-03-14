@@ -16,31 +16,43 @@ const slides: OnboardingSlide[] = [
   {
     hootMood: 'happy',
     title: 'Welcome!',
-    body: "I'm Professor Hoot! This app trains 5 research-backed habits that help you pick up marks other children lose. Most mistakes in exams come from rushing, not from not knowing!",
-    highlight: 'pick up marks',
+    body: "I'm Professor Hoot! This app teaches you the CLEAR Method — a simple technique that helps you pick up marks other children lose. Most exam mistakes come from rushing, not from not knowing!",
+    highlight: 'CLEAR Method',
+  },
+  {
+    hootMood: 'teaching',
+    title: 'What is the CLEAR Method?',
+    body: "It's 5 simple steps you follow for every question. Practise them daily and they become automatic — just like tying your shoes! Let me show you...",
+    tips: [
+      { emoji: '📖', text: 'C — Comprehend: read the question twice' },
+      { emoji: '🔍', text: 'L — Look for key words and danger words' },
+      { emoji: '❌', text: 'E — Eliminate the wrong answers' },
+      { emoji: '✅', text: 'A — Answer with confidence' },
+      { emoji: '🔄', text: 'R — Review and check your work' },
+    ],
   },
   {
     hootMood: 'thinking',
-    title: 'Calm & Focused',
-    body: "First, we breathe. Research with children your age shows that deep breathing before a test makes your brain work better. We start every session with a quick calm exercise.",
-    highlight: 'deep breathing',
-  },
-  {
-    hootMood: 'teaching',
-    title: 'Read Twice, Then Answer',
-    body: "Nearly a third of all exam mistakes come from misreading. So we ALWAYS read the question twice — and cover the answers so you can't peek! Only then do you look at the choices.",
+    title: 'C — Comprehend',
+    body: "Nearly a third of all exam mistakes come from misreading. So we always read the question twice — and cover the answers so you can't peek! Only then do you look at the choices.",
     highlight: 'read the question twice',
   },
   {
+    hootMood: 'teaching',
+    title: 'L — Look for Key Words',
+    body: "Words like \"not\", \"most\", \"least\", \"always\" and \"except\" change the whole question. In the app you'll tap to highlight them. In your real exam, underline them with your pencil!",
+    highlight: 'underline them',
+  },
+  {
     hootMood: 'warning',
-    title: 'Eliminate, Don\'t Guess',
-    body: "Don't jump to the first answer that looks right. Cross out the ones you KNOW are wrong. This turns a 25% guess into a 50% chance — or better! The right answer reveals itself.",
+    title: 'E — Eliminate',
+    body: "Don't jump to the first answer that looks right. Cross out the ones you know are wrong first. This turns a 25% guess into a 50% chance — or better! You must eliminate before you can answer.",
     highlight: 'Cross out',
   },
   {
-    hootMood: 'teaching',
-    title: 'Time & Checking',
-    body: "Top students skip hard questions and come back later. And when you check, it's OK to change your answer — research shows changes usually help, not hurt!",
+    hootMood: 'encouraging',
+    title: 'A — Answer & R — Review',
+    body: "Once you've eliminated, lock in your answer with confidence. Then review — top students check their work and it's OK to change your answer if you spot a mistake!",
     tips: [
       { emoji: '⏭️', text: 'Stuck? Dot it and move on' },
       { emoji: '⏱️', text: 'Easy questions first, hard ones second' },
@@ -48,22 +60,10 @@ const slides: OnboardingSlide[] = [
     ],
   },
   {
-    hootMood: 'encouraging',
-    title: 'The 5 Step Method',
-    body: "Every question follows the same 5 steps. Practise daily and they become automatic — just like tying your shoes!",
-    tips: [
-      { emoji: '📖', text: 'Read the question twice' },
-      { emoji: '🔍', text: 'Spot the key words' },
-      { emoji: '🔢', text: 'Check the numbers' },
-      { emoji: '✂️', text: 'Eliminate wrong answers' },
-      { emoji: '🔒', text: 'Lock your answer' },
-    ],
-  },
-  {
     hootMood: 'celebrating',
     title: "Let's Start!",
-    body: "Your first session is ready. This isn't about knowing the answers — it's about building the HABITS that win marks. I'll be right here helping you!",
-    highlight: 'HABITS',
+    body: "Your first session is ready. This isn't about knowing the answers — it's about building the CLEAR habit that wins marks. I'll be right here helping you!",
+    highlight: 'CLEAR habit',
   },
 ];
 

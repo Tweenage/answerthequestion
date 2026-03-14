@@ -68,7 +68,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'read-first',
     hootMood: 'teaching' as const,
-    title: 'Step 1: Read It Once',
+    title: 'C — Comprehend (Read It Once)',
     message: "Read the question below. Take your time — do not look at the answers yet! I've hidden them for you.",
     showQuestion: true,
     showAnswers: false,
@@ -76,7 +76,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'read-again',
     hootMood: 'thinking' as const,
-    title: 'Step 2: Read It Again',
+    title: 'C — Comprehend (Read It Again)',
     message: 'Now, read it again to check your understanding. What is the question really asking? Say it in your head.',
     showQuestion: true,
     showAnswers: false,
@@ -84,7 +84,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'key-words',
     hootMood: 'teaching' as const,
-    title: 'Step 3: Spot the Key Words',
+    title: 'L — Look for Key Words',
     message: 'See the word "normally"? That is a key word! It tells you the question is about what usually happens — not what happened on Monday. In the app, tap key words to highlight them. In your real exam, underline them with your pencil!',
     showQuestion: true,
     showAnswers: false,
@@ -93,7 +93,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'show-answers',
     hootMood: 'warning' as const,
-    title: 'Step 4: Now Eliminate!',
+    title: 'E — Eliminate!',
     message: "Here are the answers. Let's cross out the wrong ones! \"Her teacher\" is never mentioned. \"Her mum\" only drove her on Monday. \"Nobody\" is a trap — she only had nobody to talk to on that one day! Important: you won't be able to select the right answer until you've eliminated all the wrong ones first. This helps you build the habit!",
     showQuestion: true,
     showAnswers: true,
@@ -102,7 +102,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'lock-in',
     hootMood: 'celebrating' as const,
-    title: 'Step 5: Lock It In!',
+    title: 'A — Answer!',
     message: "Only \"Her best friend\" is left — and the passage says she always walks with her best friend. That is your answer! In the app, you'll hit the Lock In button.",
     showQuestion: true,
     showAnswers: true,
@@ -113,7 +113,7 @@ export const TUTORIAL_STEPS = [
     id: 'complete',
     hootMood: 'celebrating' as const,
     title: 'Hoo-ray! You Did It! 🎉',
-    message: "You just used the full technique: Read → Key Words → Eliminate → Lock In. Did you notice the traps? The question tried to trick you with Monday's events! Now you try it yourself. Remember, it is not about getting every answer right — it is about building the habit.",
+    message: "You just used the CLEAR Method! Comprehend → Look for key words → Eliminate → Answer → Review. Did you notice the traps? Now you try it yourself — practise the CLEAR steps every day and they will become automatic!",
     showQuestion: false,
     showAnswers: false,
   },
