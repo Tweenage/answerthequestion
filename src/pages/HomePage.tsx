@@ -279,6 +279,23 @@ export function HomePage() {
         </div>
       </motion.div>
 
+      {/* ========== WEEK 1 INFO NOTE ========== */}
+      {progress.currentWeek === 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.11 }}
+          className="relative z-10"
+        >
+          <div className="bg-white/90 backdrop-blur-sm rounded-card p-3.5 border border-amber-200/50 shadow-sm">
+            <p className="font-display text-sm text-gray-700 leading-relaxed">
+              <span className="font-bold text-amber-600">📋 Week 1 — Foundation:</span>{' '}
+              This week's questions are deliberately straightforward — the focus is on learning the CLEAR Method technique, not testing knowledge. The questions get progressively more challenging each week as the technique becomes second nature!
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       {/* ========== EXAM COUNTDOWN ========== */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
