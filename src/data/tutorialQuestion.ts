@@ -26,7 +26,7 @@ export const TUTORIAL_QUESTION: Question = {
     'Who', ' ', 'does', ' ', 'Lily', ' ', 'normally', ' ', 'walk', ' ',
     'to', ' ', 'school', ' ', 'with?',
   ],
-  keyWordIndices: [4, 70], // "always" and "normally"
+  keyWordIndices: [2, 76], // "always" (index 2) and "normally" (index 76)
   options: [
     {
       text: 'Her mum',
