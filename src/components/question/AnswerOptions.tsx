@@ -24,6 +24,7 @@ export function AnswerOptions({
   correctIndex,
   flowState,
   onEliminate,
+  onSelect,
   scaffoldingLevel,
 }: AnswerOptionsProps) {
   const showAnswers = !['READING_FIRST', 'READING_SECOND', 'HIGHLIGHTING'].includes(flowState);
@@ -44,7 +45,14 @@ export function AnswerOptions({
   }
 
   const handleClick = (index: number) => {
-    if (isFeedback || isSelecting) return; // Selection is now automatic
+    if (isFeedback) return;
+    if (isSelecting) {
+      // Allow tapping a non-eliminated option to select it
+      if (!eliminatedIndices.includes(index) && onSelect) {
+        onSelect(index);
+      }
+      return;
+    }
     if (isEliminating) {
       onEliminate(index);
     }

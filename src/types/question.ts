@@ -19,7 +19,7 @@ export interface Question {
   correctOptionIndex: number;
   explanation: string;
   category?: string;
-  trickType?: 'number-format' | 'irrelevant-info' | 'operation-masking' | 'reverse-logic' | 'two-step' | 'unit-shift' | 'position-trap' | 'negation-trap' | 'question-at-end';
+  trickType?: 'number-format' | 'irrelevant-info' | 'operation-masking' | 'reverse-logic' | 'two-step' | 'unit-shift' | 'position-trap' | 'negation-trap' | 'question-at-end' | 'context-clue' | 'character-inference' | 'most-likely-inference' | 'purpose-identification' | 'tone-identification';
   imageUrl?: string;
 }
 
