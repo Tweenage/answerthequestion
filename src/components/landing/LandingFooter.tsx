@@ -20,6 +20,10 @@ export function LandingFooter() {
           Why It Works
         </Link>
         <span className="text-white/25">|</span>
+        <Link to="/contact" className="hover:text-white transition-colors">
+          Contact
+        </Link>
+        <span className="text-white/25">|</span>
         <Link to="/login" className="hover:text-white transition-colors">
           Sign In
         </Link>

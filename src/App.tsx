@@ -32,6 +32,7 @@ const UpgradePage = lazy(() => import('./pages/UpgradePage').then(m => ({ defaul
 const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage').then(m => ({ default: m.PaymentSuccessPage })));
 const CertificatePage = lazy(() => import('./pages/CertificatePage').then(m => ({ default: m.CertificatePage })));
 const ResearchPage = lazy(() => import('./pages/ResearchPage').then(m => ({ default: m.ResearchPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 
 function PageLoader() {
   return (
@@ -125,6 +126,7 @@ function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/refunds" element={<RefundPolicyPage />} />
             <Route path="/research" element={<ResearchPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             {/* Parent-only routes */}
             <Route
