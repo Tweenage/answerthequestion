@@ -255,15 +255,49 @@ serve(async (req) => {
       return new Response('Missing stripe-signature header', { status: 400 });
     }
 
-    // Verify webhook signature
-    let event: Stripe.Event;
-    try {
-      event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Signature verification failed';
-      console.error('Webhook signature verification failed:', message);
-      return new Response(`Webhook Error: ${message}`, { status: 400 });
+    // Manual HMAC-SHA256 signature verification (compatible with Supabase Edge / Deno)
+    const sigParts = Object.fromEntries(
+      sig.split(',').map(part => {
+        const [key, ...rest] = part.split('=');
+        return [key, rest.join('=')];
+      })
+    );
+    const timestamp = sigParts['t'];
+    const expectedSig = sigParts['v1'];
+
+    if (!timestamp || !expectedSig) {
+      return new Response('Invalid stripe-signature format', { status: 400 });
     }
+
+    // Check timestamp is within 5 minutes (300 seconds)
+    const now = Math.floor(Date.now() / 1000);
+    if (Math.abs(now - parseInt(timestamp)) > 300) {
+      console.error(`Webhook timestamp too old: ${timestamp} vs now ${now}`);
+      return new Response('Webhook timestamp out of tolerance', { status: 400 });
+    }
+
+    // Compute HMAC-SHA256 using Web Crypto API
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(webhookSecret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+    const signedPayload = `${timestamp}.${body}`;
+    const signatureBytes = await crypto.subtle.sign('HMAC', key, encoder.encode(signedPayload));
+    const computedSig = Array.from(new Uint8Array(signatureBytes))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
+    if (computedSig !== expectedSig) {
+      console.error('Signature mismatch — computed:', computedSig.substring(0, 16), 'expected:', expectedSig.substring(0, 16));
+      return new Response('Webhook signature verification failed', { status: 400 });
+    }
+
+    console.log('Webhook signature verified successfully');
+    const event = JSON.parse(body) as Stripe.Event;
 
     // Handle the event
     if (event.type === 'checkout.session.completed') {
@@ -301,17 +335,32 @@ serve(async (req) => {
 
       console.log(`Payment completed for session ${session.id}, parentId=${parentId ?? 'guest'}, crib_sheet=${includeCribSheet}`);
 
-      // Send emails (non-blocking — failures are logged)
+      // Send emails in background — don't block the response to Stripe
+      // (SMTP is slow and can exceed Supabase Edge CPU limits)
       if (customerEmail) {
-        await sendPaymentConfirmationEmail(customerEmail);
-        if (includeCribSheet) {
-          await sendCribSheetEmail(customerEmail);
+        // Fire-and-forget: use EdgeRuntime.waitUntil if available, otherwise just don't await
+        const emailPromise = (async () => {
+          try {
+            await sendPaymentConfirmationEmail(customerEmail);
+            if (includeCribSheet) {
+              await sendCribSheetEmail(customerEmail);
+            }
+          } catch (emailErr) {
+            console.error('Email sending failed (non-critical):', emailErr);
+          }
+        })();
+
+        // Try to keep the function alive for emails without blocking the response
+        if (typeof (globalThis as any).EdgeRuntime?.waitUntil === 'function') {
+          (globalThis as any).EdgeRuntime.waitUntil(emailPromise);
         }
+        // If waitUntil isn't available, emails are best-effort
       } else {
         console.error('No customer email found on session — skipping emails');
       }
     }
 
+    // Return 200 immediately so Stripe knows we received it
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
