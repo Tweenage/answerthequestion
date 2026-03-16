@@ -129,7 +129,7 @@ export function HomePage() {
 
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2.5">
       {/* Floating background decorations — CSS-only for performance */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
         {['🦉', '📚', '⭐', '✨', '🎯', '🌟'].map((emoji, i) => (
@@ -286,7 +286,7 @@ export function HomePage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.12 }}
-        className="grid grid-cols-3 gap-3 relative z-10"
+        className="grid grid-cols-3 gap-2 relative z-10"
       >
         <div className="bg-white/95 backdrop-blur-sm rounded-card p-3 text-center border border-purple-200/50 shadow-sm">
           <p className="font-display font-extrabold text-2xl text-purple-700 drop-shadow-sm">{progress.xp}</p>
