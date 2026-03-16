@@ -425,10 +425,10 @@ export function LoginPage() {
                 </button>
 
                 <Link
-                  to={`/signup${searchParams.get('redirect') ? `?redirect=${searchParams.get('redirect')}` : ''}`}
+                  to="/"
                   className="block w-full text-center text-sm text-purple-600 hover:text-purple-800 font-display font-semibold"
                 >
-                  Don't have an account? Create one
+                  Don't have an account? Learn more
                 </Link>
               </form>
             </>
