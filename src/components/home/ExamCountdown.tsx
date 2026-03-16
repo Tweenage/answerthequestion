@@ -17,7 +17,7 @@ export function ExamCountdown({ examDate, onChangeDate }: ExamCountdownProps) {
     if (daysRemaining <= 0) return 'from-emerald-400/70 to-green-500/70';
     if (daysRemaining <= 7) return 'from-red-500/70 to-rose-700/70';
     if (daysRemaining <= 30) return 'from-orange-500/70 to-rose-500/70';
-    return 'from-fuchsia-500/50 to-fuchsia-600/40';
+    return 'from-indigo-500 via-purple-600 to-fuchsia-600';
   };
 
   if (editing) {

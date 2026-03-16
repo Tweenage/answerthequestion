@@ -321,7 +321,7 @@ export function HomePage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.18 }}
-        className="relative z-10 bg-gradient-to-br from-fuchsia-400/25 via-fuchsia-300/20 to-pink-300/20 backdrop-blur-sm rounded-card p-4 border border-fuchsia-300/30"
+        className="relative z-10 bg-gradient-to-br from-fuchsia-500/50 via-fuchsia-500/40 to-fuchsia-600/35 backdrop-blur-sm rounded-card p-4 border border-fuchsia-400/30"
       >
         <div className="text-center mb-3">
           <p className="font-display font-bold text-sm text-white">
