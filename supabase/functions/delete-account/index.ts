@@ -5,10 +5,10 @@
 // Deploy: supabase functions deploy delete-account
 // Required secrets: none beyond default SUPABASE_SERVICE_ROLE_KEY
 //
-// SECURITY: Rate limiting must be configured externally (Cloudflare WAF or
-// Supabase Dashboard → Edge Functions → Rate Limiting) to prevent abuse.
+// SECURITY: In-memory rate limiting (3 req/min per IP) — very sensitive action.
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
+import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const PROD_ORIGINS = [
@@ -42,6 +42,21 @@ serve(async (req: Request) => {
   }
 
   const cors = getCorsHeaders(req);
+
+  // Rate limit: 3 requests per minute per IP (very sensitive action)
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 3, 60_000);
+  if (!rateLimitResult.allowed) {
+    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
+    return new Response(JSON.stringify({ error: 'Too many requests. Please try again later.' }), {
+      status: 429,
+      headers: {
+        ...cors,
+        'Content-Type': 'application/json',
+        'Retry-After': String(retryAfterSec),
+      },
+    });
+  }
 
   try {
     // Verify the user is authenticated

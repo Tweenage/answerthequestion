@@ -4,11 +4,10 @@
 // Deploy: supabase functions deploy stripe-webhook --no-verify-jwt
 // Required secrets: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ZOHO_SMTP_PASSWORD
 //
-// SECURITY: Rate limiting must be configured externally (Cloudflare WAF or
-// Supabase Dashboard → Edge Functions → Rate Limiting) to prevent abuse.
-// Stripe signature verification protects against forged payloads.
+// SECURITY: In-memory rate limiting (100 req/min per IP) + Stripe signature verification.
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
+import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
@@ -232,6 +231,20 @@ async function sendCribSheetEmail(customerEmail: string): Promise<void> {
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { status: 200 });
+  }
+
+  // Rate limit: 100 requests per minute per IP (Stripe sends bursts)
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 100, 60_000);
+  if (!rateLimitResult.allowed) {
+    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
+    return new Response(JSON.stringify({ error: 'Too many requests' }), {
+      status: 429,
+      headers: {
+        'Content-Type': 'application/json',
+        'Retry-After': String(retryAfterSec),
+      },
+    });
   }
 
   try {

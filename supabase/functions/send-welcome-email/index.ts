@@ -7,6 +7,7 @@
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
+import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 
 const SMTP_FROM = 'rebecca@answerthequestion.co.uk';
 const SMTP_FROM_NAME = 'AnswerTheQuestion!';
@@ -93,6 +94,21 @@ const WELCOME_EMAIL_HTML = `<!DOCTYPE html>
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: getCorsHeaders(req) });
+  }
+
+  // Rate limit: 5 requests per minute per IP
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 5, 60_000);
+  if (!rateLimitResult.allowed) {
+    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
+    return new Response(JSON.stringify({ error: 'Too many requests. Please try again later.' }), {
+      status: 429,
+      headers: {
+        ...getCorsHeaders(req),
+        'Content-Type': 'application/json',
+        'Retry-After': String(retryAfterSec),
+      },
+    });
   }
 
   try {

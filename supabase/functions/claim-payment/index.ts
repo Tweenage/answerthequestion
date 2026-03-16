@@ -7,6 +7,7 @@
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
@@ -30,6 +31,21 @@ serve(async (req) => {
   // CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: getCorsHeaders(req) });
+  }
+
+  // Rate limit: 10 requests per minute per IP
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 10, 60_000);
+  if (!rateLimitResult.allowed) {
+    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
+    return new Response(JSON.stringify({ error: 'Too many requests. Please try again later.' }), {
+      status: 429,
+      headers: {
+        ...getCorsHeaders(req),
+        'Content-Type': 'application/json',
+        'Retry-After': String(retryAfterSec),
+      },
+    });
   }
 
   try {
