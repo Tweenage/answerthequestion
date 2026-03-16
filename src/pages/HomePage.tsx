@@ -35,7 +35,7 @@ export function HomePage() {
   const [showReferral, setShowReferral] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const { needsPayment } = usePaywall();
-  const hasCribSheet = !needsPayment; // Show crib sheet download for all paid users
+  const hasCribSheet = localStorage.getItem('atq-crib-sheet-purchased') === 'true';
   const [downloadingCribSheet, setDownloadingCribSheet] = useState(false);
 
   const handleDownloadCribSheet = () => {
