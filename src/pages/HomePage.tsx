@@ -288,17 +288,17 @@ export function HomePage() {
         transition={{ delay: 0.12 }}
         className="grid grid-cols-3 gap-3 relative z-10"
       >
-        <div className="bg-indigo-900/60 backdrop-blur-sm rounded-card p-3 text-center border border-indigo-400/30">
-          <p className="font-display font-extrabold text-2xl text-yellow-300 drop-shadow-sm">{progress.xp}</p>
-          <p className="text-indigo-100/90 text-sm font-display">⭐ Points</p>
+        <div className="bg-white/95 backdrop-blur-sm rounded-card p-3 text-center border border-purple-200/50 shadow-sm">
+          <p className="font-display font-extrabold text-2xl text-purple-700 drop-shadow-sm">{progress.xp}</p>
+          <p className="text-purple-500/80 text-sm font-display font-bold">⭐ Points</p>
         </div>
-        <div className="bg-indigo-900/60 backdrop-blur-sm rounded-card p-3 text-center border border-indigo-400/30">
-          <p className="font-display font-extrabold text-2xl text-green-300 drop-shadow-sm">{progress.totalCorrect}</p>
-          <p className="text-indigo-100/90 text-sm font-display">✅ Correct</p>
+        <div className="bg-white/95 backdrop-blur-sm rounded-card p-3 text-center border border-purple-200/50 shadow-sm">
+          <p className="font-display font-extrabold text-2xl text-purple-700 drop-shadow-sm">{progress.totalCorrect}</p>
+          <p className="text-purple-500/80 text-sm font-display font-bold">✅ Correct</p>
         </div>
-        <div className="bg-indigo-900/60 backdrop-blur-sm rounded-card p-3 text-center border border-indigo-400/30">
-          <p className="font-display font-extrabold text-2xl text-white drop-shadow-sm">{progress.averageTechniqueScore}%</p>
-          <p className="text-indigo-100/90 text-sm font-display">🎯 Technique</p>
+        <div className="bg-white/95 backdrop-blur-sm rounded-card p-3 text-center border border-purple-200/50 shadow-sm">
+          <p className="font-display font-extrabold text-2xl text-purple-700 drop-shadow-sm">{progress.averageTechniqueScore}%</p>
+          <p className="text-purple-500/80 text-sm font-display font-bold">🎯 Technique</p>
         </div>
       </motion.div>
 
