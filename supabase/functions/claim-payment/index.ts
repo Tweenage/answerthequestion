@@ -101,6 +101,33 @@ serve(async (req) => {
     }
 
     if (!payments || payments.length === 0) {
+      // No unclaimed payments — but check if this user already has claimed payments
+      // (e.g., payment was claimed on sign-in but child was created after)
+      const { data: existingPayments } = await supabaseAdmin
+        .from('payments')
+        .select('id, include_crib_sheet')
+        .eq('parent_id', user.id)
+        .eq('status', 'completed');
+
+      if (existingPayments && existingPayments.length > 0) {
+        // User has paid — ensure all their children are marked as paid
+        await supabaseAdmin
+          .from('child_profiles')
+          .update({ has_paid: true })
+          .eq('parent_id', user.id);
+
+        const hasCribSheet = existingPayments.some(p => p.include_crib_sheet);
+        console.log(`Re-applied paid status for user ${user.id} (${user.email}) — ${existingPayments.length} existing payment(s)`);
+
+        return new Response(JSON.stringify({
+          claimed: true,
+          count: existingPayments.length,
+          includeCribSheet: hasCribSheet,
+        }), {
+          headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+        });
+      }
+
       return new Response(JSON.stringify({ claimed: false }), {
         headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
       });

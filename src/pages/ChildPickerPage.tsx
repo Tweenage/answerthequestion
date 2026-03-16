@@ -55,8 +55,12 @@ export function ChildPickerPage() {
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Add child form state
-  const [name, setName] = useState('');
+  // Add child form state — pre-fill from payment success page if available
+  const [name, setName] = useState(() => {
+    const saved = localStorage.getItem('atq_child_name');
+    if (saved) localStorage.removeItem('atq_child_name');
+    return saved ?? '';
+  });
   const [selectedCharacter, setSelectedCharacter] = useState<typeof AVATAR_CHARACTERS[number]>(AVATAR_CHARACTERS[0]);
   const [selectedColour, setSelectedColour] = useState<typeof AVATAR_COLOURS[number]>(AVATAR_COLOURS[0]);
   const [saving, setSaving] = useState(false);

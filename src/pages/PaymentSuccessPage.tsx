@@ -192,6 +192,7 @@ export function PaymentSuccessPage() {
   const children = useAuthStore(s => s.children);
   const [verified, setVerified] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [childName, setChildName] = useState('');
 
   const isGuest = !parentSession;
 
@@ -378,8 +379,30 @@ export function PaymentSuccessPage() {
                 <br />
                 <strong className="text-purple-700">Use the same email</strong> you just paid with so we can link your purchase.
               </p>
+              <div>
+                <label htmlFor="child-name" className="block text-sm font-display font-semibold text-gray-600 mb-1.5 text-left">
+                  Your child's first name
+                </label>
+                <input
+                  id="child-name"
+                  type="text"
+                  value={childName}
+                  onChange={e => setChildName(e.target.value)}
+                  placeholder="e.g. Sophie"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                  autoFocus
+                />
+                <p className="text-xs text-gray-400 font-display mt-1">
+                  You can add more children later from your account
+                </p>
+              </div>
               <Link
                 to="/signup"
+                onClick={() => {
+                  if (childName.trim()) {
+                    localStorage.setItem('atq_child_name', childName.trim());
+                  }
+                }}
                 className="block w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg text-center bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-500 shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-transform"
               >
                 Create Your Account 🦉
