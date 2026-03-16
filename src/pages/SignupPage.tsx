@@ -26,6 +26,8 @@ export function SignupPage() {
   const [confirmationSent, setConfirmationSent] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resent, setResent] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,6 +106,31 @@ export function SignupPage() {
             <p className="text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mb-4 font-display">
               📬 Can't see it? Check your <strong>spam</strong> or <strong>junk</strong> folder — it sometimes ends up there!
             </p>
+
+            {resent ? (
+              <p className="text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2 mb-4 font-display font-semibold">
+                ✅ Confirmation email resent! Check your inbox.
+              </p>
+            ) : (
+              <button
+                onClick={async () => {
+                  setResending(true);
+                  try {
+                    await supabase.auth.resend({ type: 'signup', email });
+                    setResent(true);
+                  } catch {
+                    // silently fail
+                  } finally {
+                    setResending(false);
+                  }
+                }}
+                disabled={resending}
+                className="text-sm font-display font-bold text-purple-600 hover:text-purple-800 underline mb-4 block"
+              >
+                {resending ? 'Sending...' : 'Resend confirmation email'}
+              </button>
+            )}
+
             <Link
               to="/login"
               className="inline-block py-3 px-6 rounded-button font-display font-bold text-purple-600 border-2 border-purple-300 hover:bg-purple-50 transition-all"
