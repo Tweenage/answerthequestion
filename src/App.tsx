@@ -34,6 +34,7 @@ const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage').then(
 const CertificatePage = lazy(() => import('./pages/CertificatePage').then(m => ({ default: m.CertificatePage })));
 const ResearchPage = lazy(() => import('./pages/ResearchPage').then(m => ({ default: m.ResearchPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 function PageLoader() {
   return (
@@ -162,6 +163,7 @@ function App() {
               <Route path="/review-mistakes" element={<MistakeReviewPage />} />
               <Route path="/parent-dashboard" element={<DashboardPage />} />
               <Route path="/upgrade" element={<UpgradePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/certificate" element={<CertificatePage />} />
             </Route>
 

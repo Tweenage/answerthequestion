@@ -1,16 +1,13 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
-import { TrendingUp, TrendingDown, Target, BookOpen, Clock, Flame, ArrowLeft, Minus, Trash2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Target, BookOpen, Clock, Flame, ArrowLeft, Minus } from 'lucide-react';
 import { useProgressStore } from '../stores/useProgressStore';
-import { useAuthStore } from '../stores/useAuthStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { SUBJECT_LABELS } from '../types/question';
 import type { Subject } from '../types/question';
 import { programmeWeeks } from '../data/programme/weeks';
 import { PHASE_LABELS } from '../types/programme';
 import { analyzeWeeklyProgress } from '../utils/dashboardAnalytics';
-import { supabase } from '../lib/supabase';
 
 const subjects: Subject[] = ['english', 'maths', 'reasoning'];
 const subjectBarColours: Record<Subject, string> = {
@@ -23,11 +20,6 @@ export function DashboardPage() {
   const currentUser = useCurrentUser();
   const getProgress = useProgressStore(s => s.getProgress);
   const navigate = useNavigate();
-  const logout = useAuthStore(s => s.logout);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState('');
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [deleteError, setDeleteError] = useState('');
 
   if (!currentUser) return null;
   const progress = getProgress(currentUser.id);
@@ -236,104 +228,6 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {/* Account Management */}
-      <div className="bg-white rounded-card p-4 shadow-sm mt-6">
-        <h3 className="font-display font-bold text-sm text-gray-700 mb-3">Account</h3>
-        <button
-          onClick={() => setShowDeleteModal(true)}
-          className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 font-display font-bold transition-colors"
-        >
-          <Trash2 className="w-4 h-4" />
-          Delete my account
-        </button>
-        <p className="text-xs text-gray-400 font-display mt-1">
-          Permanently removes your account, all child profiles, and all progress data.
-        </p>
-      </div>
-
-      {/* Delete Account Confirmation Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl"
-          >
-            <div className="text-center mb-4">
-              <span className="text-4xl">⚠️</span>
-              <h3 className="font-display font-extrabold text-lg text-gray-900 mt-2">
-                Delete your account?
-              </h3>
-              <p className="text-sm text-gray-500 font-display mt-2">
-                This will permanently delete your account, all child profiles, progress, badges, and payment records. This cannot be undone.
-              </p>
-            </div>
-
-            <div className="mb-4">
-              <label className="text-xs text-gray-500 font-display font-bold block mb-1">
-                Type DELETE to confirm
-              </label>
-              <input
-                type="text"
-                value={deleteConfirmText}
-                onChange={e => setDeleteConfirmText(e.target.value)}
-                placeholder="DELETE"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-display focus:outline-none focus:ring-2 focus:ring-red-300"
-              />
-            </div>
-
-            {deleteError && (
-              <p className="text-sm text-red-500 font-display mb-3">{deleteError}</p>
-            )}
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  setDeleteConfirmText('');
-                  setDeleteError('');
-                }}
-                className="flex-1 py-2.5 rounded-xl font-display font-bold text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                disabled={deleteConfirmText !== 'DELETE' || deleteLoading}
-                onClick={async () => {
-                  setDeleteLoading(true);
-                  setDeleteError('');
-                  try {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) throw new Error('Not logged in');
-
-                    const { error } = await supabase.functions.invoke('delete-account', {
-                      body: { confirm: 'DELETE_MY_ACCOUNT' },
-                    });
-                    if (error) throw error;
-
-                    // Account deleted — clear local state and redirect
-                    await supabase.auth.signOut();
-                    logout();
-                    navigate('/');
-                  } catch (err) {
-                    setDeleteError(
-                      err instanceof Error ? err.message : 'Something went wrong. Please try again.'
-                    );
-                    setDeleteLoading(false);
-                  }
-                }}
-                className={`flex-1 py-2.5 rounded-xl font-display font-bold text-sm text-white transition-colors ${
-                  deleteConfirmText === 'DELETE' && !deleteLoading
-                    ? 'bg-red-500 hover:bg-red-600'
-                    : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              >
-                {deleteLoading ? 'Deleting...' : 'Delete forever'}
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useAuthStore } from '../../stores/useAuthStore';
 import { useProgressStore } from '../../stores/useProgressStore';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { supabase } from '../../lib/supabase';
-import { Flame, Star, LogOut, Users, BarChart3 } from 'lucide-react';
+import { Flame, Star, LogOut, Users, BarChart3, Settings } from 'lucide-react';
 import { HootInline } from '../mascot/ProfessorHoot';
 import { SoundToggle } from '../settings/SoundToggle';
 import { navItems } from '../../data/navItems';
@@ -119,6 +119,14 @@ export function Header() {
                   >
                     <BarChart3 className="w-5 h-5 text-purple-500" aria-hidden="true" />
                     Progress Report
+                  </button>
+                  <button
+                    role="menuitem"
+                    onClick={() => { setShowMenu(false); navigate('/settings'); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 font-display font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-purple-500 focus-visible:outline-offset-[-2px]"
+                  >
+                    <Settings className="w-5 h-5 text-purple-500" aria-hidden="true" />
+                    Settings
                   </button>
                   <div className="border-t border-gray-100 my-1" role="separator" />
                   <button

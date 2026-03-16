@@ -15,6 +15,34 @@ const createEmptySubjectProgress = (): SubjectProgress => ({
   averageTimeMs: 0,
 });
 
+// Migrate old VR/NVR subject scores to 'reasoning' for users who had progress before the merge
+const migrateSubjectScores = (scores: Record<string, SubjectProgress>): Record<Subject, SubjectProgress> => {
+  const result: Record<Subject, SubjectProgress> = {
+    english: scores['english'] ?? createEmptySubjectProgress(),
+    maths: scores['maths'] ?? createEmptySubjectProgress(),
+    reasoning: scores['reasoning'] ?? createEmptySubjectProgress(),
+  };
+  // Merge old VR + NVR into reasoning if they exist
+  const vr = scores['verbal-reasoning'];
+  const nvr = scores['non-verbal-reasoning'];
+  if ((vr || nvr) && !scores['reasoning']) {
+    const vrAttempted = vr?.questionsAttempted ?? 0;
+    const nvrAttempted = nvr?.questionsAttempted ?? 0;
+    const totalAttempted = vrAttempted + nvrAttempted;
+    result.reasoning = {
+      questionsAttempted: totalAttempted,
+      questionsCorrect: (vr?.questionsCorrect ?? 0) + (nvr?.questionsCorrect ?? 0),
+      averageTechniqueScore: totalAttempted > 0
+        ? Math.round(((vr?.averageTechniqueScore ?? 0) * vrAttempted + (nvr?.averageTechniqueScore ?? 0) * nvrAttempted) / totalAttempted)
+        : 0,
+      averageTimeMs: totalAttempted > 0
+        ? Math.round(((vr?.averageTimeMs ?? 0) * vrAttempted + (nvr?.averageTimeMs ?? 0) * nvrAttempted) / totalAttempted)
+        : 0,
+    };
+  }
+  return result;
+};
+
 const createEmptyProgress = (userId: string): UserProgress => ({
   userId,
   currentWeek: 1,
@@ -141,7 +169,12 @@ export const useProgressStore = create<ProgressState>()(
       badgesByUser: {},
 
       getProgress: (userId) => {
-        return get().progressByUser[userId] ?? createEmptyProgress(userId);
+        const p = get().progressByUser[userId] ?? createEmptyProgress(userId);
+        // Ensure subjectScores has 'reasoning' (migrates old VR/NVR data)
+        if (!p.subjectScores['reasoning'] || (p.subjectScores as Record<string, SubjectProgress>)['verbal-reasoning']) {
+          p.subjectScores = migrateSubjectScores(p.subjectScores as Record<string, SubjectProgress>);
+        }
+        return p;
       },
 
       getBadges: (userId) => {
@@ -520,7 +553,7 @@ export const useProgressStore = create<ProgressState>()(
             totalQuestionsAnswered: progressData.total_questions_answered,
             totalCorrect: progressData.total_correct,
             averageTechniqueScore: progressData.average_technique_score,
-            subjectScores: progressData.subject_scores as Record<Subject, SubjectProgress>,
+            subjectScores: migrateSubjectScores(progressData.subject_scores as Record<string, SubjectProgress>),
             level: progressData.level,
             xp: progressData.xp,
             xpToNextLevel: progressData.xp_to_next_level,
