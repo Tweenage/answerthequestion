@@ -20,7 +20,7 @@ function useSpeech() {
     onEndRef.current = onEnd ?? null;
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.7;
+    utterance.rate = 0.55;
     utterance.pitch = 1.0;
     utterance.volume = 1;
 

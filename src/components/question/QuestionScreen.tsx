@@ -166,7 +166,7 @@ export function QuestionScreen({
             {questionNumber}/{totalQuestions}
           </span>
           <span className="px-2 py-0.5 rounded-full text-xs font-display font-bold bg-white/80 text-gray-500 border border-gray-200">
-            Lv {question.difficulty}
+            Level {question.difficulty}
           </span>
         </div>
 
