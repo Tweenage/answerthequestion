@@ -76,19 +76,20 @@ export const useAuthStore = create<AuthState>()(
       markOnboardingSeen: () => {
         const childId = get().currentChildId;
         if (!childId) return;
+        // Update Zustand state immediately
         set(state => ({
           children: state.children.map(u =>
             u.id === childId ? { ...u, hasSeenOnboarding: true } : u
           ),
         }));
+        // Persist to localStorage as fallback (survives failed Supabase writes)
+        try { localStorage.setItem(`atq_onboarding_seen_${childId}`, 'true'); } catch {}
         // Also update in Supabase
         supabase
           .from('child_profiles')
           .update({ has_seen_onboarding: true })
           .eq('id', childId)
-          .then(({ error }) => {
-            if (error) console.warn('Failed to sync onboarding status:', error.message);
-          });
+          .then(() => {});
       },
 
       markTutorialSeen: () => {
@@ -99,13 +100,12 @@ export const useAuthStore = create<AuthState>()(
             u.id === childId ? { ...u, hasSeenTutorial: true } : u
           ),
         }));
+        try { localStorage.setItem(`atq_tutorial_seen_${childId}`, 'true'); } catch {}
         supabase
           .from('child_profiles')
           .update({ has_seen_tutorial: true })
           .eq('id', childId)
-          .then(({ error }) => {
-            if (error) console.warn('Failed to sync tutorial status:', error.message);
-          });
+          .then(() => {});
       },
 
       updateChildLocally: (childId, updates) => {

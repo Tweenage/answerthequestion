@@ -92,8 +92,8 @@ export function ChildPickerPage() {
         avatar: p.avatar,
         createdAt: p.created_at,
         programmeStartDate: p.programme_start_date,
-        hasSeenOnboarding: p.has_seen_onboarding,
-        hasSeenTutorial: p.has_seen_tutorial ?? false,
+        hasSeenOnboarding: p.has_seen_onboarding || localStorage.getItem(`atq_onboarding_seen_${p.id}`) === 'true',
+        hasSeenTutorial: (p.has_seen_tutorial ?? false) || localStorage.getItem(`atq_tutorial_seen_${p.id}`) === 'true',
         hasPaid: p.has_paid ?? false,
         referralCode: p.referral_code ?? undefined,
       })));
