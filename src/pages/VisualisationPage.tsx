@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, ChevronRight, ChevronLeft, Wind } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Play, Pause, Volume2, VolumeX, ChevronLeft, Wind } from 'lucide-react';
 import { visualisationScripts, boxBreathingConfig } from '../data/visualisation-scripts';
 import type { VisualisationScript, VisualisationSection, BoxBreathingConfig } from '../data/visualisation-scripts';
 
@@ -169,7 +169,7 @@ export function VisualisationPage() {
   const [selectedScript, setSelectedScript] = useState<VisualisationScript | null>(null);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(true);
-  const { speak, stop: stopSpeech, isSpeaking } = useSpeech();
+  const { speak, stop: stopSpeech } = useSpeech();
   const { play: playAudio, stop: stopAudio, isPlaying: isAudioPlaying } = useAudioPlayer();
 
   useEffect(() => {
