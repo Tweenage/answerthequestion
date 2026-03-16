@@ -30,6 +30,7 @@ interface HighlightableTextProps {
   numberExtractionMode?: boolean;
   convertedNumberIndices?: number[];
   onConvertNumber?: (index: number) => void;
+  dyslexiaMode?: boolean;
 }
 
 export function HighlightableText({
@@ -43,6 +44,7 @@ export function HighlightableText({
   numberExtractionMode = false,
   convertedNumberIndices = [],
   onConvertNumber,
+  dyslexiaMode = false,
 }: HighlightableTextProps) {
   // Track which tokens have been animated (for the pop effect)
   const [justConverted, setJustConverted] = useState<Set<number>>(new Set());
@@ -143,7 +145,7 @@ export function HighlightableText({
           >
             {getDisplayText(token, index)}
             {numberExtractionMode && isNumberWord(token) && !convertedNumberIndices.includes(index) && (
-              <span className="ml-0.5 text-[10px] text-rainbow-blue font-bold align-super">123</span>
+              <span className={`ml-0.5 ${dyslexiaMode ? 'text-xs' : 'text-[10px]'} text-rainbow-blue font-bold align-super`}>123</span>
             )}
           </motion.span>
         );
@@ -156,13 +158,13 @@ export function HighlightableText({
           className="mt-4 text-sm text-rainbow-blue font-display bg-blue-50 rounded-xl p-3 border border-blue-200 space-y-1"
         >
           <p className="font-bold text-base">🔢 Tap the number words to turn them into digits!</p>
-          <p className="text-xs text-gray-500">
+          <p className={`${dyslexiaMode ? 'text-sm text-gray-700' : 'text-xs text-gray-500'}`}>
             In your exam, always circle numbers and write the digit next to any number words.
           </p>
         </motion.div>
       )}
       {numberExtractionMode && scaffoldingLevel === 'medium' && (
-        <p className="mt-3 text-sm text-rainbow-blue font-display font-semibold">
+        <p className={`mt-3 ${dyslexiaMode ? 'text-base' : 'text-sm'} text-rainbow-blue font-display font-semibold`}>
           🔢 Tap number words to convert them to digits.
         </p>
       )}
@@ -174,23 +176,23 @@ export function HighlightableText({
           className="mt-4 text-sm text-focus-600 font-display bg-focus-50 rounded-xl p-3 border border-focus-200 space-y-2"
         >
           <p className="font-bold text-base">👆 Tap the important words!</p>
-          <div className="flex flex-wrap gap-2 text-xs">
+          <div className={`flex flex-wrap gap-2 ${dyslexiaMode ? 'text-sm' : 'text-xs'}`}>
             <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Names</span>
             <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Numbers</span>
             <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Places</span>
             <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Times</span>
             <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Key details</span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className={`${dyslexiaMode ? 'text-sm text-gray-700' : 'text-xs text-gray-500'}`}>
             Look for <span className="font-bold text-rainbow-red">who</span>, <span className="font-bold text-rainbow-blue">what</span>, <span className="font-bold text-rainbow-green">when</span> and <span className="font-bold text-rainbow-violet">where</span>
           </p>
-          <p className="text-xs text-rainbow-red font-semibold">
+          <p className={`${dyslexiaMode ? 'text-sm' : 'text-xs'} text-rainbow-red font-semibold`}>
             Watch out for <span className="border-b-2 border-dotted border-rainbow-red/50 px-0.5">danger words</span> like not, never, except, only, although, however!
           </p>
         </motion.div>
       )}
       {!numberExtractionMode && !disabled && scaffoldingLevel === 'medium' && (
-        <p className="mt-3 text-sm text-gray-500 font-display">
+        <p className={`mt-3 ${dyslexiaMode ? 'text-base text-gray-700' : 'text-sm text-gray-500'} font-display`}>
           Tap key words. <span className="border-b-2 border-dotted border-rainbow-red/50 px-0.5">Dotted words</span> are danger words — don't miss them!
         </p>
       )}

@@ -10,6 +10,7 @@ import { HighlightableText } from './HighlightableText';
 import { AnswerOptions } from './AnswerOptions';
 import { QuestionFeedback } from './QuestionFeedback';
 import { useTimer } from '../../hooks/useTimer';
+import { useDyslexiaMode } from '../../hooks/useDyslexiaMode';
 import { MascotMessage, getMascotTip } from '../celebrations/MascotMessage';
 import { StepBanner } from './StepBanner';
 import { useSoundEffects } from '../../hooks/useSoundEffects';
@@ -29,8 +30,12 @@ export function QuestionScreen({
   totalQuestions,
   onComplete,
 }: QuestionScreenProps) {
+  const { dyslexiaMode } = useDyslexiaMode();
   const flow = useQuestionFlow(question, weekConfig);
-  const timer = useTimer(weekConfig.timePerQuestionMs);
+  const timerDuration = dyslexiaMode
+    ? Math.round(weekConfig.timePerQuestionMs * 1.25)
+    : weekConfig.timePerQuestionMs;
+  const timer = useTimer(timerDuration);
   const { data } = flow;
   const { play } = useSoundEffects();
   const lastTickRef = useRef<number>(0);
@@ -159,13 +164,13 @@ export function QuestionScreen({
       {/* Progress + Timer bar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-display font-bold ${subjectColours[question.subject]}`}>
+          <span className={`px-3 py-1 rounded-full ${dyslexiaMode ? 'text-sm' : 'text-xs'} font-display font-bold ${subjectColours[question.subject]}`}>
             {SUBJECT_LABELS[question.subject]}
           </span>
-          <span className="text-sm text-gray-400 font-display" aria-label={`Question ${questionNumber} of ${totalQuestions}`}>
+          <span className={`text-sm ${dyslexiaMode ? 'text-gray-600' : 'text-gray-400'} font-display`} aria-label={`Question ${questionNumber} of ${totalQuestions}`}>
             {questionNumber}/{totalQuestions}
           </span>
-          <span className="px-2 py-0.5 rounded-full text-xs font-display font-bold bg-white/80 text-gray-500 border border-gray-200">
+          <span className={`px-2 py-0.5 rounded-full ${dyslexiaMode ? 'text-sm' : 'text-xs'} font-display font-bold bg-white/80 ${dyslexiaMode ? 'text-gray-700' : 'text-gray-500'} border border-gray-200`}>
             Level {question.difficulty}
           </span>
         </div>
@@ -181,7 +186,7 @@ export function QuestionScreen({
         >
           <Clock className={`w-4 h-4 ${
             timer.percentRemaining < 20 ? 'text-rainbow-red' :
-            timer.percentRemaining < 40 ? 'text-celebrate-amber' : 'text-gray-400'
+            timer.percentRemaining < 40 ? 'text-celebrate-amber' : dyslexiaMode ? 'text-gray-600' : 'text-gray-400'
           }`} aria-hidden="true" />
           <span className={`font-display font-bold ${
             timer.percentRemaining < 20 ? 'text-rainbow-red text-base' :
@@ -222,7 +227,7 @@ export function QuestionScreen({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-card p-5 shadow-sm border border-focus-100"
+        className={`${dyslexiaMode ? 'bg-amber-50' : 'bg-white'} rounded-card p-5 shadow-sm border border-focus-100`}
       >
         {/* Reading prompt — only for medium/light (heavy uses StepBanner above) */}
         {canAdvanceReading && !showStepBanner && (
@@ -273,6 +278,7 @@ export function QuestionScreen({
           numberExtractionMode={isNumberExtraction}
           convertedNumberIndices={data.convertedNumberIndices}
           onConvertNumber={flow.convertNumber}
+          dyslexiaMode={dyslexiaMode}
         />
 
         {/* Number extraction advance button */}

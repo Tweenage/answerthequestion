@@ -177,11 +177,13 @@ export function HomePage() {
         >
           <Link
             to="/visualise"
-            className="flex items-center gap-3 w-full py-2.5 px-4 rounded-card border-2 border-white/50 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all hover:shadow-lg hover:scale-[1.01] active:scale-[0.98]"
+            className="block w-full rounded-card border-2 border-white/40 bg-white/15 backdrop-blur-sm hover:bg-white/25 transition-all hover:shadow-lg hover:scale-[1.01] active:scale-[0.98] p-4 text-center"
           >
-            <span className="text-xl">🧘</span>
-            <span className="font-display font-bold text-white text-sm">Calm & Focus First</span>
-            <span className="ml-auto text-white/80 text-xs font-display">▶</span>
+            <p className="text-2xl mb-1">🧘</p>
+            <p className="font-display font-bold text-white text-base">Before we begin&hellip;</p>
+            <p className="font-display text-white/70 text-xs mt-1">
+              Take a moment to calm your mind and focus
+            </p>
           </Link>
         </motion.div>
       )}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Trash2 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { useDyslexiaMode } from '../hooks/useDyslexiaMode';
 import { supabase } from '../lib/supabase';
 import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
 
@@ -27,6 +28,7 @@ const CHARACTER_LABELS: Record<string, string> = {
 
 export function SettingsPage() {
   const currentUser = useCurrentUser();
+  const { dyslexiaMode, toggleDyslexiaMode } = useDyslexiaMode();
   const updateChildLocally = useAuthStore(s => s.updateChildLocally);
   const logout = useAuthStore(s => s.logout);
   const navigate = useNavigate();
@@ -75,6 +77,32 @@ export function SettingsPage() {
       <h2 className="font-display font-extrabold text-xl text-white drop-shadow-md text-center">
         ⚙️ Settings
       </h2>
+
+      {/* Dyslexia-friendly mode */}
+      <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-display font-bold text-base text-gray-800">Dyslexia-friendly mode</h3>
+            <p className="text-sm text-gray-500 font-display mt-1">
+              Adds 25% extra time, softens backgrounds and improves text contrast
+            </p>
+          </div>
+          <button
+            role="switch"
+            aria-checked={dyslexiaMode}
+            onClick={toggleDyslexiaMode}
+            className={`relative shrink-0 ml-4 w-12 h-7 rounded-full transition-colors duration-200 ${
+              dyslexiaMode ? 'bg-purple-500' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
+                dyslexiaMode ? 'translate-x-5' : 'translate-x-0'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
 
       {/* Avatar & Colour */}
       <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-sm space-y-5">

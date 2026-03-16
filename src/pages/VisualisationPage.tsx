@@ -490,11 +490,129 @@ export function VisualisationPage() {
   /* ---------- Guided script (immersive) ---------- */
   if (!selectedScript) return null;
 
-  const section = selectedScript.sections[currentSectionIndex];
-  const totalSections = selectedScript.sections.length;
-  const progressPercent = ((currentSectionIndex + 1) / totalSections) * 100;
-  const isLast = currentSectionIndex === totalSections - 1;
-  const isAnythingPlaying = isSpeaking || isAudioPlaying;
+  const totalDurationMs = selectedScript.sections.reduce((sum, s) => sum + s.displayDurationMs, 0);
+
+  return (
+    <VisualisationPlayer
+      script={selectedScript}
+      totalDurationMs={totalDurationMs}
+      audioEnabled={audioEnabled}
+      isAudioPlaying={isAudioPlaying}
+      onToggleAudio={() => {
+        if (audioEnabled) stopAllAudio();
+        setAudioEnabled(!audioEnabled);
+      }}
+      onPlayPause={() => {
+        if (isAudioPlaying) stopAudio();
+        else if (selectedScript.audioSrc) playAudio(selectedScript.audioSrc);
+      }}
+      onBack={handleBack}
+      breathingConfig={boxBreathingConfig}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Visualisation Player — countdown timer + breathing visual          */
+/* ------------------------------------------------------------------ */
+
+function VisualisationPlayer({
+  script,
+  totalDurationMs,
+  audioEnabled,
+  isAudioPlaying,
+  onToggleAudio,
+  onPlayPause,
+  onBack,
+  breathingConfig,
+}: {
+  script: VisualisationScript;
+  totalDurationMs: number;
+  audioEnabled: boolean;
+  isAudioPlaying: boolean;
+  onToggleAudio: () => void;
+  onPlayPause: () => void;
+  onBack: () => void;
+  breathingConfig: BoxBreathingConfig;
+}) {
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const [finished, setFinished] = useState(false);
+  const sound = useBreathingSound();
+
+  // Countdown timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsedMs(prev => {
+        const next = prev + 1000;
+        if (next >= totalDurationMs) {
+          setFinished(true);
+          clearInterval(interval);
+          return totalDurationMs;
+        }
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [totalDurationMs]);
+
+  // Breathing cycle for the visual
+  const cycleDuration = (breathingConfig.inhaleSeconds + breathingConfig.holdInSeconds + breathingConfig.exhaleSeconds + breathingConfig.holdOutSeconds) * 1000;
+  const posInCycle = elapsedMs % cycleDuration;
+  const inhaleDur = breathingConfig.inhaleSeconds * 1000;
+  const holdInDur = breathingConfig.holdInSeconds * 1000;
+  const exhaleDur = breathingConfig.exhaleSeconds * 1000;
+
+  let breathPhase: 'inhale' | 'hold-in' | 'exhale' | 'hold-out';
+  if (posInCycle < inhaleDur) breathPhase = 'inhale';
+  else if (posInCycle < inhaleDur + holdInDur) breathPhase = 'hold-in';
+  else if (posInCycle < inhaleDur + holdInDur + exhaleDur) breathPhase = 'exhale';
+  else breathPhase = 'hold-out';
+
+  // Trigger breathing sounds
+  const prevPhaseRef = useRef(breathPhase);
+  useEffect(() => {
+    if (finished) { sound.stopAll(); return; }
+    if (prevPhaseRef.current !== breathPhase) {
+      prevPhaseRef.current = breathPhase;
+      if (breathPhase === 'inhale') sound.inhale(breathingConfig.inhaleSeconds);
+      else if (breathPhase === 'exhale') sound.exhale(breathingConfig.exhaleSeconds);
+      else if (breathPhase === 'hold-in') sound.hold();
+      else sound.silence();
+    }
+  }, [breathPhase, finished, sound, breathingConfig]);
+
+  useEffect(() => () => { sound.stopAll(); }, [sound]);
+
+  const isExpanded = breathPhase === 'inhale' || breathPhase === 'hold-in';
+  const circleScale = isExpanded ? 1.3 : 0.8;
+  const phaseDuration =
+    breathPhase === 'inhale' ? breathingConfig.inhaleSeconds :
+    breathPhase === 'exhale' ? breathingConfig.exhaleSeconds : 0.3;
+
+  const breathLabel =
+    breathPhase === 'inhale' ? 'Breathe in\u2026' :
+    breathPhase === 'hold-in' ? 'Hold\u2026' :
+    breathPhase === 'exhale' ? 'Breathe out\u2026' : 'Hold\u2026';
+
+  const breathColour =
+    breathPhase === 'inhale' ? 'text-teal-300' :
+    breathPhase === 'hold-in' ? 'text-indigo-300' :
+    breathPhase === 'exhale' ? 'text-emerald-300' : 'text-violet-300';
+
+  const ringBg =
+    breathPhase === 'inhale' ? 'bg-teal-400/20' :
+    breathPhase === 'hold-in' ? 'bg-indigo-400/20' :
+    breathPhase === 'exhale' ? 'bg-emerald-400/20' : 'bg-violet-400/20';
+
+  const innerBg =
+    breathPhase === 'inhale' ? 'bg-teal-400/30' :
+    breathPhase === 'hold-in' ? 'bg-indigo-400/30' :
+    breathPhase === 'exhale' ? 'bg-emerald-400/30' : 'bg-violet-400/30';
+
+  const remainingMs = Math.max(0, totalDurationMs - elapsedMs);
+  const remainingMin = Math.floor(remainingMs / 60000);
+  const remainingSec = Math.floor((remainingMs % 60000) / 1000);
+  const progressPercent = (elapsedMs / totalDurationMs) * 100;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col overflow-hidden">
@@ -536,7 +654,7 @@ export function VisualisationPage() {
         {/* Top bar: back + audio controls */}
         <div className="flex items-center justify-between mb-4">
           <button
-            onClick={handleBack}
+            onClick={onBack}
             className="text-sm text-white/70 font-display font-semibold flex items-center gap-1 hover:text-white transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -544,38 +662,17 @@ export function VisualisationPage() {
           </button>
 
           <div className="flex items-center gap-2">
-            {/* Play/pause for full audio */}
-            {hasFullAudio && (
+            {script.audioSrc && (
               <button
-                onClick={() => {
-                  if (isAudioPlaying) stopAudio();
-                  else if (selectedScript.audioSrc) playAudio(selectedScript.audioSrc);
-                }}
+                onClick={onPlayPause}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 font-display font-semibold text-xs transition-all hover:bg-white/20"
               >
                 {isAudioPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 {isAudioPlaying ? 'Pause' : 'Play'}
               </button>
             )}
-            {/* Per-section listen (no full audio) */}
-            {!hasFullAudio && audioEnabled && section.type === 'text' && (
-              <button
-                onClick={() => {
-                  if (isAnythingPlaying) stopAllAudio();
-                  else speakSection(section);
-                }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 font-display font-semibold text-xs transition-all hover:bg-white/20"
-              >
-                {isAnythingPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                {isAnythingPlaying ? 'Pause' : 'Listen'}
-              </button>
-            )}
-            {/* Mute toggle */}
             <button
-              onClick={() => {
-                if (audioEnabled) stopAllAudio();
-                setAudioEnabled(!audioEnabled);
-              }}
+              onClick={onToggleAudio}
               className={`p-2 rounded-full transition-all ${
                 audioEnabled ? 'bg-white/10 text-white/80' : 'bg-white/5 text-white/30'
               }`}
@@ -588,11 +685,11 @@ export function VisualisationPage() {
 
         {/* Title */}
         <div className="text-center mb-3">
-          <h2 className="font-display text-lg font-bold text-white/90">{selectedScript.title}</h2>
+          <h2 className="font-display text-lg font-bold text-white/90">{script.title}</h2>
         </div>
 
         {/* Progress bar */}
-        <div className="h-1 bg-white/10 rounded-full overflow-hidden mb-6">
+        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden mb-2">
           <motion.div
             className="h-full bg-teal-400/60 rounded-full"
             animate={{ width: `${progressPercent}%` }}
@@ -600,52 +697,71 @@ export function VisualisationPage() {
           />
         </div>
 
-        {/* Text content — centered */}
-        <div className="flex-1 flex items-center justify-center px-4">
-          <AnimatePresence mode="wait">
+        {/* Time remaining */}
+        <p className="text-center text-white/50 text-sm font-display mb-4">
+          {remainingMin}:{remainingSec.toString().padStart(2, '0')} remaining
+        </p>
+
+        {/* Central breathing visual */}
+        <div className="flex-1 flex flex-col items-center justify-center gap-6">
+          {finished ? (
             <motion.div
-              key={section.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="max-w-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center"
             >
-              <p className="text-xl md:text-2xl leading-relaxed text-center text-white/90 font-display font-medium">
-                {section.content}
+              <p className="text-5xl mb-4">✨</p>
+              <h3 className="font-display text-2xl font-bold text-white mb-2">Well done</h3>
+              <p className="font-display text-white/60 text-base">
+                You&rsquo;re calm, focused, and ready
               </p>
+              <button
+                onClick={onBack}
+                className="mt-8 px-8 py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 transition-all shadow-lg"
+              >
+                Continue
+              </button>
             </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Bottom navigation */}
-        <div className="flex items-center justify-between pt-6">
-          <button
-            onClick={() => setCurrentSectionIndex(i => Math.max(0, i - 1))}
-            disabled={currentSectionIndex === 0}
-            className="p-3 rounded-full bg-white/10 text-white/70 disabled:opacity-20 transition-opacity"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <span className="text-sm text-white/70 font-display">
-            {currentSectionIndex + 1} / {totalSections}
-          </span>
-
-          {isLast ? (
-            <button
-              onClick={handleBack}
-              className="px-6 py-3 rounded-button font-display font-bold text-white bg-teal-500/80 hover:bg-teal-500 transition-colors"
-            >
-              Finish
-            </button>
           ) : (
-            <button
-              onClick={() => setCurrentSectionIndex(i => Math.min(totalSections - 1, i + 1))}
-              className="p-3 rounded-full bg-white/15 text-white/80 transition-colors hover:bg-white/25"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+            <>
+              {/* Breathing circle */}
+              <motion.div
+                animate={{ scale: circleScale }}
+                transition={{
+                  duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
+                  ease: 'easeInOut',
+                }}
+                className={`w-40 h-40 rounded-full ${ringBg} flex items-center justify-center`}
+              >
+                <motion.div
+                  animate={{ scale: circleScale * 0.55 }}
+                  transition={{
+                    duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
+                    ease: 'easeInOut',
+                  }}
+                  className={`w-24 h-24 rounded-full ${innerBg} flex items-center justify-center`}
+                >
+                  <span className="font-display font-black text-2xl text-white/60">
+                    😌
+                  </span>
+                </motion.div>
+              </motion.div>
+
+              {/* Breathing phase label */}
+              <motion.p
+                key={breathPhase}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-xl font-display font-bold ${breathColour}`}
+              >
+                {breathLabel}
+              </motion.p>
+
+              {/* Gentle instruction */}
+              <p className="text-white/30 text-sm font-display text-center max-w-xs">
+                Close your eyes and listen. Follow the breathing if it helps.
+              </p>
+            </>
           )}
         </div>
       </div>
