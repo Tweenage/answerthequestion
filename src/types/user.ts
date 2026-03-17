@@ -15,6 +15,7 @@ export interface User {
   hasSeenTutorial?: boolean;
   hasPaid?: boolean;
   referralCode?: string;
+  examDate?: string | null;
 }
 
 export const AVATAR_CHARACTERS = ['cat', 'owl', 'robot', 'unicorn', 'dragon', 'fox'] as const;

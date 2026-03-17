@@ -7,6 +7,7 @@ import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
 import type { AvatarConfig } from '../types/user';
 import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
 import { LogOut } from 'lucide-react';
+import { isFastTrack, getWeeksUntilExam } from '../data/programme/fast-track';
 
 const CHARACTER_EMOJIS: Record<string, string> = {
   cat: '🐱',
@@ -31,6 +32,7 @@ interface ChildProfile {
   name: string;
   avatar: AvatarConfig;
   programme_start_date: string;
+  exam_date?: string | null;
   has_seen_onboarding: boolean;
   has_seen_tutorial?: boolean;
   has_paid?: boolean;
@@ -63,7 +65,12 @@ export function ChildPickerPage() {
   });
   const [selectedCharacter, setSelectedCharacter] = useState<typeof AVATAR_CHARACTERS[number]>(AVATAR_CHARACTERS[0]);
   const [selectedColour, setSelectedColour] = useState<typeof AVATAR_COLOURS[number]>(AVATAR_COLOURS[0]);
+  const [examDateInput, setExamDateInput] = useState<string>('');
   const [saving, setSaving] = useState(false);
+
+  // Derived fast-track info from exam date input
+  const weeksUntil = getWeeksUntilExam(examDateInput || null);
+  const willBeFastTrack = isFastTrack(examDateInput || null);
 
   useEffect(() => {
     // Try to claim any guest checkout payment first (gives webhook extra time),
@@ -96,6 +103,7 @@ export function ChildPickerPage() {
         avatar: p.avatar,
         createdAt: p.created_at,
         programmeStartDate: p.programme_start_date,
+        examDate: p.exam_date ?? null,
         hasSeenOnboarding: p.has_seen_onboarding || localStorage.getItem(`atq_onboarding_seen_${p.id}`) === 'true',
         hasSeenTutorial: (p.has_seen_tutorial ?? false) || localStorage.getItem(`atq_tutorial_seen_${p.id}`) === 'true',
         hasPaid: (p.has_paid ?? false) || localStorage.getItem(`atq_has_paid_${p.id}`) === 'true',
@@ -147,6 +155,7 @@ export function ChildPickerPage() {
           name: name.trim(),
           avatar,
           programme_start_date: new Date().toISOString().split('T')[0],
+          exam_date: examDateInput || null,
           referral_code: referralCode,
           ...(referredBy ? { referred_by: referredBy } : {}),
         })
@@ -188,6 +197,7 @@ export function ChildPickerPage() {
         avatar: p.avatar,
         createdAt: p.created_at,
         programmeStartDate: p.programme_start_date,
+        examDate: p.exam_date ?? null,
         hasSeenOnboarding: p.has_seen_onboarding,
         hasSeenTutorial: p.has_seen_tutorial ?? false,
         hasPaid: claimedPayment || (p.has_paid ?? false),
@@ -198,6 +208,7 @@ export function ChildPickerPage() {
         avatar: newChild.avatar,
         createdAt: newChild.created_at,
         programmeStartDate: newChild.programme_start_date,
+        examDate: newChild.exam_date ?? null,
         hasSeenOnboarding: newChild.has_seen_onboarding,
         hasSeenTutorial: newChild.has_seen_tutorial ?? false,
         hasPaid: (newChild.has_paid ?? false) || localStorage.getItem(`atq_has_paid_${newChild.id}`) === 'true',
@@ -447,6 +458,40 @@ export function ChildPickerPage() {
                 >
                   {CHARACTER_EMOJIS[selectedCharacter]}
                 </motion.div>
+              </div>
+
+              {/* Exam date */}
+              <div className="space-y-1.5">
+                <label className="block text-sm font-display font-semibold text-gray-600">
+                  📅 When is the exam?{' '}
+                  <span className="text-gray-400 font-normal">(optional — you can add this later)</span>
+                </label>
+                <input
+                  type="date"
+                  value={examDateInput}
+                  min={new Date().toISOString().split('T')[0]}
+                  onChange={e => setExamDateInput(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm font-display focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+                {willBeFastTrack && weeksUntil !== null && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-amber-50 border border-amber-200 rounded-xl p-3"
+                  >
+                    <p className="text-xs font-display font-bold text-amber-700">
+                      ⚡ Fast Track mode — {weeksUntil} week{weeksUntil !== 1 ? 's' : ''} to go!
+                    </p>
+                    <p className="text-xs font-display text-amber-600 mt-0.5">
+                      We'll compress the programme so {name.trim() || 'your child'} reaches exam pace in time. Every session counts!
+                    </p>
+                  </motion.div>
+                )}
+                {!willBeFastTrack && weeksUntil !== null && weeksUntil > 0 && (
+                  <p className="text-xs text-gray-400 font-display">
+                    ✅ {weeksUntil} weeks — plenty of time for the full 12-week programme!
+                  </p>
+                )}
               </div>
 
               {/* Submit button */}
