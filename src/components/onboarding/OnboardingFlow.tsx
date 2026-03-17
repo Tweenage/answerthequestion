@@ -22,11 +22,12 @@ const slides: OnboardingSlide[] = [
   {
     hootMood: 'teaching',
     title: '👨‍👩‍👧 A Note for Parents',
-    body: "For the best start, sit with your child for the tutorial, the first practice question, and the first full session. After that, they can fly solo! I'll guide them every step of the way.",
+    body: "Please sit with your child for these slides, the tutorial, and the first session. As you go through each slide together, ask your child to read the words aloud — starting with what Professor Hoot says, then all the tips. Reading out loud helps the method really stick!",
     tips: [
-      { emoji: '📖', text: 'Read through these slides together' },
-      { emoji: '🧪', text: 'Do the tutorial side by side so you can explain each step' },
-      { emoji: '⭐', text: "Stay for Day 1 — after that they're ready to go it alone!" },
+      { emoji: '🗣️', text: "Ask your child to read every slide aloud — Professor Hoot's speech first, then each tip below" },
+      { emoji: '🧪', text: 'Do the tutorial side by side so you can talk through each step together' },
+      { emoji: '⭐', text: "Stay for Day 1 — after that they're ready to fly solo!" },
+      { emoji: '💡', text: "If they get stuck, encourage them to re-read the question — that's the whole method!" },
     ],
   },
   {
