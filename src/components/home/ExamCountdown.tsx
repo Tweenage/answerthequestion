@@ -30,6 +30,7 @@ export function ExamCountdown({ examDate, onChangeDate }: ExamCountdownProps) {
         <input
           type="date"
           defaultValue={examDate}
+          min={new Date().toISOString().split('T')[0]}
           onChange={(e) => {
             if (e.target.value) {
               onChangeDate(e.target.value);

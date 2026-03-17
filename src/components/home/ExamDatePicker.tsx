@@ -19,6 +19,7 @@ export function ExamDatePicker({ onSet }: ExamDatePickerProps) {
         <Calendar className="w-4 h-4 text-purple-500 shrink-0" />
         <input
           type="date"
+          min={new Date().toISOString().split('T')[0]}
           onChange={(e) => {
             if (e.target.value) onSet(e.target.value);
           }}
