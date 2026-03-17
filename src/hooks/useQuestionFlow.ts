@@ -78,7 +78,11 @@ export function useQuestionFlow(question: Question | null, weekConfig: WeekConfi
         const totalReadingTime = prev.readingTimeMs + readingTime;
 
         // Check if question has number words and scaffolding is not light
-        const numberWordIdxs = question ? findNumberWordIndices(question.questionTokens) : [];
+        // Only run number extraction for maths questions — English/reasoning "number words"
+        // are almost always idiomatic (e.g. "odd one out", "one of the greatest", "a hundred times")
+        const numberWordIdxs = question && question.subject === 'maths'
+          ? findNumberWordIndices(question.questionTokens)
+          : [];
         const shouldExtractNumbers = numberWordIdxs.length > 0 && weekConfig.scaffoldingLevel !== 'light';
 
         return {

@@ -324,7 +324,8 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
           <TechniqueRow
             icon={<Target className="w-4 h-4" />}
             label={`Key words (${techniqueScore.keyWordsIdentified}/${techniqueScore.keyWordsTotal})`}
-            achieved={techniqueScore.keyWordAccuracy >= 0.5}
+            achieved={techniqueScore.keyWordAccuracy >= 0.8}
+            partial={techniqueScore.keyWordAccuracy >= 0.5 && techniqueScore.keyWordAccuracy < 0.8}
           />
           <TechniqueRow
             icon={<Scissors className="w-4 h-4" />}
@@ -361,21 +362,32 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
   );
 }
 
-function TechniqueRow({ icon, label, achieved }: { icon: React.ReactNode; label: string; achieved: boolean }) {
+function TechniqueRow({ icon, label, achieved, partial }: { icon: React.ReactNode; label: string; achieved: boolean; partial?: boolean }) {
+  const color = achieved ? 'text-calm-500' : partial ? 'text-celebrate-amber' : 'text-gray-300';
+  const textColor = achieved || partial ? 'text-gray-700' : 'text-gray-400';
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       className="flex items-center gap-2 text-sm"
     >
-      <span className={achieved ? 'text-calm-500' : 'text-gray-300'}>{icon}</span>
-      <span className={achieved ? 'text-gray-700' : 'text-gray-400'}>{label}</span>
+      <span className={color}>{icon}</span>
+      <span className={textColor}>{label}</span>
       <span className="ml-auto">
         {achieved ? (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="text-calm-500 font-bold"
+          >
+            &#10003;
+          </motion.span>
+        ) : partial ? (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="text-celebrate-amber font-bold"
           >
             &#10003;
           </motion.span>

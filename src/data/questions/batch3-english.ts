@@ -17,7 +17,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'Squirrels spend the autumn collecting nuts, seeds, and berries. They bury their food in many different places around the forest. When winter arrives and food is hard to find, squirrels dig up their hidden stores to survive. Which sentence best summarises this passage?',
     questionTokens: ['Squirrels', 'spend', 'the', 'autumn', 'collecting', 'nuts,', 'seeds,', 'and', 'berries.', 'They', 'bury', 'their', 'food', 'in', 'many', 'different', 'places', 'around', 'the', 'forest.', 'When', 'winter', 'arrives', 'and', 'food', 'is', 'hard', 'to', 'find,', 'squirrels', 'dig', 'up', 'their', 'hidden', 'stores', 'to', 'survive.', 'Which', 'sentence', 'best', 'summarises', 'this', 'passage?'],
-    keyWordIndices: [37, 38, 39, 40],
+    keyWordIndices: [0, 3, 4, 5, 6, 8, 10, 12, 19, 21, 24, 26, 28, 29, 30, 33, 34, 36, 40],
     options: [
       { text: 'Squirrels like eating nuts and seeds.', isEliminatable: true, eliminationReason: 'This only mentions what squirrels eat. A good summary covers the whole passage — collecting, hiding, and digging up food — not just one detail.' },
       { text: 'Squirrels store food in autumn so they have enough to eat in winter.', isEliminatable: false },
@@ -36,7 +36,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'The school fair raised money for new playground equipment. There were cake stalls, games, and a raffle. Parents, teachers, and children all helped to organise the event. By the end of the day, they had raised over three hundred pounds. Which of these is the best summary of the passage?',
     questionTokens: ['The', 'school', 'fair', 'raised', 'money', 'for', 'new', 'playground', 'equipment.', 'There', 'were', 'cake', 'stalls,', 'games,', 'and', 'a', 'raffle.', 'Parents,', 'teachers,', 'and', 'children', 'all', 'helped', 'to', 'organise', 'the', 'event.', 'By', 'the', 'end', 'of', 'the', 'day,', 'they', 'had', 'raised', 'over', 'three', 'hundred', 'pounds.', 'Which', 'of', 'these', 'is', 'the', 'best', 'summary', 'of', 'the', 'passage?'],
-    keyWordIndices: [40, 44, 45, 46],
+    keyWordIndices: [1, 2, 3, 4, 7, 8, 11, 12, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 46],
     options: [
       { text: 'The school fair had cake stalls and a raffle.', isEliminatable: true, eliminationReason: 'This only describes part of the fair. A summary should cover the purpose (raising money) and the outcome, not just list activities.' },
       { text: 'Schools often hold fairs to bring the community together.', isEliminatable: true, eliminationReason: 'This is a general statement not found in the passage. The passage is about one specific fair and its purpose.' },
@@ -55,7 +55,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'Penguins are birds, but they cannot fly. Instead, they are excellent swimmers. Their wings act like flippers, helping them glide through the water at high speed. Penguins spend much of their time in the sea hunting for fish. Which sentence best summarises this passage?',
     questionTokens: ['Penguins', 'are', 'birds,', 'but', 'they', 'cannot', 'fly.', 'Instead,', 'they', 'are', 'excellent', 'swimmers.', 'Their', 'wings', 'act', 'like', 'flippers,', 'helping', 'them', 'glide', 'through', 'the', 'water', 'at', 'high', 'speed.', 'Penguins', 'spend', 'much', 'of', 'their', 'time', 'in', 'the', 'sea', 'hunting', 'for', 'fish.', 'Which', 'sentence', 'best', 'summarises', 'this', 'passage?'],
-    keyWordIndices: [38, 39, 40, 41],
+    keyWordIndices: [0, 2, 5, 6, 10, 11, 13, 16, 19, 22, 24, 25, 26, 34, 35, 37, 41],
     options: [
       { text: 'Penguins eat fish from the sea.', isEliminatable: true, eliminationReason: 'Eating fish is just one detail. The passage is mainly about how penguins swim instead of fly. A rusher picks the last thing mentioned.' },
       { text: 'Penguins have wings shaped like flippers.', isEliminatable: true, eliminationReason: 'This is a single supporting detail, not the main idea. A summary should cover why their wings matter, not just describe them.' },
@@ -77,7 +77,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'In Victorian times, children as young as five worked in factories and mines. The hours were long, the conditions were dangerous, and the pay was very low. Reformers like Lord Shaftesbury campaigned for new laws to protect children. Eventually, the Factory Acts limited the number of hours children could work and required them to attend school. Which of these best summarises the passage?',
     questionTokens: ['In', 'Victorian', 'times,', 'children', 'as', 'young', 'as', 'five', 'worked', 'in', 'factories', 'and', 'mines.', 'The', 'hours', 'were', 'long,', 'the', 'conditions', 'were', 'dangerous,', 'and', 'the', 'pay', 'was', 'very', 'low.', 'Reformers', 'like', 'Lord', 'Shaftesbury', 'campaigned', 'for', 'new', 'laws', 'to', 'protect', 'children.', 'Eventually,', 'the', 'Factory', 'Acts', 'limited', 'the', 'number', 'of', 'hours', 'children', 'could', 'work', 'and', 'required', 'them', 'to', 'attend', 'school.', 'Which', 'of', 'these', 'best', 'summarises', 'the', 'passage?'],
-    keyWordIndices: [56, 59, 60],
+    keyWordIndices: [1, 3, 5, 7, 8, 10, 12, 14, 16, 18, 20, 23, 26, 27, 29, 30, 31, 34, 36, 40, 41, 42, 54, 55, 60],
     options: [
       { text: 'Lord Shaftesbury was an important Victorian reformer.', isEliminatable: true, eliminationReason: 'Shaftesbury is mentioned as an example, but the passage covers much more — the problem and the solution. A rusher focuses on a single name.' },
       { text: 'Victorian children worked long hours in factories and mines until new laws were introduced to protect them.', isEliminatable: false },
@@ -96,7 +96,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'The Amazon rainforest produces around twenty per cent of the world\'s oxygen. It is home to millions of species of plants, insects, and animals, many of which have not yet been discovered. However, large areas of the rainforest are being cut down each year to make way for farming and roads. Scientists warn that this destruction could have serious effects on the global climate. Which sentence best summarises this passage?',
     questionTokens: ['The', 'Amazon', 'rainforest', 'produces', 'around', 'twenty', 'per', 'cent', 'of', 'the', 'world\'s', 'oxygen.', 'It', 'is', 'home', 'to', 'millions', 'of', 'species', 'of', 'plants,', 'insects,', 'and', 'animals,', 'many', 'of', 'which', 'have', 'not', 'yet', 'been', 'discovered.', 'However,', 'large', 'areas', 'of', 'the', 'rainforest', 'are', 'being', 'cut', 'down', 'each', 'year', 'to', 'make', 'way', 'for', 'farming', 'and', 'roads.', 'Scientists', 'warn', 'that', 'this', 'destruction', 'could', 'have', 'serious', 'effects', 'on', 'the', 'global', 'climate.', 'Which', 'sentence', 'best', 'summarises', 'this', 'passage?'],
-    keyWordIndices: [64, 65, 66, 67],
+    keyWordIndices: [1, 2, 3, 5, 6, 7, 11, 16, 18, 20, 21, 23, 33, 40, 41, 48, 50, 51, 52, 55, 58, 59, 62, 63, 67],
     options: [
       { text: 'The Amazon rainforest is being cut down for farming.', isEliminatable: true, eliminationReason: 'This only covers one part of the passage. A summary should also mention why the rainforest matters and what scientists warn about.' },
       { text: 'Millions of species live in the Amazon rainforest.', isEliminatable: true, eliminationReason: 'This is a supporting detail, not the main message. The passage is about why the rainforest is important AND the threat it faces.' },
@@ -115,7 +115,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'Guide dogs are specially trained to help people who are blind or partially sighted. The training begins when the dogs are puppies and takes about two years. During this time, the dogs learn to stop at kerbs, avoid obstacles, and judge the height and width of gaps. A fully trained guide dog can help its owner travel safely and independently. Which of these is the best summary?',
     questionTokens: ['Guide', 'dogs', 'are', 'specially', 'trained', 'to', 'help', 'people', 'who', 'are', 'blind', 'or', 'partially', 'sighted.', 'The', 'training', 'begins', 'when', 'the', 'dogs', 'are', 'puppies', 'and', 'takes', 'about', 'two', 'years.', 'During', 'this', 'time,', 'the', 'dogs', 'learn', 'to', 'stop', 'at', 'kerbs,', 'avoid', 'obstacles,', 'and', 'judge', 'the', 'height', 'and', 'width', 'of', 'gaps.', 'A', 'fully', 'trained', 'guide', 'dog', 'can', 'help', 'its', 'owner', 'travel', 'safely', 'and', 'independently.', 'Which', 'of', 'these', 'is', 'the', 'best', 'summary?'],
-    keyWordIndices: [60, 64, 65, 66],
+    keyWordIndices: [0, 1, 3, 4, 6, 10, 12, 13, 15, 21, 25, 26, 34, 36, 37, 38, 48, 49, 56, 57, 59, 65, 66],
     options: [
       { text: 'Guide dogs learn to stop at kerbs and avoid obstacles.', isEliminatable: true, eliminationReason: 'These are specific skills mentioned as examples. The summary should cover the bigger picture — why dogs are trained and what the result is.' },
       { text: 'Dogs are very intelligent animals that can be trained to do many things.', isEliminatable: true, eliminationReason: 'This is far too general. The passage is specifically about guide dogs, not all dogs or all types of training.' },
@@ -137,7 +137,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 3,
     questionText: 'Although the wheel is often considered the most important invention in history, some historians argue that the printing press had a greater impact on society. Before the printing press, books had to be copied by hand, which was slow and expensive. After Johannes Gutenberg developed his press in the 1440s, books could be produced quickly and cheaply, allowing knowledge to spread to ordinary people for the first time. Which of the following best summarises the writer\'s main point?',
     questionTokens: ['Although', 'the', 'wheel', 'is', 'often', 'considered', 'the', 'most', 'important', 'invention', 'in', 'history,', 'some', 'historians', 'argue', 'that', 'the', 'printing', 'press', 'had', 'a', 'greater', 'impact', 'on', 'society.', 'Before', 'the', 'printing', 'press,', 'books', 'had', 'to', 'be', 'copied', 'by', 'hand,', 'which', 'was', 'slow', 'and', 'expensive.', 'After', 'Johannes', 'Gutenberg', 'developed', 'his', 'press', 'in', 'the', '1440s,', 'books', 'could', 'be', 'produced', 'quickly', 'and', 'cheaply,', 'allowing', 'knowledge', 'to', 'spread', 'to', 'ordinary', 'people', 'for', 'the', 'first', 'time.', 'Which', 'of', 'the', 'following', 'best', 'summarises', 'the', 'writer\'s', 'main', 'point?'],
-    keyWordIndices: [68, 72, 73, 75, 76, 77],
+    keyWordIndices: [0, 2, 8, 9, 13, 14, 17, 18, 21, 22, 24, 29, 33, 35, 38, 40, 42, 43, 50, 53, 54, 56, 58, 60, 62, 63, 73, 76, 77],
     options: [
       { text: 'The wheel is the most important invention in history.', isEliminatable: true, eliminationReason: 'The passage actually argues against this view. The word "although" signals that the writer disagrees. A rusher grabs the first claim without noticing the contrast.' },
       { text: 'Gutenberg invented the printing press in the 1440s.', isEliminatable: true, eliminationReason: 'This is a supporting fact, not the main point. The passage uses this detail to support a bigger argument about impact on society.' },
@@ -156,7 +156,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 3,
     questionText: 'Recent studies suggest that homework in primary schools has little effect on academic achievement. Researchers found that children who spent more time on homework did not score significantly higher in tests than those who spent less time. However, many teachers argue that homework builds important habits such as time management and responsibility. The debate continues, with no clear agreement among experts. Which of the following best summarises the passage?',
     questionTokens: ['Recent', 'studies', 'suggest', 'that', 'homework', 'in', 'primary', 'schools', 'has', 'little', 'effect', 'on', 'academic', 'achievement.', 'Researchers', 'found', 'that', 'children', 'who', 'spent', 'more', 'time', 'on', 'homework', 'did', 'not', 'score', 'significantly', 'higher', 'in', 'tests', 'than', 'those', 'who', 'spent', 'less', 'time.', 'However,', 'many', 'teachers', 'argue', 'that', 'homework', 'builds', 'important', 'habits', 'such', 'as', 'time', 'management', 'and', 'responsibility.', 'The', 'debate', 'continues,', 'with', 'no', 'clear', 'agreement', 'among', 'experts.', 'Which', 'of', 'the', 'following', 'best', 'summarises', 'the', 'passage?'],
-    keyWordIndices: [61, 64, 65, 66],
+    keyWordIndices: [1, 4, 6, 7, 9, 10, 12, 13, 14, 23, 25, 26, 28, 30, 39, 40, 42, 43, 45, 49, 51, 53, 56, 57, 58, 60, 66],
     options: [
       { text: 'Homework is a waste of time for primary school children.', isEliminatable: true, eliminationReason: 'The passage says studies found little effect on test scores, but it also presents teachers\' views in favour. Saying it is a "waste of time" is too strong and one-sided.' },
       { text: 'Teachers believe homework helps children develop good habits.', isEliminatable: true, eliminationReason: 'This is only one side of the argument. The passage presents both sides and says there is no agreement. A rusher picks the last argument mentioned.' },
@@ -182,7 +182,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'Mia stared at the maths test on her desk. The questions swam before her eyes, and her mind went completely blank. She felt as though the clock on the wall was racing faster than ever. What does the writer mean by "the questions swam before her eyes"?',
     questionTokens: ['Mia', 'stared', 'at', 'the', 'maths', 'test', 'on', 'her', 'desk.', 'The', 'questions', 'swam', 'before', 'her', 'eyes,', 'and', 'her', 'mind', 'went', 'completely', 'blank.', 'She', 'felt', 'as', 'though', 'the', 'clock', 'on', 'the', 'wall', 'was', 'racing', 'faster', 'than', 'ever.', 'What', 'does', 'the', 'writer', 'mean', 'by', '"the', 'questions', 'swam', 'before', 'her', 'eyes"?'],
-    keyWordIndices: [35, 39, 41, 42, 43, 44, 45, 46],
+    keyWordIndices: [0, 1, 4, 5, 10, 11, 14, 17, 19, 20, 26, 31, 39, 42, 43, 45, 46],
     options: [
       { text: 'The words on the page were actually moving around.', isEliminatable: true, eliminationReason: 'Words on a page cannot literally swim. A rusher takes figurative language literally instead of thinking about what it really means.' },
       { text: 'Mia was thinking about swimming instead of doing the test.', isEliminatable: true, eliminationReason: 'The passage is about a maths test, not swimming. "Swam" is used figuratively here. A rusher connects the word to its literal meaning.' },
@@ -201,7 +201,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'After weeks of grey skies and rain, the sun finally broke through the clouds. Gran said, "Every cloud has a silver lining." She smiled and suggested they go for a walk in the park. What does Gran mean by "every cloud has a silver lining"?',
     questionTokens: ['After', 'weeks', 'of', 'grey', 'skies', 'and', 'rain,', 'the', 'sun', 'finally', 'broke', 'through', 'the', 'clouds.', 'Gran', 'said,', '"Every', 'cloud', 'has', 'a', 'silver', 'lining."', 'She', 'smiled', 'and', 'suggested', 'they', 'go', 'for', 'a', 'walk', 'in', 'the', 'park.', 'What', 'does', 'Gran', 'mean', 'by', '"every', 'cloud', 'has', 'a', 'silver', 'lining"?'],
-    keyWordIndices: [34, 36, 37, 39, 40, 41, 42, 43, 44],
+    keyWordIndices: [3, 4, 6, 8, 10, 13, 14, 16, 17, 20, 21, 37, 39, 40, 43, 44],
     options: [
       { text: 'The clouds in the sky are actually lined with silver.', isEliminatable: true, eliminationReason: 'Clouds are not made of silver. A rusher takes the saying literally instead of understanding its figurative meaning.' },
       { text: 'Even bad situations can have something good come from them.', isEliminatable: false },
@@ -220,7 +220,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 1,
     questionText: 'The old house sat at the end of the lane, its windows staring out like dark, hollow eyes. The gate groaned as Tom pushed it open, and the garden path seemed to reach out towards him with its cracked, broken stones. What effect does the writer create by describing the house this way?',
     questionTokens: ['The', 'old', 'house', 'sat', 'at', 'the', 'end', 'of', 'the', 'lane,', 'its', 'windows', 'staring', 'out', 'like', 'dark,', 'hollow', 'eyes.', 'The', 'gate', 'groaned', 'as', 'Tom', 'pushed', 'it', 'open,', 'and', 'the', 'garden', 'path', 'seemed', 'to', 'reach', 'out', 'towards', 'him', 'with', 'its', 'cracked,', 'broken', 'stones.', 'What', 'effect', 'does', 'the', 'writer', 'create', 'by', 'describing', 'the', 'house', 'this', 'way?'],
-    keyWordIndices: [41, 42, 43, 46],
+    keyWordIndices: [1, 2, 11, 12, 15, 16, 17, 19, 20, 22, 28, 29, 32, 38, 39, 42, 46],
     options: [
       { text: 'It makes the house seem friendly and welcoming.', isEliminatable: true, eliminationReason: 'Words like "groaned," "dark, hollow eyes," and "cracked, broken" create an unwelcoming feeling, not a friendly one. A rusher does not consider the mood of the language.' },
       { text: 'It shows the house is very old and needs to be repaired.', isEliminatable: true, eliminationReason: 'While the house may be old, the question asks about the effect of the writing, not a factual description. The writer is creating a feeling, not listing repairs.' },
@@ -242,7 +242,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'The runners lined up at the start. When the whistle blew, Amir shot off like a bullet, leaving the others trailing behind. By the halfway mark, his legs were turning to jelly. He gritted his teeth and pushed on, but the finish line seemed to be running away from him. What does the writer mean by "his legs were turning to jelly"?',
     questionTokens: ['The', 'runners', 'lined', 'up', 'at', 'the', 'start.', 'When', 'the', 'whistle', 'blew,', 'Amir', 'shot', 'off', 'like', 'a', 'bullet,', 'leaving', 'the', 'others', 'trailing', 'behind.', 'By', 'the', 'halfway', 'mark,', 'his', 'legs', 'were', 'turning', 'to', 'jelly.', 'He', 'gritted', 'his', 'teeth', 'and', 'pushed', 'on,', 'but', 'the', 'finish', 'line', 'seemed', 'to', 'be', 'running', 'away', 'from', 'him.', 'What', 'does', 'the', 'writer', 'mean', 'by', '"his', 'legs', 'were', 'turning', 'to', 'jelly"?'],
-    keyWordIndices: [50, 53, 54, 56, 57, 58, 59, 60, 61],
+    keyWordIndices: [11, 12, 14, 16, 24, 27, 29, 31, 33, 35, 37, 41, 42, 46, 47, 54, 56, 57, 59, 61],
     options: [
       { text: 'Amir\'s legs were literally becoming soft and wobbly like jelly.', isEliminatable: true, eliminationReason: 'Legs cannot actually turn into jelly. A rusher takes the simile literally instead of understanding what it means about how Amir feels.' },
       { text: 'Amir had eaten too much jelly before the race.', isEliminatable: true, eliminationReason: 'The passage says nothing about eating. A rusher connects the word "jelly" to food instead of understanding the figurative meaning.' },
@@ -261,7 +261,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'Dad had been working on the car all morning, but it still would not start. He threw down the spanner and said, "I\'ve been barking up the wrong tree — the problem isn\'t the engine at all, it\'s the battery." He wiped his hands and went to fetch a new one. What does Dad mean by "barking up the wrong tree"?',
     questionTokens: ['Dad', 'had', 'been', 'working', 'on', 'the', 'car', 'all', 'morning,', 'but', 'it', 'still', 'would', 'not', 'start.', 'He', 'threw', 'down', 'the', 'spanner', 'and', 'said,', '"I\'ve', 'been', 'barking', 'up', 'the', 'wrong', 'tree', '—', 'the', 'problem', 'isn\'t', 'the', 'engine', 'at', 'all,', 'it\'s', 'the', 'battery."', 'He', 'wiped', 'his', 'hands', 'and', 'went', 'to', 'fetch', 'a', 'new', 'one.', 'What', 'does', 'Dad', 'mean', 'by', '"barking', 'up', 'the', 'wrong', 'tree"?'],
-    keyWordIndices: [51, 53, 54, 56, 57, 58, 59, 60],
+    keyWordIndices: [0, 3, 6, 13, 14, 19, 24, 27, 28, 31, 34, 39, 54, 56, 57, 59, 60],
     options: [
       { text: 'He was making too much noise while working on the car.', isEliminatable: true, eliminationReason: '"Barking" does not mean making noise here. A rusher connects "barking" to its literal meaning (like a dog) instead of understanding the idiom.' },
       { text: 'He had been trying to fix the wrong part of the car.', isEliminatable: false },
@@ -280,7 +280,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 2,
     questionText: 'The wind howled through the village, rattling windows and tearing tiles from rooftops. Trees bowed low as if paying respect to the storm\'s fury. By morning, the streets were a patchwork of fallen branches and scattered debris. What does the writer mean by "trees bowed low as if paying respect to the storm\'s fury"?',
     questionTokens: ['The', 'wind', 'howled', 'through', 'the', 'village,', 'rattling', 'windows', 'and', 'tearing', 'tiles', 'from', 'rooftops.', 'Trees', 'bowed', 'low', 'as', 'if', 'paying', 'respect', 'to', 'the', 'storm\'s', 'fury.', 'By', 'morning,', 'the', 'streets', 'were', 'a', 'patchwork', 'of', 'fallen', 'branches', 'and', 'scattered', 'debris.', 'What', 'does', 'the', 'writer', 'mean', 'by', '"trees', 'bowed', 'low', 'as', 'if', 'paying', 'respect', 'to', 'the', 'storm\'s', 'fury"?'],
-    keyWordIndices: [37, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53],
+    keyWordIndices: [1, 2, 5, 6, 7, 9, 10, 12, 13, 14, 15, 18, 19, 22, 23, 30, 32, 33, 35, 36, 41, 43, 44, 45, 48, 49, 52, 53],
     options: [
       { text: 'The trees were being polite and showing good manners.', isEliminatable: true, eliminationReason: 'Trees cannot be polite. A rusher takes the phrase "paying respect" literally instead of understanding it as a comparison.' },
       { text: 'The strong wind was bending the trees over with great force.', isEliminatable: false },
@@ -302,7 +302,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 3,
     questionText: 'Mrs Palmer\'s classroom was a beehive of activity. Children buzzed from table to table, collecting materials for their projects. The hum of conversation filled the room, and Mrs Palmer, the queen of her domain, directed proceedings with a calm smile. She did not need to raise her voice — a single look was enough to bring order. What is the main effect of the figurative language used in this passage?',
     questionTokens: ['Mrs', 'Palmer\'s', 'classroom', 'was', 'a', 'beehive', 'of', 'activity.', 'Children', 'buzzed', 'from', 'table', 'to', 'table,', 'collecting', 'materials', 'for', 'their', 'projects.', 'The', 'hum', 'of', 'conversation', 'filled', 'the', 'room,', 'and', 'Mrs', 'Palmer,', 'the', 'queen', 'of', 'her', 'domain,', 'directed', 'proceedings', 'with', 'a', 'calm', 'smile.', 'She', 'did', 'not', 'need', 'to', 'raise', 'her', 'voice', '—', 'a', 'single', 'look', 'was', 'enough', 'to', 'bring', 'order.', 'What', 'is', 'the', 'main', 'effect', 'of', 'the', 'figurative', 'language', 'used', 'in', 'this', 'passage?'],
-    keyWordIndices: [57, 60, 61, 64, 65],
+    keyWordIndices: [0, 1, 2, 5, 7, 8, 9, 20, 22, 27, 28, 30, 33, 34, 38, 50, 51, 55, 56, 60, 61, 64, 65],
     options: [
       { text: 'It tells us that Mrs Palmer keeps bees as a hobby.', isEliminatable: true, eliminationReason: 'The beehive is a metaphor for the busy classroom, not a real beehive. A rusher takes the figurative language literally.' },
       { text: 'It suggests the classroom is noisy, chaotic, and out of control.', isEliminatable: true, eliminationReason: 'Although the room is busy, Mrs Palmer is described as calm and in control. "Chaotic" and "out of control" contradict the description of her authority.' },
@@ -321,7 +321,7 @@ export const batch3EnglishQuestions: Question[] = [
     difficulty: 3,
     questionText: 'Kai had practised his speech a hundred times, yet standing backstage, his heart was a drum pounding in his chest. The spotlight waited for him like a hungry eye. He took a deep breath, stepped forward, and let his words flow like a river — steady, strong, and impossible to stop. Once he began, the fear melted away like snow in spring. What does the figurative language in this passage mainly reveal about Kai?',
     questionTokens: ['Kai', 'had', 'practised', 'his', 'speech', 'a', 'hundred', 'times,', 'yet', 'standing', 'backstage,', 'his', 'heart', 'was', 'a', 'drum', 'pounding', 'in', 'his', 'chest.', 'The', 'spotlight', 'waited', 'for', 'him', 'like', 'a', 'hungry', 'eye.', 'He', 'took', 'a', 'deep', 'breath,', 'stepped', 'forward,', 'and', 'let', 'his', 'words', 'flow', 'like', 'a', 'river', '—', 'steady,', 'strong,', 'and', 'impossible', 'to', 'stop.', 'Once', 'he', 'began,', 'the', 'fear', 'melted', 'away', 'like', 'snow', 'in', 'spring.', 'What', 'does', 'the', 'figurative', 'language', 'in', 'this', 'passage', 'mainly', 'reveal', 'about', 'Kai?'],
-    keyWordIndices: [62, 65, 66, 70, 71, 72, 73],
+    keyWordIndices: [0, 4, 12, 15, 16, 19, 21, 27, 28, 39, 40, 43, 45, 46, 48, 50, 55, 56, 59, 61, 65, 66, 70, 71, 73],
     options: [
       { text: 'Kai is not a very good public speaker and forgot his words.', isEliminatable: true, eliminationReason: 'The passage says his words flowed "like a river — steady, strong, and impossible to stop." He did not forget anything. A rusher focuses on the nervousness and ignores the successful outcome.' },
       { text: 'Kai was nervous at first but overcame his fear and delivered his speech confidently.', isEliminatable: false },

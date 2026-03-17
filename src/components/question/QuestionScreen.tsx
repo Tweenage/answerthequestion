@@ -57,8 +57,12 @@ export function QuestionScreen({
     setShowTimesUp(false);
   }, [question.id]);
 
-  // Timer tick sounds
+  // Timer tick sounds — only play in weeks 5+ (Building/Exam Ready phases)
+  // In Foundation phase (weeks 1-4), the timer is silent to avoid anxiety
+  const enableTimerSounds = weekConfig.weekNumber >= 5;
+
   useEffect(() => {
+    if (!enableTimerSounds) return;
     if (data.state === 'FEEDBACK' || data.state === 'COMPLETE') return;
     const now = Date.now();
     if (now - lastTickRef.current < 900) return; // debounce to once per second
@@ -69,7 +73,7 @@ export function QuestionScreen({
       play('timerWarning');
       lastTickRef.current = now;
     }
-  }, [timer.percentRemaining, data.state, play]);
+  }, [timer.percentRemaining, data.state, play, enableTimerSounds]);
 
   // Auto-submit when timer runs out — show "Time's Up!" briefly first
   useEffect(() => {
@@ -177,20 +181,28 @@ export function QuestionScreen({
 
         <div
           className={`flex items-center gap-2 text-sm px-2 py-1 rounded-lg transition-all ${
-            timer.percentRemaining < 20 ? 'bg-red-50 animate-pulse' :
-            timer.percentRemaining < 40 ? 'bg-amber-50' : ''
+            !enableTimerSounds
+              ? '' // Foundation: no colour changes, keep calm
+              : timer.percentRemaining < 20 ? 'bg-red-50 animate-pulse'
+              : timer.percentRemaining < 40 ? 'bg-amber-50' : ''
           }`}
           role="timer"
           aria-live="polite"
           aria-label={`${timer.display} remaining`}
         >
           <Clock className={`w-4 h-4 ${
-            timer.percentRemaining < 20 ? 'text-rainbow-red' :
-            timer.percentRemaining < 40 ? 'text-celebrate-amber' : dyslexiaMode ? 'text-gray-600' : 'text-gray-400'
+            !enableTimerSounds
+              ? (dyslexiaMode ? 'text-gray-600' : 'text-gray-400') // Foundation: always calm
+              : timer.percentRemaining < 20 ? 'text-rainbow-red'
+              : timer.percentRemaining < 40 ? 'text-celebrate-amber'
+              : dyslexiaMode ? 'text-gray-600' : 'text-gray-400'
           }`} aria-hidden="true" />
           <span className={`font-display font-bold ${
-            timer.percentRemaining < 20 ? 'text-rainbow-red text-base' :
-            timer.percentRemaining < 40 ? 'text-celebrate-amber' : 'text-gray-600'
+            !enableTimerSounds
+              ? 'text-gray-600' // Foundation: always calm
+              : timer.percentRemaining < 20 ? 'text-rainbow-red text-base'
+              : timer.percentRemaining < 40 ? 'text-celebrate-amber'
+              : 'text-gray-600'
           }`}>
             {timer.display}
           </span>
@@ -201,9 +213,11 @@ export function QuestionScreen({
       <div className="h-2.5 bg-focus-100 rounded-full overflow-hidden" role="progressbar" aria-label="Time remaining" aria-valuenow={Math.round(timer.percentRemaining)} aria-valuemin={0} aria-valuemax={100}>
         <div
           className={`h-full rounded-full transition-all duration-1000 ${
-            timer.percentRemaining < 20 ? 'bg-rainbow-red' :
-            timer.percentRemaining < 50 ? 'bg-celebrate-amber' :
-            'bg-focus-400'
+            !enableTimerSounds
+              ? 'bg-focus-400' // Foundation: always calm colour
+              : timer.percentRemaining < 20 ? 'bg-rainbow-red'
+              : timer.percentRemaining < 50 ? 'bg-celebrate-amber'
+              : 'bg-focus-400'
           }`}
           style={{ width: `${timer.percentRemaining}%` }}
         />
