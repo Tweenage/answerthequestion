@@ -425,6 +425,13 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - Guest checkout → claim-payment → paywall clearing end-to-end flow
 - Stripe promotion codes (ATQBETA100 for 100% off, ATQWELCOME10 for 10% off) configured in Stripe Dashboard
 - Dashboard styled with violet-fuchsia gradient colour scheme
+- Technique feedback shows amber indicators for partial scores (50-79%), not just green/red
+- Number-to-figure extraction restricted to maths questions only (prevents false positives like "odd one out")
+- batch3-english keyWordIndices fixed to mark passage content words, not just question stems
+- `npm audit fix` runs automatically as postbuild step
+- Security documentation: secret rotation policy, backup/restore procedures, environment separation guide, guest checkout auth rationale (all in `docs/security/`)
+- Paywall enforced server-side only — no localStorage bypass (`usePaywall.ts` sources `hasPaid` exclusively from Supabase-fetched child profiles)
+- Security audit score: **22/22 (2 N/A) — SHIP**
 
 ---
 
@@ -447,22 +454,38 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 
 ## Security Audit Summary
 
-**Good**:
+**Score: 22/22 (2 rules N/A — no AI APIs, no file uploads) — SHIP**
+
+**Passing**:
+- Supabase Auth with default session lifetime (<7 days) + refresh token rotation
+- All API keys via env vars (`import.meta.env` / `Deno.env.get`), never hardcoded
 - Strict CSP in `vercel.json` (no `unsafe-eval`, limited `connect-src` to Supabase/Stripe)
 - HSTS with preload, X-Frame-Options DENY, X-Content-Type-Options nosniff
-- Stripe webhook signature verification (manual HMAC-SHA256 via Web Crypto API — Stripe SDK incompatible with Deno)
+- Stripe webhook signature verification (manual HMAC-SHA256 via Web Crypto API)
 - Rate limiting on all Edge Functions (sliding window per IP)
 - Service role key only used server-side (delete-account, stripe-webhook)
 - Redirect URL validation in checkout (must be trusted origin)
-- `console.log`/`warn` stripped in production builds via Vite esbuild config
-- `npm audit` runs as prebuild step
+- `console.log`/`warn`/`debug` stripped in production builds via Vite esbuild config
+- `npm audit` runs as prebuild step; `npm audit fix` runs as postbuild step
 - CORS whitelist restricted to production domains + Vercel previews
+- Paywall enforced server-side only — no localStorage bypass
+- Parameterized queries throughout (Supabase JS client, no raw SQL)
+- Row-Level Security enabled on all tables
+- GDPR-compliant hard delete (CASCADE) for account deletion
+- Critical actions logged (account deletion, payment completion, payment claiming)
+- Documented secret rotation policy (90-day schedule in `docs/security/secret-rotation.md`)
+- Documented backup/restore procedures (`docs/security/backup-restore.md`)
+- Documented environment separation guide (`docs/security/environment-separation.md`)
+- Guest checkout auth exception documented with rationale (`docs/security/guest-checkout-auth.md`)
 
-**Notes**:
-- Rate limiting is in-memory (resets on cold start) — adequate for burst protection but not persistent
+**Advisory (non-blocking)**:
+- Rate limiting is in-memory (resets on cold start) — adequate for current scale
 - `.env`, `.env.local`, `.env.production` are in `.gitignore`
 - Supabase anon key is exposed to the client (by design — RLS protects data)
 - `unsafe-inline` is allowed for styles in CSP (needed for inline Tailwind + Google Fonts)
+- Secret rotation dates need to be filled in and calendar reminders set
+- Environment separation guide exists but may not be fully implemented yet (single Supabase project)
+- Quarterly backup restore test should be scheduled
 
 ---
 
@@ -552,8 +575,20 @@ Required secrets (set via `supabase secrets set`):
 
 17. **`has_paid` column**: Was missing from `child_profiles` table initially — had to be added via `ALTER TABLE`. All payment-related updates were silently failing without it. If setting up a fresh Supabase instance, ensure this column exists: `ALTER TABLE child_profiles ADD COLUMN has_paid boolean DEFAULT false;`
 
-18. **Dashboard colour scheme**: Uses a violet-fuchsia gradient palette. Stats row: `bg-gradient-to-br from-violet-500/40 to-fuchsia-500/30`. Exam countdown: fuchsia gradient (`from-fuchsia-500/70 to-fuchsia-600/60`). 12-week journey: more transparent fuchsia (`from-fuchsia-500/50 via-fuchsia-500/40 to-fuchsia-600/35`). The user specifically dislikes solid indigo/purple and plain white for dashboard cards.
+18. **Dashboard colour scheme**: Uses a violet-fuchsia gradient palette. Stats row: `bg-gradient-to-br from-violet-500/40 to-fuchsia-500/30`. Exam countdown: fuchsia-pink gradient (`from-fuchsia-400 to-pink-600`). 12-week journey: more transparent fuchsia (`from-fuchsia-500/50 via-fuchsia-500/40 to-fuchsia-600/35`). The user specifically dislikes solid indigo/purple and plain white for dashboard cards.
 
 19. **Stripe promo codes**: `create-checkout-session` passes `allow_promotion_codes: true`. Do NOT pass `customer_email` to Stripe when promo codes are enabled — it causes a Stripe error. Instead, use `customer_creation: 'always'` or collect email via Stripe's built-in form. Billing address is required (`billing_address_collection: 'required'`) to avoid empty customer name errors.
 
 20. **Paywall persistence fix**: `useAuthStore` persists `children` array (including `hasPaid` flag) to localStorage, not just `currentChildId`. This prevents a login loop where the paywall check runs before Supabase fetches child profiles.
+
+21. **Paywall is server-side only**: `usePaywall.ts` sources `hasPaid` exclusively from the Supabase-fetched child profile. No localStorage fallback — this prevents client-side bypass. The comment in the file explicitly warns against re-adding a localStorage check.
+
+22. **Technique feedback amber indicators**: `QuestionFeedback.tsx` shows three colours for technique rows: green (≥80%), amber/yellow (50-79%), red (<50%). This gives children nuanced feedback — partial credit for effort rather than binary pass/fail. The overall technique percentage also uses amber text colour when in the 50-79% range.
+
+23. **Number extraction is maths-only**: The `useQuestionFlow.ts` state machine skips the `NUMBER_EXTRACTION` step for English and Reasoning questions. This prevents false positives where words like "one" in "odd one out" or "first" in "first person" would be flagged for conversion to figures.
+
+24. **Key word quality in question bank**: The `keyWordIndices` arrays in question files should mark ~60-70% passage content words (nouns, verbs, figurative language, key facts) and ~30-40% question focus words. The original batch3-english questions only marked question-stem words (e.g. "Which sentence best summarises") which meant children couldn't score well even when highlighting correctly. Fixed in March 2026 — other question files may need similar review.
+
+25. **Zoho email delivery**: Emails sent from `rebecca@answerthequestion.co.uk` may fail to deliver to `@answerthequestion.co.uk` addresses if MX records don't resolve correctly. Check MX records point to `mx.zoho.eu`, `mx2.zoho.eu`, `mx3.zoho.eu`. Emails to external addresses (Gmail, Outlook) work fine.
+
+26. **Security documentation**: Security policies live in `docs/security/`: `secret-rotation.md` (90-day rotation schedule), `backup-restore.md` (Supabase backup + quarterly restore testing), `environment-separation.md` (separate dev/prod Supabase projects + Stripe test/live keys), `guest-checkout-auth.md` (rationale for unauthenticated checkout endpoint with mitigations).
