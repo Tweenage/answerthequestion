@@ -148,8 +148,8 @@ export function PracticePage() {
     const goals = weekGoals[weekConfig.phase] ?? weekGoals.foundation;
 
     return (
-      <div className="flex items-center justify-center min-h-[60vh] px-4">
-        <div className="bg-white/90 backdrop-blur-sm rounded-card p-6 max-w-md shadow-lg border border-purple-200/50 space-y-4">
+      <div className="flex items-center justify-center min-h-[50vh] px-4">
+        <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 max-w-md shadow-lg border border-purple-200/50 space-y-3">
           <div className="text-center">
             <p className="text-4xl mb-2">🦉</p>
             <p className="font-display font-black text-xl text-purple-700">Week {weekConfig.weekNumber} — {phaseLabel} {phaseEmoji}</p>

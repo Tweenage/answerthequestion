@@ -153,7 +153,7 @@ export function SessionCompleteScreen({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="space-y-5 py-4"
+      className="space-y-3 py-2"
     >
       <ConfettiExplosion trigger={showConfetti} />
 
@@ -191,7 +191,7 @@ export function SessionCompleteScreen({
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5, type: 'spring', damping: 12 }}
-        className="text-center bg-white rounded-card p-5 shadow-sm border-2 border-celebrate-amber/30"
+        className="text-center bg-white rounded-card p-4 shadow-sm border-2 border-celebrate-amber/30"
       >
         <div className="flex items-center justify-center gap-2 mb-1">
           <Zap className="w-6 h-6 text-celebrate-amber" />
@@ -225,20 +225,20 @@ export function SessionCompleteScreen({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.0 }}
-        className="grid grid-cols-3 gap-3"
+        className="grid grid-cols-3 gap-2"
       >
-        <div className="bg-white rounded-card p-4 shadow-sm border border-focus-100 text-center">
-          <Target className="w-6 h-6 text-focus-500 mx-auto mb-1" />
+        <div className="bg-white rounded-card p-3 shadow-sm border border-focus-100 text-center">
+          <Target className="w-5 h-5 text-focus-500 mx-auto mb-0.5" />
           <p className="font-display font-bold text-xl text-focus-700">{avgTechnique}%</p>
           <p className="text-xs text-gray-500">Technique</p>
         </div>
-        <div className="bg-white rounded-card p-4 shadow-sm border border-focus-100 text-center">
-          <Star className="w-6 h-6 text-calm-500 mx-auto mb-1" />
+        <div className="bg-white rounded-card p-3 shadow-sm border border-focus-100 text-center">
+          <Star className="w-5 h-5 text-calm-500 mx-auto mb-0.5" />
           <p className="font-display font-bold text-xl text-calm-600">{correctCount}/{results.length}</p>
           <p className="text-xs text-gray-500">Correct</p>
         </div>
-        <div className="bg-white rounded-card p-4 shadow-sm border border-focus-100 text-center">
-          <Clock className="w-6 h-6 text-celebrate-amber mx-auto mb-1" />
+        <div className="bg-white rounded-card p-3 shadow-sm border border-focus-100 text-center">
+          <Clock className="w-5 h-5 text-celebrate-amber mx-auto mb-0.5" />
           <p className="font-display font-bold text-xl text-gray-700">{minutes}:{seconds.toString().padStart(2, '0')}</p>
           <p className="text-xs text-gray-500">Time</p>
         </div>
@@ -251,8 +251,8 @@ export function SessionCompleteScreen({
         transition={{ delay: 1.2 }}
         className="bg-white rounded-card p-4 shadow-sm border border-focus-100"
       >
-        <h3 className="font-display font-bold text-sm text-gray-700 mb-3">Technique Breakdown</h3>
-        <div className="space-y-3">
+        <h3 className="font-display font-bold text-sm text-gray-700 mb-2">Technique Breakdown</h3>
+        <div className="space-y-2.5">
           <TechniqueBar
             label="Read twice"
             icon={<BookOpen className="w-3.5 h-3.5 text-celebrate-amber" />}
@@ -364,7 +364,7 @@ export function SessionCompleteScreen({
           transition={{ delay: 1.6 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => navigate('/review-mistakes', { state: { results: wrongResults } })}
-          className="w-full py-3.5 rounded-button font-display font-bold text-purple-700 text-base bg-purple-100 hover:bg-purple-200 transition-colors flex items-center justify-center gap-2 border border-purple-200"
+          className="w-full py-3 rounded-button font-display font-bold text-purple-700 text-base bg-purple-100 hover:bg-purple-200 transition-colors flex items-center justify-center gap-2 border border-purple-200"
         >
           Review Mistakes ({wrongResults.length}) 🔍
         </motion.button>
@@ -377,7 +377,7 @@ export function SessionCompleteScreen({
         transition={{ delay: 1.7 }}
         whileTap={{ scale: 0.97 }}
         onClick={onGoHome}
-        className="w-full py-4 rounded-button font-display font-bold text-white text-lg rainbow-gradient hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+        className="w-full py-3 rounded-button font-display font-bold text-white text-base rainbow-gradient hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
       >
         Back to the Nest! 🦉
       </motion.button>

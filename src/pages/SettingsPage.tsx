@@ -73,13 +73,13 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-md mx-auto">
+    <div className="space-y-4 max-w-md mx-auto">
       <h2 className="font-display font-extrabold text-xl text-white drop-shadow-md text-center">
         ⚙️ Settings
       </h2>
 
       {/* Dyslexia-friendly mode */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-sm">
+      <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-display font-bold text-base text-gray-800">Dyslexia-friendly mode</h3>
@@ -105,7 +105,7 @@ export function SettingsPage() {
       </div>
 
       {/* Avatar & Colour */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-sm space-y-5">
+      <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm space-y-4">
         <h3 className="font-display font-bold text-base text-gray-800">Your Avatar</h3>
 
         {/* Preview */}
@@ -130,12 +130,12 @@ export function SettingsPage() {
           <label className="block text-sm font-display font-semibold text-gray-600 mb-2">
             Choose your lucky charm
           </label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2.5">
             {AVATAR_CHARACTERS.map(char => (
               <button
                 key={char}
                 onClick={() => setSelectedCharacter(char)}
-                className={`flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all ${
+                className={`flex flex-col items-center gap-1 py-2.5 px-2 rounded-2xl transition-all ${
                   selectedCharacter === char
                     ? 'ring-3 ring-purple-400 bg-purple-50 scale-105 shadow-md'
                     : 'bg-gray-50 hover:bg-gray-100 hover:shadow-sm'
@@ -192,8 +192,8 @@ export function SettingsPage() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-sm">
-        <h3 className="font-display font-bold text-sm text-gray-700 mb-3">Account</h3>
+      <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm">
+        <h3 className="font-display font-bold text-sm text-gray-700 mb-2">Account</h3>
         <button
           onClick={() => setShowDeleteModal(true)}
           className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 font-display font-bold transition-colors"
@@ -212,9 +212,9 @@ export function SettingsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl"
+            className="bg-white rounded-2xl p-5 max-w-sm w-full shadow-xl"
           >
-            <div className="text-center mb-4">
+            <div className="text-center mb-3">
               <span className="text-4xl">⚠️</span>
               <h3 className="font-display font-extrabold text-lg text-gray-900 mt-2">
                 Delete your account?
@@ -224,7 +224,7 @@ export function SettingsPage() {
               </p>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-3">
               <label className="text-xs text-gray-500 font-display font-bold block mb-1">
                 Type DELETE to confirm
               </label>

@@ -24,7 +24,7 @@ export function BadgesPage() {
   const earnedIds = new Set(earnedBadges.map(b => b.badgeId));
 
   return (
-    <div className="space-y-6 py-2">
+    <div className="space-y-4 py-1">
       {/* Professor Hoot header */}
       <ProfessorHoot
         mood={earnedIds.size > 0 ? 'happy' : 'encouraging'}
@@ -49,8 +49,8 @@ export function BadgesPage() {
         const badges = badgeDefinitions.filter(b => b.category === category);
         return (
           <div key={category}>
-            <h3 className="font-display font-bold text-focus-700 mb-3">{categoryLabels[category]}</h3>
-            <div className="grid grid-cols-3 gap-3">
+            <h3 className="font-display font-bold text-focus-700 mb-2">{categoryLabels[category]}</h3>
+            <div className="grid grid-cols-3 gap-2.5">
               {badges.map((badge, i) => {
                 const isEarned = earnedIds.has(badge.id);
                 return (
