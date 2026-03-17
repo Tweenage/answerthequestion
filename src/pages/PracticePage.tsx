@@ -4,7 +4,7 @@ import { useProgressStore } from '../stores/useProgressStore';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { usePaywall } from '../hooks/usePaywall';
-import { programmeWeeks } from '../data/programme/weeks';
+import { useWeekConfig } from '../hooks/useWeekConfig';
 import { useDailyQuestions } from '../hooks/useDailyQuestions';
 import { calculateXpFromResult } from '../utils/scoring';
 import { QuestionScreen } from '../components/question/QuestionScreen';
@@ -26,7 +26,7 @@ export function PracticePage() {
   const focusSubject = rawSubject && VALID_SUBJECTS.includes(rawSubject as Subject) ? rawSubject as Subject : null;
 
   const progress = currentUser ? getProgress(currentUser.id) : null;
-  const weekConfig = programmeWeeks[Math.min((progress?.currentWeek ?? 1) - 1, 11)];
+  const { weekConfig, isFastTrack: isOnFastTrack, totalWeeks } = useWeekConfig();
   const answeredIds = useMemo(
     () => progress?.sessions.flatMap(s => s.questions.map(q => q.questionId)) ?? [],
     [progress?.sessions]
@@ -152,7 +152,10 @@ export function PracticePage() {
         <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 max-w-md shadow-lg border border-purple-200/50 space-y-3">
           <div className="text-center">
             <p className="text-4xl mb-2">🦉</p>
-            <p className="font-display font-black text-xl text-purple-700">Week {weekConfig.weekNumber} — {phaseLabel} {phaseEmoji}</p>
+            <p className="font-display font-black text-xl text-purple-700">
+            {isOnFastTrack && <span className="text-amber-500">⚡ Fast Track · </span>}
+            Week {weekConfig.weekNumber}{isOnFastTrack ? ` of ${totalWeeks}` : ''} — {phaseLabel} {phaseEmoji}
+          </p>
           </div>
 
           {/* Timing target */}

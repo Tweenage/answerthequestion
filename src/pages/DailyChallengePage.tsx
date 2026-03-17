@@ -5,7 +5,7 @@ import { Star, Zap } from 'lucide-react';
 import { useProgressStore } from '../stores/useProgressStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { usePaywall } from '../hooks/usePaywall';
-import { programmeWeeks } from '../data/programme/weeks';
+import { useWeekConfig } from '../hooks/useWeekConfig';
 import { allQuestions } from '../data/questions';
 import { QuestionScreen } from '../components/question/QuestionScreen';
 import { ConfettiExplosion } from '../components/celebrations/ConfettiExplosion';
@@ -56,16 +56,17 @@ export function DailyChallengePage() {
   const [result, setResult] = useState<QuestionResult | null>(null);
   const [animatedXp, setAnimatedXp] = useState(0);
 
+  const { weekConfig: baseWeekConfig } = useWeekConfig();
+
   // Create a synthetic week config for the challenge (no scaffolding)
   const challengeConfig: WeekConfig = useMemo(() => {
-    const baseWeek = programmeWeeks[Math.min((progress?.currentWeek ?? 1) - 1, 11)];
     return {
-      ...baseWeek,
+      ...baseWeekConfig,
       scaffoldingLevel: 'light' as const,
       timePerQuestionMs: 90_000,
       dailyQuestionCount: 1,
     };
-  }, [progress?.currentWeek]);
+  }, [baseWeekConfig]);
 
   const handleComplete = useCallback((res: QuestionResult) => {
     setResult(res);

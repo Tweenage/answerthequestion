@@ -85,13 +85,31 @@ export function JourneySection() {
           </div>
 
           {/* Session format */}
-          <div className="bg-gradient-to-r from-purple-50 to-fuchsia-50 rounded-2xl p-6 md:p-8 border border-purple-200/50 text-center mb-8">
+          <div className="bg-gradient-to-r from-purple-50 to-fuchsia-50 rounded-2xl p-6 md:p-8 border border-purple-200/50 text-center mb-4">
             <p className="font-display font-extrabold text-xl md:text-2xl text-purple-800">
               10 questions. 10 minutes. Done.
             </p>
             <p className="font-display text-sm md:text-base text-purple-600 mt-2">
               Short enough to fit around homework &mdash; powerful enough to build a lasting habit.
             </p>
+          </div>
+
+          {/* Fast Track callout */}
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-5 md:p-6 border border-amber-200/60 mb-8">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl shrink-0">⚡</span>
+              <div>
+                <p className="font-display font-extrabold text-base text-amber-900 mb-1">
+                  Exam in less than 12 weeks?
+                </p>
+                <p className="font-display text-sm text-amber-800 leading-relaxed">
+                  No problem. Just enter your child&rsquo;s exam date and the app automatically switches
+                  to <strong>Fast Track mode</strong> &mdash; a compressed programme that accelerates from
+                  gentle start to exam pace in the time you have left. The same CLEAR Method, the same
+                  proven technique, just adapted to your timeline.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Features grid */}

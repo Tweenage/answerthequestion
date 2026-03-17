@@ -5,7 +5,7 @@ import { Clock, BarChart3 } from 'lucide-react';
 import { useProgressStore } from '../stores/useProgressStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { usePaywall } from '../hooks/usePaywall';
-import { programmeWeeks } from '../data/programme/weeks';
+import { useWeekConfig } from '../hooks/useWeekConfig';
 import { useDailyQuestions } from '../hooks/useDailyQuestions';
 import { calculateXpFromResult } from '../utils/scoring';
 import { QuestionScreen } from '../components/question/QuestionScreen';
@@ -25,13 +25,13 @@ export function MockExamPage() {
   const { needsPayment } = usePaywall();
 
   const progress = currentUser ? getProgress(currentUser.id) : null;
-  const isUnlocked = (progress?.currentWeek ?? 1) >= 6;
+  const { weekConfig: baseWeekConfig, totalWeeks } = useWeekConfig();
+  const isUnlocked = (progress?.currentWeek ?? 1) >= Math.ceil(totalWeeks / 2);
 
   // Create exam-conditions week config
   const examConfig: WeekConfig = useMemo(() => {
-    const baseWeek = programmeWeeks[Math.min((progress?.currentWeek ?? 1) - 1, 11)];
     return {
-      ...baseWeek,
+      ...baseWeekConfig,
       scaffoldingLevel: 'light' as const,
       timePerQuestionMs: 60_000,
       dailyQuestionCount: 20,
@@ -41,7 +41,7 @@ export function MockExamPage() {
         'reasoning': 6,
       },
     };
-  }, [progress?.currentWeek]);
+  }, [baseWeekConfig]);
 
   const answeredIds = progress?.sessions.flatMap(s => s.questions.map(q => q.questionId)) ?? [];
   const questions = useDailyQuestions(examConfig, answeredIds);
@@ -88,7 +88,7 @@ export function MockExamPage() {
         <ProfessorHoot
           mood="teaching"
           size="lg"
-          message={`Mock exams unlock in Week 6, ${currentUser.name}! You're on Week ${progress.currentWeek} — keep building your technique!`}
+          message={`Mock exams unlock in Week ${Math.ceil(totalWeeks / 2)}, ${currentUser.name}! You're on Week ${progress.currentWeek} — keep building your technique!`}
           showSpeechBubble
           animate
         />

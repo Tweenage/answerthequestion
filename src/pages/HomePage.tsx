@@ -7,8 +7,8 @@ import { useProgressStore } from '../stores/useProgressStore';
 import { useSettingsStore } from '../stores/useSettingsStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { usePaywall } from '../hooks/usePaywall';
+import { useWeekConfig } from '../hooks/useWeekConfig';
 import { PHASE_LABELS } from '../types/programme';
-import { programmeWeeks } from '../data/programme/weeks';
 import { OnboardingFlow } from '../components/onboarding/OnboardingFlow';
 import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
 import { ExamCountdown } from '../components/home/ExamCountdown';
@@ -28,9 +28,11 @@ const SUBJECT_CHIPS = [
 export function HomePage() {
   const currentUser = useCurrentUser();
   const markOnboardingSeen = useAuthStore(s => s.markOnboardingSeen);
+  const updateChildLocally = useAuthStore(s => s.updateChildLocally);
   const getProgress = useProgressStore(s => s.getProgress);
   const examDate = useSettingsStore(s => s.examDate);
   const setExamDate = useSettingsStore(s => s.setExamDate);
+  const { weekConfig, isFastTrack: isOnFastTrack, totalWeeks } = useWeekConfig();
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [showReferral, setShowReferral] = useState(false);
   const [showReview, setShowReview] = useState(false);
@@ -70,6 +72,28 @@ export function HomePage() {
     }
   }, [currentUser, getProgress]);
 
+  // Sync exam date from child profile into global settings store (one-way, on child change)
+  useEffect(() => {
+    if (currentUser?.examDate && currentUser.examDate !== examDate) {
+      setExamDate(currentUser.examDate);
+    }
+  }, [currentUser?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist exam date to Supabase when user sets it via the countdown/picker
+  const handleSetExamDate = async (date: string | null) => {
+    setExamDate(date);
+    if (!currentUser) return;
+    updateChildLocally(currentUser.id, { examDate: date ?? undefined });
+    try {
+      await supabase
+        .from('child_profiles')
+        .update({ exam_date: date })
+        .eq('id', currentUser.id);
+    } catch {
+      // silent fail — local state is already updated
+    }
+  };
+
   if (!currentUser) return null;
 
   if (!currentUser.hasSeenOnboarding) {
@@ -82,7 +106,6 @@ export function HomePage() {
     );
   }
   const progress = getProgress(currentUser.id);
-  const weekConfig = programmeWeeks[Math.min(progress.currentWeek - 1, 11)];
   const todayStr = new Date().toISOString().split('T')[0];
   const todaySession = progress.sessions.find(s => s.date === todayStr);
   const hasPractisedToday = !!todaySession?.completed;
@@ -206,7 +229,7 @@ export function HomePage() {
             {/* Week & Streak badges */}
             <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
               <span className="bg-white/25 text-white px-2.5 py-0.5 rounded-full text-xs font-display font-bold">
-                Week {progress.currentWeek} · {PHASE_LABELS[weekConfig.phase]}
+                {isOnFastTrack && '⚡ '}Week {progress.currentWeek}{isOnFastTrack ? ` of ${totalWeeks}` : ''} · {PHASE_LABELS[weekConfig.phase]}
               </span>
               {progress.streak.currentStreak > 0 && (
                 <span className="bg-white/25 text-white px-2.5 py-0.5 rounded-full text-xs font-display font-bold">
@@ -310,9 +333,9 @@ export function HomePage() {
         className="relative z-10"
       >
         {examDate ? (
-          <ExamCountdown examDate={examDate} childName={currentUser.name} onChangeDate={setExamDate} />
+          <ExamCountdown examDate={examDate} childName={currentUser.name} onChangeDate={handleSetExamDate} />
         ) : (
-          <ExamDatePicker onSet={setExamDate} />
+          <ExamDatePicker onSet={handleSetExamDate} />
         )}
       </motion.div>
 
@@ -325,10 +348,10 @@ export function HomePage() {
       >
         <div className="text-center mb-3">
           <p className="font-display font-bold text-sm text-white">
-            🗺️ Your 12-Week Journey
+            {isOnFastTrack ? `⚡ Fast Track — ${totalWeeks}-Week Programme` : '🗺️ Your 12-Week Journey'}
           </p>
           <p className="font-display font-bold text-xs text-white/80">
-            Week {progress.currentWeek} of 12
+            Week {progress.currentWeek} of {totalWeeks}
           </p>
         </div>
 
@@ -436,7 +459,7 @@ export function HomePage() {
       </motion.div>
 
       {/* ========== CERTIFICATE CARD (programme complete) ========== */}
-      {progress.currentWeek > 12 && (
+      {progress.currentWeek > totalWeeks && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

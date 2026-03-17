@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const INCLUDES = [
   ['📚', '12-week CLEAR Method programme'],
+  ['⚡', 'Fast Track mode — any timeline'],
   ['👨‍👩‍👧‍👦', 'Multi-child — whole family'],
   ['🧘', 'Breathing & calm exercises'],
   ['📊', 'Parent progress dashboard'],

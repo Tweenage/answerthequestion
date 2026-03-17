@@ -5,7 +5,7 @@ import { useProgressStore } from '../stores/useProgressStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { SUBJECT_LABELS } from '../types/question';
 import type { Subject } from '../types/question';
-import { programmeWeeks } from '../data/programme/weeks';
+import { useWeekConfig } from '../hooks/useWeekConfig';
 import { PHASE_LABELS } from '../types/programme';
 import { analyzeWeeklyProgress } from '../utils/dashboardAnalytics';
 
@@ -21,9 +21,10 @@ export function DashboardPage() {
   const getProgress = useProgressStore(s => s.getProgress);
   const navigate = useNavigate();
 
+  const { weekConfig, isFastTrack: isOnFastTrack, totalWeeks } = useWeekConfig();
+
   if (!currentUser) return null;
   const progress = getProgress(currentUser.id);
-  const weekConfig = programmeWeeks[Math.min(progress.currentWeek - 1, 11)];
 
   const analysis = analyzeWeeklyProgress(progress.sessions, progress.subjectScores, progress.streak);
 
@@ -37,7 +38,8 @@ export function DashboardPage() {
         <div>
           <h2 className="font-display text-xl font-bold text-white">{currentUser.name}'s Progress</h2>
           <p className="text-white/80 text-xs font-display">
-            Week {progress.currentWeek} · {PHASE_LABELS[weekConfig.phase]}
+            {isOnFastTrack && <span className="text-amber-300">⚡ Fast Track · </span>}
+            Week {progress.currentWeek}{isOnFastTrack ? ` of ${totalWeeks}` : ''} · {PHASE_LABELS[weekConfig.phase]}
           </p>
         </div>
       </div>

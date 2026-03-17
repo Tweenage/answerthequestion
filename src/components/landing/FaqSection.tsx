@@ -33,6 +33,11 @@ const FAQ_ITEMS = [
       'Yes! One purchase covers your whole family. You can add multiple child profiles, and each child gets their own independent 12-week journey with separate progress tracking, badges, and a personalised certificate.',
   },
   {
+    question: "What if my child's exam is only a few weeks away?",
+    answer:
+      "AnswerTheQuestion! includes Fast Track mode for exactly this situation. Enter your child\u2019s exam date and the app automatically adapts the programme to fit your timeline \u2014 compressing the progression from gentle start to exam pace into the weeks you have left. Whether you have 2 weeks or 10, the CLEAR Method can still make a real difference.",
+  },
+  {
     question: 'Is this a subscription?',
     answer:
       'No. It\u2019s a one-time payment of \u00a319.99 for lifetime access to the full 12-week programme \u2014 for the whole family. No recurring charges, no hidden fees.',
