@@ -10,7 +10,7 @@ export default defineConfig({
   },
   esbuild: {
     drop: ['debugger'],
-    pure: ['console.log', 'console.debug', 'console.warn'],
+    pure: ['console.log', 'console.debug', 'console.warn', 'console.error'],
   },
   build: {
     rollupOptions: {
