@@ -171,7 +171,7 @@ export function QuestionScreen({
           <span className={`px-3 py-1 rounded-full ${dyslexiaMode ? 'text-sm' : 'text-xs'} font-display font-bold ${subjectColours[question.subject]}`}>
             {SUBJECT_LABELS[question.subject]}
           </span>
-          <span className={`text-sm ${dyslexiaMode ? 'text-gray-600' : 'text-gray-400'} font-display`} aria-label={`Question ${questionNumber} of ${totalQuestions}`}>
+          <span className={`text-base ${dyslexiaMode ? 'text-gray-600' : 'text-white'} font-display font-bold drop-shadow`} aria-label={`Question ${questionNumber} of ${totalQuestions}`}>
             {questionNumber}/{totalQuestions}
           </span>
           <span className={`px-2 py-0.5 rounded-full ${dyslexiaMode ? 'text-sm' : 'text-xs'} font-display font-bold bg-white/80 ${dyslexiaMode ? 'text-gray-700' : 'text-gray-500'} border border-gray-200`}>

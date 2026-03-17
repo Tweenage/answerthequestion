@@ -60,6 +60,16 @@ const slides: OnboardingSlide[] = [
     ],
   },
   {
+    hootMood: 'teaching',
+    title: '👨‍👩‍👧 A Note for Parents',
+    body: "For the best start, sit with your child for the tutorial, the first practice question, and the first full session. After that, they can fly solo! I'll guide them every step of the way.",
+    tips: [
+      { emoji: '📖', text: 'Read through these slides together' },
+      { emoji: '🧪', text: 'Do the tutorial side by side so you can explain each step' },
+      { emoji: '⭐', text: 'Stay for Day 1 — after that they\'re ready to go it alone!' },
+    ],
+  },
+  {
     hootMood: 'celebrating',
     title: "Let's Start!",
     body: "Your first session is ready. This is about building the habits so you can identify the best answer based on everything else you're learning. I'll be right here helping you!",
