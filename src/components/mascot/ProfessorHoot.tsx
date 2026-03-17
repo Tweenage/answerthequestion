@@ -85,13 +85,13 @@ export function ProfessorHoot({
         <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative inline-block bg-white/90 rounded-2xl px-4 py-2.5 border-2 border-purple-200/40 shadow-sm max-w-sm"
+          className="relative inline-block bg-white/90 rounded-2xl px-5 py-2.5 border-2 border-purple-200/40 shadow-sm max-w-md w-full"
         >
           {/* Speech bubble tail (pointing up) */}
           <div className="absolute left-1/2 -translate-x-1/2 -top-[9px] w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-b-[9px] border-b-purple-200/40" />
           <div className="absolute left-1/2 -translate-x-1/2 -top-[7px] w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[8px] border-b-white/90" />
 
-          <p className="font-display text-sm text-gray-700 leading-relaxed text-center">{message}</p>
+          <p className="font-display text-base text-gray-700 leading-relaxed text-center">{message}</p>
         </motion.div>
       )}
     </div>
