@@ -70,6 +70,16 @@ const slides: OnboardingSlide[] = [
     ],
   },
   {
+    hootMood: 'thinking',
+    title: '⏱️ Your Time Challenge',
+    body: "On Day 1 you get 2 minutes per question — that's 20 minutes for 10 questions. By Week 12 you'll answer each question in under a minute — just like a real exam! The timer gets shorter each week as you build confidence. That's not scary — that's how you get brilliant!",
+    tips: [
+      { emoji: '🌱', text: 'Week 1: 20 minutes total — take all the time you need' },
+      { emoji: '🔥', text: 'Week 6: 15 minutes — technique is becoming a habit' },
+      { emoji: '🎯', text: 'Week 12: 9 minutes — exam-ready speed!' },
+    ],
+  },
+  {
     hootMood: 'celebrating',
     title: "Let's Start!",
     body: "Your first session is ready. This is about building the habits so you can identify the best answer based on everything else you're learning. I'll be right here helping you!",

@@ -64,6 +64,41 @@ const phaseDurations: Record<BreathPhase, number> = {
 
 const phaseOrder: BreathPhase[] = ['inhale', 'holdIn', 'exhale', 'holdOut'];
 
+// Phase-specific colour personality — warm on expand, cool on exhale
+const phaseColours: Record<BreathPhase, {
+  circleGradient: string;
+  glowColour: string;
+  labelColour: string;
+}> = {
+  inhale: {
+    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(251,207,232,0.95) 0%, rgba(236,72,153,0.75) 45%, rgba(168,85,247,0.55) 100%)',
+    glowColour: 'rgba(236,72,153,0.55)',
+    labelColour: 'text-pink-200',
+  },
+  holdIn: {
+    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(253,230,138,0.95) 0%, rgba(251,146,60,0.75) 45%, rgba(239,68,68,0.45) 100%)',
+    glowColour: 'rgba(251,146,60,0.5)',
+    labelColour: 'text-amber-200',
+  },
+  exhale: {
+    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(196,181,253,0.95) 0%, rgba(139,92,246,0.75) 45%, rgba(59,130,246,0.5) 100%)',
+    glowColour: 'rgba(139,92,246,0.5)',
+    labelColour: 'text-violet-200',
+  },
+  holdOut: {
+    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(147,197,253,0.9) 0%, rgba(59,130,246,0.65) 45%, rgba(37,99,235,0.45) 100%)',
+    glowColour: 'rgba(59,130,246,0.4)',
+    labelColour: 'text-blue-200',
+  },
+};
+
+const phaseScale: Record<BreathPhase, number> = {
+  inhale: 1.6,
+  holdIn: 1.6,
+  exhale: 1.0,
+  holdOut: 1.0,
+};
+
 function getDailyAffirmation(): string {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 0);
@@ -72,26 +107,18 @@ function getDailyAffirmation(): string {
   return affirmations[dayOfYear % affirmations.length];
 }
 
-// Circle scale values for each phase
-const phaseScale: Record<BreathPhase, number> = {
-  inhale: 1.6,
-  holdIn: 1.6,
-  exhale: 1.0,
-  holdOut: 1.0,
-};
-
 export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
   const [phase, setPhase] = useState<BreathPhase>('inhale');
   const [cycle, setCycle] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [started, setStarted] = useState(false);
   const affirmation = getDailyAffirmation();
+  const colours = phaseColours[phase];
 
   const advancePhase = useCallback(() => {
     setPhase(prev => {
       const currentIdx = phaseOrder.indexOf(prev);
       if (currentIdx === phaseOrder.length - 1) {
-        // End of a cycle
         setCycle(prevCycle => {
           const nextCycle = prevCycle + 1;
           if (nextCycle >= TOTAL_CYCLES) {
@@ -106,141 +133,210 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
     });
   }, []);
 
-  // Start the breathing after a brief delay
   useEffect(() => {
     const timer = setTimeout(() => setStarted(true), 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Phase timer
   useEffect(() => {
     if (!started || isComplete) return;
-
     const duration = phaseDurations[phase] * 1000;
     const timer = setTimeout(advancePhase, duration);
     return () => clearTimeout(timer);
   }, [phase, started, isComplete, advancePhase, cycle]);
 
+  const circleDuration = phase === 'inhale' || phase === 'exhale' ? phaseDurations[phase] : 0.4;
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4338ca 50%, #6366f1 75%, #7c3aed 100%)',
+        background: 'linear-gradient(160deg, #1e1b4b 0%, #4c1d95 18%, #7c3aed 36%, #c026d3 56%, #db2777 76%, #be123c 100%)',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Decorative background circles */}
+      {/* Background decorative orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-white/5 blur-2xl" />
-        <div className="absolute -bottom-32 -right-20 w-80 h-80 rounded-full bg-purple-400/10 blur-3xl" />
-        <div className="absolute top-1/4 right-10 w-40 h-40 rounded-full bg-indigo-300/10 blur-2xl" />
+        <motion.div
+          className="absolute -top-28 -left-28 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.4) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute -bottom-36 -right-24 w-96 h-96 rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.35) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.25, 1], opacity: [0.45, 0.85, 0.45] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
+        <motion.div
+          className="absolute top-1/3 -right-20 w-60 h-60 rounded-full blur-2xl"
+          style={{ background: 'radial-gradient(circle, rgba(244,114,182,0.3) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        />
+        <motion.div
+          className="absolute -top-10 right-6 w-48 h-48 rounded-full blur-2xl"
+          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.3, 1] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 3.5 }}
+        />
+        {/* Twinkling star dots */}
+        {[
+          { l: '12%', t: '18%', d: 2.5 },
+          { l: '28%', t: '55%', d: 4.1 },
+          { l: '70%', t: '22%', d: 1.8 },
+          { l: '85%', t: '60%', d: 3.3 },
+          { l: '45%', t: '88%', d: 5.0 },
+          { l: '60%', t: '10%', d: 2.0 },
+        ].map((dot, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1.5 h-1.5 rounded-full bg-white"
+            style={{ left: dot.l, top: dot.t }}
+            animate={{ opacity: [0, 0.8, 0], scale: [0.5, 1.5, 0.5] }}
+            transition={{ duration: dot.d + 1.5, repeat: Infinity, delay: i * 0.7, ease: 'easeInOut' }}
+          />
+        ))}
       </div>
 
-      {/* Skip button */}
+      {/* Skip */}
       <button
         onClick={onComplete}
-        className="absolute top-6 right-6 text-white/40 hover:text-white/70 text-sm font-display transition-colors z-10"
+        className="absolute top-6 right-6 text-white/35 hover:text-white/70 text-sm font-display transition-colors z-10"
       >
         Skip
       </button>
 
       {/* Affirmation */}
       <motion.div
-        className="relative z-10 text-center px-8 mb-12 max-w-md"
+        className="relative z-10 text-center px-8 mb-10 max-w-md"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
-        <p className="text-white/90 text-xl sm:text-2xl font-display font-bold leading-relaxed italic">
-          "{affirmation}"
+        <p className="text-white/90 text-xl sm:text-2xl font-display font-bold leading-relaxed">
+          ✨ <em>"{affirmation}"</em>
         </p>
       </motion.div>
 
       {/* Breathing circle */}
       <div className="relative z-10 flex flex-col items-center">
-        <div className="relative w-40 h-40 flex items-center justify-center">
-          {/* Outer glow ring */}
+        <div className="relative w-44 h-44 flex items-center justify-center">
+
+          {/* Outermost ambient pulse ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(165,180,252,0.3) 0%, transparent 70%)',
+              background: `radial-gradient(circle, ${colours.glowColour} 0%, transparent 70%)`,
             }}
             animate={{
-              scale: started && !isComplete ? phaseScale[phase] : 1,
+              scale: started && !isComplete ? phaseScale[phase] * 1.3 : 1,
+              opacity: [0.5, 0.9, 0.5],
             }}
             transition={{
-              duration: phase === 'inhale' || phase === 'exhale'
-                ? phaseDurations[phase]
-                : 0.3,
-              ease: 'easeInOut',
+              scale: { duration: circleDuration, ease: 'easeInOut' },
+              opacity: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
             }}
           />
 
-          {/* Main breathing circle */}
+          {/* Soft glow halo */}
           <motion.div
-            className="w-32 h-32 rounded-full flex items-center justify-center"
+            className="absolute inset-3 rounded-full"
             style={{
-              background: 'radial-gradient(circle at 30% 30%, rgba(199,210,254,0.8) 0%, rgba(129,140,248,0.6) 50%, rgba(99,102,241,0.4) 100%)',
-              boxShadow: '0 0 60px rgba(129,140,248,0.4), inset 0 0 30px rgba(255,255,255,0.2)',
+              boxShadow: `0 0 60px ${colours.glowColour}, 0 0 120px ${colours.glowColour}`,
             }}
-            animate={{
-              scale: started && !isComplete ? phaseScale[phase] : 1,
-            }}
-            transition={{
-              duration: phase === 'inhale' || phase === 'exhale'
-                ? phaseDurations[phase]
-                : 0.3,
-              ease: 'easeInOut',
-            }}
+            animate={{ scale: started && !isComplete ? phaseScale[phase] : 1 }}
+            transition={{ duration: circleDuration, ease: 'easeInOut' }}
           />
+
+          {/* Main circle */}
+          <motion.div
+            className="relative w-32 h-32 rounded-full overflow-hidden"
+            style={{
+              background: colours.circleGradient,
+              boxShadow: `0 0 60px ${colours.glowColour}, 0 0 120px ${colours.glowColour}, inset 0 0 30px rgba(255,255,255,0.2)`,
+            }}
+            animate={{ scale: started && !isComplete ? phaseScale[phase] : 1 }}
+            transition={{ duration: circleDuration, ease: 'easeInOut' }}
+          >
+            {/* Shimmer overlay */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 55%, rgba(255,255,255,0.1) 100%)',
+              }}
+              animate={{ opacity: [0.4, 0.85, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </motion.div>
         </div>
 
         {/* Phase label */}
         <AnimatePresence mode="wait">
           {started && !isComplete && (
-            <motion.p
+            <motion.div
               key={phase + cycle}
-              className="mt-8 text-white/80 text-lg font-display font-medium"
-              initial={{ opacity: 0, y: 5 }}
+              className="mt-8 text-center"
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35 }}
             >
-              {phaseLabels[phase]}
-            </motion.p>
+              <p className={`text-2xl font-display font-bold tracking-wide ${colours.labelColour}`}>
+                {phaseLabels[phase]}
+              </p>
+              <p className="text-white/35 text-xs font-display mt-1">
+                {phaseDurations[phase]}s
+              </p>
+            </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Cycle indicator */}
+        {/* Cycle progress pills */}
         {started && !isComplete && (
           <div className="flex gap-2 mt-6">
             {Array.from({ length: TOTAL_CYCLES }).map((_, i) => (
-              <div
+              <motion.div
                 key={i}
-                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  i < cycle ? 'bg-white/80' : i === cycle ? 'bg-white/50' : 'bg-white/20'
-                }`}
+                className="rounded-full transition-all duration-500"
+                style={{
+                  width: i === cycle ? 28 : 8,
+                  height: 8,
+                  background: i < cycle
+                    ? 'rgba(255,255,255,0.85)'
+                    : i === cycle
+                    ? 'rgba(255,255,255,0.55)'
+                    : 'rgba(255,255,255,0.15)',
+                }}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Ready button */}
+      {/* Ready state */}
       <AnimatePresence>
         {isComplete && (
           <motion.div
-            className="relative z-10 mt-12"
+            className="relative z-10 mt-12 flex flex-col items-center gap-3"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5, type: 'spring', bounce: 0.4 }}
           >
+            <p className="text-white/75 font-display text-base font-semibold tracking-wide">
+              You're calm. You're focused. 🌟
+            </p>
             <button
               onClick={onComplete}
-              className="px-10 py-4 bg-white text-indigo-700 font-display font-bold text-xl rounded-full shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200"
+              className="px-10 py-4 font-display font-bold text-xl rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%)',
+                boxShadow: '0 0 40px rgba(236,72,153,0.55), 0 10px 40px rgba(0,0,0,0.3)',
+              }}
             >
               I'm Ready! 🚀
             </button>
@@ -252,7 +348,7 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
       <AnimatePresence>
         {!started && (
           <motion.p
-            className="relative z-10 mt-8 text-white/60 text-sm font-display"
+            className="relative z-10 mt-8 text-white/45 text-sm font-display"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
