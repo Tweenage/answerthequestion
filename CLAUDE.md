@@ -268,7 +268,7 @@ Four Zustand stores, all using `persist` middleware (localStorage):
 ## Database (Supabase)
 
 ### Tables (inferred from code):
-- **`child_profiles`**: `id`, `parent_id`, `name`, `avatar` (JSON), `programme_start_date`, `has_seen_onboarding`, `has_seen_tutorial`, `has_paid`, `referral_code`, `referred_by`, `created_at`
+- **`child_profiles`**: `id`, `parent_id`, `name`, `avatar` (JSON), `programme_start_date`, `has_seen_onboarding`, `has_seen_tutorial`, `has_paid`, `referral_code`, `referred_by`, `exam_date` (TEXT, nullable), `created_at`
 - **`user_progress`**: `child_id` (PK), `current_week`, `streak` (JSON), `total_questions_answered`, `total_correct`, `average_technique_score`, `subject_scores` (JSON), `level`, `xp`, `xp_to_next_level`, `mistake_queue` (JSON), `daily_challenge` (JSON), `mock_exams` (JSON), `updated_at`
 - **`daily_sessions`**: `id`, `child_id`, `date`, `average_technique_score`, `average_correctness`, `total_time_ms`, `completed`, `created_at`
 - **`question_results`**: `session_id`, `child_id`, `question_id`, `subject`, `correct`, `technique_score` (JSON), `reading_time_ms`, `total_time_ms`, `highlighted_word_indices`, `eliminated_option_indices`, `selected_option_index`, `timestamp`
@@ -616,3 +616,11 @@ Required secrets (set via `supabase secrets set`):
 31. **Parent onboarding note placement**: The "A Note for Parents" slide must appear as slide 2 (index 1) in `OnboardingFlow.tsx`, immediately after Welcome, before any CLEAR Method content. This ensures parents see the co-watching guidance before their child has advanced. If the note appears late (e.g. after the CLEAR Method slides), parents miss it — the child will have already clicked through before the parent reads it.
 
 32. **XP formula rationale**: `calculateXpFromResult` uses `techniquePercent × 0.8 + 20 (correct)` so technique drives 80 XP and correctness adds 20. Previously `× 0.5 + 30` gave too much weight to answer correctness (37.5% of max XP), creating an incentive to guess quickly rather than use the method. Now technique is 80% of maximum XP. The total maximum is unchanged at 100 XP (80 + 20).
+
+33. **Fast Track mode**: When a child has fewer than 12 full weeks until their exam date, the app automatically uses Fast Track mode. Logic in `src/data/programme/fast-track.ts`: `isFastTrack()` checks whether `getWeeksUntilExam()` < 12; `getFastTrackWeekConfig()` proportionally maps `currentWeek` → `programmeWeeks[0..11]` using `Math.round(progress * 11)`. Week 1 always maps to standard week 1 (gentle start), last week always maps to standard week 12 (exam pace). Special case: 1-week fast track maps to week 7 config (85s, medium, difficulty 2) rather than jump straight to exam pace on day 1.
+
+34. **`useWeekConfig` hook**: Single integration point — replaces ALL inline `programmeWeeks[Math.min(currentWeek-1, 11)]` lookups. Returns `{ weekConfig, isFastTrack, totalWeeks, currentWeek }`. Used in PracticePage, MockExamPage, DailyChallengePage, DashboardPage, HomePage. Do NOT add new inline `programmeWeeks[...]` lookups — always use this hook.
+
+35. **Exam date is per-child, not global**: `exam_date` lives in `child_profiles` table (TEXT, nullable). Exposed as `examDate?: string | null` on the `User` interface. `useWeekConfig` reads it via `currentUser?.examDate`. `HomePage.handleSetExamDate` persists changes to Supabase and local auth store simultaneously. The global `useSettingsStore.examDate` is kept in sync via a `useEffect` in `HomePage` that copies `currentUser.examDate` into the store on child load (so `ExamCountdown` can use it). **Supabase migration required**: `ALTER TABLE child_profiles ADD COLUMN IF NOT EXISTS exam_date TEXT;` — must be run manually before deploying.
+
+36. **Mock exam unlock in Fast Track**: `MockExamPage` unlocks at `Math.ceil(totalWeeks / 2)`. Standard: week 6 of 12. Fast Track 3-week: week 2. Fast Track 6-week: week 3. This ensures the unlock is proportional — children aren't locked out of mock exams for their entire fast-track programme.
