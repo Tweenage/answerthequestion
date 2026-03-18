@@ -40,15 +40,17 @@ export function HomePage() {
   const hasCribSheet = localStorage.getItem('atq-crib-sheet-purchased') === 'true';
   const [downloadingCribSheet, setDownloadingCribSheet] = useState(false);
 
-  const handleDownloadCribSheet = () => {
+  const handleDownloadCribSheet = async () => {
     setDownloadingCribSheet(true);
     try {
-      const { data } = supabase.storage
+      // Uses a short-lived signed URL so the assets bucket can remain private.
+      // Requires storage policy: authenticated users can read crib-sheet/* objects.
+      const { data, error } = await supabase.storage
         .from('assets')
-        .getPublicUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', {
-          download: 'CLEAR-Method-Crib-Sheet.pdf',
-        });
-      window.open(data.publicUrl, '_blank');
+        .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 120); // 2 min expiry
+      if (!error && data?.signedUrl) {
+        window.open(data.signedUrl, '_blank');
+      }
     } catch {
       // silent fail
     } finally {

@@ -192,23 +192,32 @@ async function sendPaymentConfirmationEmail(customerEmail: string): Promise<void
   }
 }
 
-async function sendCribSheetEmail(customerEmail: string): Promise<void> {
-  // Fetch the PDF from Supabase Storage
-  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-  const pdfStorageUrl = `${supabaseUrl}/storage/v1/object/public/assets/crib-sheet/CLEAR-Method-Crib-Sheet.pdf`;
-
+async function sendCribSheetEmail(
+  customerEmail: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabaseAdmin: any,
+): Promise<void> {
+  // Fetch the PDF via a short-lived signed URL so the bucket can be kept private
   let pdfAttachment: { filename: string; content: Uint8Array; contentType: string } | undefined;
   try {
-    const pdfResponse = await fetch(pdfStorageUrl);
-    if (pdfResponse.ok) {
-      const pdfBuffer = await pdfResponse.arrayBuffer();
-      pdfAttachment = {
-        filename: 'CLEAR-Method-Crib-Sheet.pdf',
-        content: new Uint8Array(pdfBuffer),
-        contentType: 'application/pdf',
-      };
+    const { data: signedData, error: signedError } = await supabaseAdmin.storage
+      .from('assets')
+      .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 60); // 60-second expiry
+
+    if (signedError || !signedData?.signedUrl) {
+      console.error('Failed to create signed URL for crib sheet:', signedError);
     } else {
-      console.error(`Failed to fetch crib sheet PDF (${pdfResponse.status})`);
+      const pdfResponse = await fetch(signedData.signedUrl);
+      if (pdfResponse.ok) {
+        const pdfBuffer = await pdfResponse.arrayBuffer();
+        pdfAttachment = {
+          filename: 'CLEAR-Method-Crib-Sheet.pdf',
+          content: new Uint8Array(pdfBuffer),
+          contentType: 'application/pdf',
+        };
+      } else {
+        console.error(`Failed to fetch crib sheet PDF (${pdfResponse.status})`);
+      }
     }
   } catch (err) {
     console.error('Error fetching crib sheet PDF:', err);
@@ -343,7 +352,7 @@ serve(async (req) => {
           try {
             await sendPaymentConfirmationEmail(customerEmail);
             if (includeCribSheet) {
-              await sendCribSheetEmail(customerEmail);
+              await sendCribSheetEmail(customerEmail, supabase);
             }
           } catch (emailErr) {
             console.error('Email sending failed (non-critical):', emailErr);
