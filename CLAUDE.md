@@ -1,22 +1,27 @@
-# AnswerTheQuestion!
-
-> 11+ exam technique trainer for children, built by a parent (Rebecca Everton).
-> Live at **https://answerthequestion.co.uk**
+# CLAUDE.md — AnswerTheQuestion (ATQ)
+*Last updated: 25 March 2026*
 
 ---
 
-## What This Project Does
+## What This Project Is
 
-AnswerTheQuestion! (ATQ!) teaches children the **CLEAR Method** for answering 11+ exam questions. Rather than testing knowledge, it trains *exam technique* — the habits that prevent avoidable mistakes under pressure. Children practise 10 questions daily across English, Maths, and Reasoning over a structured 12-week programme with decreasing scaffolding. A mascot called **Professor Hoot** (an owl) guides them throughout.
+AnswerTheQuestion teaches children to answer exam questions correctly — not by knowing more, but by reading more carefully. The entire product is built around one insight: most children lose marks not because they don't know the answer, but because they don't read the question properly.
 
-The CLEAR Method:
-- **C** — Calm: Breathe, then begin (pre-session breathing exercise)
-- **L** — Look: Read every word (forced double-read before seeing answers)
-- **E** — Eliminate: Cross out wrong answers (must eliminate all wrong before selecting)
-- **A** — Answer: Choose with confidence
-- **R** — Review: Check before moving on
+The product is a 12-week web app for children preparing for the 11+ (UK grammar school entrance exam). It is in beta as of March 2026.
 
-The app scores *technique* (did you read twice? highlight key words? eliminate wrong answers?) separately from correctness, and both are tracked over time.
+---
+
+## The CLEAR Method — The Heart of Everything
+
+Every question, every scaffold, every UI interaction must reinforce CLEAR. This is non-negotiable.
+
+**C — Calm:** Take a breath before you start
+**L — Look:** Read the whole question before looking at any answers
+**E — Eliminate:** Cross out answers that are obviously wrong
+**A — Answer:** What is the question ACTUALLY asking you?
+**R — Review:** Read your answer back against the question before moving on
+
+**Critical design rule:** Questions must require deduction — never give away the answer or method in the question text. Trap answers are essential. The product exists to teach children to slow down and avoid them. If a question can be answered by skim-reading, it fails.
 
 ---
 
@@ -24,248 +29,114 @@ The app scores *technique* (did you read twice? highlight key words? eliminate w
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 19, TypeScript 5.9, Vite 7 |
-| Styling | Tailwind CSS 4 (via `@tailwindcss/vite` plugin, configured in `src/index.css` with `@theme`) |
-| State | Zustand 5 with `persist` middleware (localStorage) |
-| Routing | React Router 7 (imported as `react-router`) |
-| Animation | Framer Motion 12 |
-| Icons | Lucide React |
-| Auth + DB | Supabase (PostgreSQL + Auth + Edge Functions + Storage) |
-| Payments | Stripe Checkout (one-time, server-side session creation) |
-| Email | Zoho SMTP via Deno `denomailer` in Edge Functions |
-| Analytics | Vercel Analytics |
-| Hosting | Vercel (SPA with rewrites in `vercel.json`) |
-| PDF gen | jsPDF (for certificates) |
-| IDs | nanoid |
-| PWA | Service worker (`public/sw.js`, `public/register-sw.js`, `public/manifest.json`) |
+| Frontend | React 19 + Vite 7 + TypeScript |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion |
+| State | Zustand with persist middleware |
+| Database | Supabase (project ID: ganlncdbebtnstgcewsd) |
+| Payments | Stripe (£19.99 one-time, £4.99 bump) |
+| Email | Resend |
+| Deployment | Vercel |
+| Fonts | Nunito (display), Inter (body) |
+| Package manager | npm |
+| Node | v22 (nvm) |
 
-**No Tailwind config file** — Tailwind 4 uses CSS-based configuration. Custom theme tokens (colours, fonts, spacing, border-radii) are defined in `src/index.css` under `@theme`.
-
----
-
-## Architecture Overview
-
-```
-Single-page React app (Vite)
-    |
-    |-- Supabase Auth (email/password, magic link)
-    |-- Supabase PostgreSQL (child_profiles, user_progress, daily_sessions, question_results, earned_badges, payments)
-    |-- Supabase Edge Functions (Deno) for server-side logic
-    |-- Stripe Checkout for payments
-    |-- Vercel for hosting
-```
-
-**Parent/child model**: A parent creates a Supabase account (email + password). Under that account they create one or more **child profiles** (`child_profiles` table). Each child has their own progress, badges, and settings. The parent selects which child is "playing" via the ChildPickerPage.
-
-**Offline-first with cloud sync**: All progress is stored in localStorage (Zustand `persist`) and synced to Supabase in the background. On load, the app fetches from Supabase and merges (whichever has more data wins). Failed syncs show a toast but don't block the user.
-
-**Question flow is fully client-side**: Questions are bundled as static TypeScript arrays (~13,000 lines across 14 files). No API calls during practice. The `useQuestionFlow` hook manages a state machine: `READING_FIRST` -> `READING_SECOND` -> `NUMBER_EXTRACTION` (optional) -> `HIGHLIGHTING` -> `SHOWING_ANSWERS` -> `ELIMINATING` -> `SELECTING` -> `FEEDBACK` -> `COMPLETE`.
+**GitHub:** imperial-design/readthequestion
+**Domain:** answerthequestion.co.uk
+**Vercel:** readthequestion.vercel.app
 
 ---
 
-## Key Files & Folders
+## Design Language
 
-```
-/
-├── src/
-│   ├── App.tsx                      # Router, route guards, lazy loading
-│   ├── main.tsx                     # React entry point
-│   ├── index.css                    # Tailwind 4 theme config (colours, fonts, radii)
-│   ├── pages/                       # 23 page components (see below)
-│   ├── components/
-│   │   ├── layout/                  # AppShell, Header, BottomNav
-│   │   ├── question/                # QuestionScreen, HighlightableText, AnswerOptions, StepBanner, QuestionFeedback
-│   │   ├── mascot/                  # ProfessorHoot.tsx
-│   │   ├── session/                 # PreSessionBreathing, SessionCompleteScreen
-│   │   ├── onboarding/              # OnboardingFlow.tsx
-│   │   ├── tutorial/                # GuidedTutorial.tsx (interactive CLEAR walkthrough)
-│   │   ├── celebrations/            # ConfettiExplosion, XpPopup, MascotMessage
-│   │   ├── landing/                 # 14 section components for the marketing page
-│   │   ├── techniques/              # ChildTechniquesView, ParentTechniquesView, etc.
-│   │   ├── home/                    # DailyChallengeCard, MockExamCard, ExamCountdown, SubjectFocusPicker
-│   │   ├── settings/                # SoundToggle
-│   │   ├── ErrorBoundary.tsx
-│   │   ├── SyncToast.tsx            # Global toast for sync status
-│   │   ├── BumpUpsell.tsx           # Crib sheet upsell
-│   │   ├── FeedbackButton.tsx       # Floating feedback button
-│   │   ├── ReferralModal.tsx
-│   │   └── ReviewPrompt.tsx         # App Store review prompt
-│   ├── stores/
-│   │   ├── useAuthStore.ts          # Parent session, child profiles, child selection
-│   │   ├── useProgressStore.ts      # All progress data, Supabase sync
-│   │   ├── useDyslexiaStore.ts      # Per-child dyslexia mode toggle
-│   │   └── useSettingsStore.ts      # Sound, exam date, techniques view mode
-│   ├── hooks/
-│   │   ├── useSupabaseAuth.ts       # Supabase auth listener, claim-payment on sign-in
-│   │   ├── useCurrentUser.ts        # Reactive child profile selector
-│   │   ├── usePaywall.ts            # Checks hasPaid flag (no free tier)
-│   │   ├── useDailyQuestions.ts     # Selects questions by week/difficulty/subject
-│   │   ├── useQuestionFlow.ts       # State machine for the question answering flow
-│   │   ├── useDyslexiaMode.ts       # Convenience wrapper for dyslexia store
-│   │   ├── useSoundEffects.ts
-│   │   └── useTimer.ts
-│   ├── data/
-│   │   ├── questions/               # 14 .ts files, ~13,000 lines total
-│   │   │   ├── index.ts             # Aggregates all into `allQuestions: Question[]`
-│   │   │   ├── english.ts, new-english.ts, batch2-english.ts, batch3-english.ts
-│   │   │   ├── maths.ts, new-maths.ts, batch2-maths.ts, batch3-maths.ts
-│   │   │   ├── verbal-reasoning.ts, new-verbal-reasoning.ts, batch2-verbal-reasoning.ts
-│   │   │   └── non-verbal-reasoning.ts, new-non-verbal-reasoning.ts, batch2-non-verbal-reasoning.ts
-│   │   ├── programme/weeks.ts       # 12 WeekConfig objects (phases, difficulty, timers, distribution)
-│   │   ├── badges.ts                # 18 badge definitions
-│   │   ├── techniques.ts            # CORE_STEPS, SUBJECT_TECHNIQUES, TRICK_TYPES, research data
-│   │   ├── visualisation-scripts.ts # Guided exam-day visualisation (text + audio)
-│   │   ├── tutorialQuestion.ts      # Single hand-crafted tutorial question + step scripts
-│   │   └── navItems.ts              # Bottom nav configuration (4 items)
-│   ├── types/
-│   │   ├── question.ts              # Subject ('english' | 'maths' | 'reasoning'), Difficulty, Question
-│   │   ├── user.ts                  # User, AvatarConfig
-│   │   ├── progress.ts              # UserProgress, DailySession, QuestionResult, StreakData, etc.
-│   │   ├── badge.ts                 # BadgeDefinition, EarnedBadge
-│   │   ├── technique.ts             # TechniqueScore
-│   │   └── programme.ts             # WeekConfig, Phase, ScaffoldingLevel
-│   ├── utils/
-│   │   ├── scoring.ts               # calculateTechniqueScore, calculateXpFromResult
-│   │   ├── numberWords.ts           # Detects number words in question tokens
-│   │   └── dashboardAnalytics.ts
-│   └── lib/
-│       └── supabase.ts              # Supabase client init (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
-├── supabase/
-│   └── functions/
-│       ├── _shared/rate-limit.ts    # In-memory sliding-window rate limiter (shared by all functions)
-│       ├── create-checkout-session/  # Creates Stripe Checkout session (auth optional for guest checkout)
-│       ├── stripe-webhook/           # Handles checkout.session.completed, sends confirmation + crib sheet emails
-│       ├── claim-payment/            # Links guest checkout payments to newly created accounts
-│       ├── send-welcome-email/       # Sends branded welcome email via Zoho SMTP
-│       └── delete-account/           # Deletes user account + all data (CASCADE)
-├── public/
-│   ├── manifest.json                # PWA manifest
-│   ├── sw.js, register-sw.js        # Service worker
-│   ├── favicon.svg, favicon.png
-│   ├── audio/                       # Pre-recorded visualisation audio
-│   ├── icons/                       # PWA icons (SVG)
-│   └── assets/
-├── vercel.json                      # SPA rewrites + security headers (CSP, HSTS, X-Frame-Options)
-├── vite.config.ts                   # Plugins, manual chunks, console.log stripping in prod
-├── index.html                       # Fonts (Nunito + Inter), meta tags, PWA, OG tags
-└── package.json
-```
+- Vibrant purple/pink gradient background
+- Frosted glass UI panels
+- Colourful gradient buttons
+- Mascot: Professor Hoot (emoji+CSS owl — multiple moods and sizes)
+- Child-friendly, fun, colourful — must work on mobile
+- Never clinical or school-like in tone
 
 ---
 
-## Pages (23 total)
+## Programme Architecture
 
-| Route | Page | Auth | Notes |
-|---|---|---|---|
-| `/` | LandingPage | Public | Marketing page, redirects logged-in users to /home |
-| `/login` | LoginPage | Public | Email/password + password reset |
-| `/signup` | SignupPage | Public | |
-| `/checkout` | CheckoutPage | Public | Guest or authenticated checkout |
-| `/payment-success` | PaymentSuccessPage | Public | Post-Stripe redirect |
-| `/privacy-policy` | PrivacyPolicyPage | Public | |
-| `/terms` | TermsPage | Public | |
-| `/refunds` | RefundPolicyPage | Public | |
-| `/research` | ResearchPage | Public | Evidence base for the method |
-| `/contact` | ContactPage | Public | |
-| `/select-child` | ChildPickerPage | Parent | Create/select child profiles |
-| `/home` | HomePage | Parent+Child | Dashboard: streak, XP, week progress, daily challenge |
-| `/practice` | PracticePage | Parent+Child | Main question flow (10 Qs per session) |
-| `/badges` | BadgesPage | Parent+Child | Badge collection |
-| `/visualise` | VisualisationPage | Parent+Child | Guided exam-day visualisation with audio |
-| `/techniques` | TipsPage | Parent+Child | CLEAR Method reference (child/parent toggle) |
-| `/daily-challenge` | DailyChallengePage | Parent+Child | Single bonus question per day |
-| `/mock-exam` | MockExamPage | Parent+Child | Timed multi-subject mock |
-| `/review-mistakes` | MistakeReviewPage | Parent+Child | Spaced repetition of wrong answers |
-| `/parent-dashboard` | DashboardPage | Parent+Child | Analytics: technique breakdown, subject scores, session history |
-| `/upgrade` | UpgradePage | Parent+Child | Payment CTA for unpaid users |
-| `/settings` | SettingsPage | Parent+Child | Exam date, sound, dyslexia mode, delete account |
-| `/certificate` | CertificatePage | Parent+Child | Downloadable PDF certificate (jsPDF) |
+**Difficulty levels:**
+- D1 — Year 4–5 (Foundation)
+- D2 — Year 5–6 (Building)
+- D3 — Exam Ready
 
-**Route guards** (in `App.tsx`):
-- `PublicLandingRoute` — redirects authenticated users away from `/`
-- `ParentProtectedRoute` — requires Supabase session, redirects to `/login`
-- `ChildProtectedRoute` — requires a child profile to be selected, redirects to `/select-child`
-- `ProgressSync` — fetches progress + badges from Supabase when a child is selected
+**Scaffolding phases:**
+- Weeks 1–4: Foundation (maximum scaffolding, CLEAR steps shown explicitly)
+- Weeks 5–8: Building (scaffolding fades, child internalises method)
+- Weeks 9–12: Exam Ready (exam conditions, minimal scaffolding)
 
-Protected pages are wrapped in `AppShell` which provides `Header`, `BottomNav`, and `FeedbackButton`.
+**Timer:** Generous early, tightens gradually across the 12 weeks. Never punishing — encouraging.
 
 ---
 
-## State Management
+## Pricing and Codes
 
-Four Zustand stores, all using `persist` middleware (localStorage):
-
-### `useAuthStore` (key: `rtq-auth`)
-- `parentSession`: Supabase `Session` object (not persisted — Supabase handles session refresh)
-- `children`: array of `User` objects (child profiles)
-- `currentChildId`: which child is active
-- Only `currentChildId` is persisted to localStorage; session comes from Supabase on load
-
-### `useProgressStore` (key: `rtq-progress`)
-- `progressByUser`: `Record<childId, UserProgress>` — all progress keyed by child
-- `badgesByUser`: `Record<childId, EarnedBadge[]>`
-- Every mutation syncs to Supabase in the background (fire-and-forget with error toast)
-- On load, fetches from Supabase and merges: whichever has more `totalQuestionsAnswered` wins
-
-### `useDyslexiaStore` (key: `rtq-dyslexia`)
-- `enabledByChild`: `Record<childId, boolean>` — per-child toggle
-
-### `useSettingsStore` (key: `rtq-settings`)
-- `soundEnabled`, `examDate`, `techniquesViewMode` ('child' | 'parent')
+- **Main product:** £19.99 one-time
+- **Checkout bump:** £4.99 — CLEAR Method Crib Sheet (printable PDF, Professor Hoot branded)
+- **Beta code:** `BETA100` — 100% off
+- **Launch code:** `WELCOME10` — 10% off
 
 ---
 
-## Payment Flow
+## Current Status (March 2026)
 
-**Model**: One-time payment of **£19.99** for lifetime access. No subscription. No free tier. Optional **£4.99 crib sheet** add-on (only at checkout). 7-day no-questions-asked refund guarantee (handled manually via Stripe).
-
-**Guest checkout** is supported — users can pay before creating an account.
-
-### Flow:
-1. User lands on `/checkout` (from landing page CTA)
-2. If logged in, the session token is sent. If not, they enter an email address.
-3. Frontend calls `create-checkout-session` Edge Function, which creates a Stripe Checkout Session with `allow_promotion_codes: true`
-4. User is redirected to Stripe-hosted checkout page
-5. On success, Stripe redirects to `/payment-success`
-6. Stripe sends `checkout.session.completed` webhook to `stripe-webhook` Edge Function, which:
-   - Updates `payments` table status to 'completed'
-   - If authenticated user: marks all their `child_profiles` as `has_paid = true`
-   - Sends payment confirmation email via Zoho SMTP (fire-and-forget to avoid CPU timeout)
-   - If crib sheet was purchased: sends separate email with PDF attachment from Supabase Storage
-   - **Important**: Webhook uses manual HMAC-SHA256 signature verification (not Stripe SDK `constructEvent`) because the Stripe SDK is incompatible with Supabase Edge / Deno runtime. The verification uses Web Crypto API directly.
-
-### Guest payment claiming:
-- `claim-payment` Edge Function links unclaimed payments to accounts by matching email
-- Called automatically on sign-in (in `useSupabaseAuth`) and on child creation (in `ChildPickerPage`)
-- This handles the race condition where the user pays as guest, then creates an account
-
-### Paywall enforcement:
-- `usePaywall` hook checks `currentUser.hasPaid`
-- `needsPayment` is true when `hasPaid` is false
-- Pages redirect to `/upgrade` when payment is needed
+- ✅ Stripe payment flow live
+- ✅ Resend email confirmation live
+- ✅ Security audit: 22/22 clean
+- ✅ First beta user onboarded
+- ⚠️ Email confirmation **currently disabled** in Supabase — must re-enable before public launch (Auth → Settings → toggle on)
+- ⚠️ GitHub backup cron has had errors — verify push works before relying on it
 
 ---
 
-## Authentication Flow
+## Development Rules
 
-- **Supabase Auth** with email + password
-- `useSupabaseAuth` hook (mounted once in `App.tsx`):
-  - Calls `getSession()` on mount to restore session
-  - Listens to `onAuthStateChange` for sign-in/sign-out/recovery events
-  - On `SIGNED_IN`, automatically calls `claim-payment` in background
-  - On `PASSWORD_RECOVERY`, sets flag to prevent redirect away from login page
-- `useRequireNoAuth` hook: used on login/signup pages to redirect already-authenticated users
-- Password reset: detected via URL hash containing `type=recovery`
+**Security (non-negotiable):**
+- NEVER store secrets in code or config files
+- NEVER commit API keys, tokens, or credentials
+- Use `.env` files (gitignored) for all secrets
+- Add `.env` to `.gitignore` before first commit — always
 
-### Multi-child model:
-1. Parent authenticates with Supabase (gets a session)
-2. Parent goes to `/select-child` to create or select a child profile
-3. `currentChildId` is set in `useAuthStore`
-4. All subsequent data operations use `currentChildId` as the key
+**Code:**
+- TypeScript always — no plain JavaScript
+- Strict mode on — unused variables are errors
+- Keep components focused and composable
+- Supabase schema changes: always check RLS policies
+
+**Sessions:**
+- New session for each distinct task
+- Use `/compact` proactively when context gets long
+- Initialise git before starting any new project
+
+**Environment:**
+- macOS (Darwin, Apple Silicon M4)
+- Node v22 via nvm
+- Homebrew for system packages
+- Path: `/opt/homebrew/opt/node@22/bin`
 
 ---
 
-## Database (Supabase)
+## How to Work on This Project
+
+**Think bigger:** Don't just fix what was asked. If you notice something broken, flag it. If there's an obvious next step, offer it. If the same bug pattern exists elsewhere in the codebase, say so.
+
+**Planning mode:** For any task touching multiple files, affecting production, or with non-obvious consequences — surface a plan first and wait for go-ahead before executing.
+
+**Task endings:** After significant work, close with:
+- Next actions available right now (specific, not vague)
+- Anything flagged while working (bugs, security issues, design inconsistencies)
+- What to test before shipping
+
+**Proactivity:** See a security issue → always flag it, never ignore. See a pattern that should be abstracted → say so. See something that will break at scale → note it even if it's not today's problem.
+
+---
+
+## What This Project Is Not
 
 ### Tables (inferred from code):
 - **`child_profiles`**: `id`, `parent_id`, `name`, `avatar` (JSON), `programme_start_date`, `has_seen_onboarding`, `has_seen_tutorial`, `has_paid`, `referral_code`, `referred_by`, `exam_date` (TEXT, nullable), `created_at`
