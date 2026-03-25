@@ -329,55 +329,32 @@ export function VisualisationPage() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center text-center px-4 pt-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-4xl mb-5">
+        <div className="flex flex-col items-center text-center px-4 pt-2">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-3xl mb-4">
             🌅
           </div>
 
-          <h2 className="font-display text-2xl font-bold text-purple-700 mb-2">
+          <h2 className="font-display text-xl font-bold text-purple-700 mb-1">
             Guided Visualisation
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-6">
-            {script.durationMinutes} minutes
+          <p className="text-purple-400 font-display text-sm mb-5">
+            {script.durationMinutes} min &middot; Close your eyes and listen
           </p>
 
-          <div className="bg-white rounded-2xl p-5 w-full space-y-3 text-left shadow-sm">
-            <p className="font-display text-gray-700 text-base leading-relaxed">
-              This short guided exercise will help you imagine exam day going well &mdash;
-              arriving calm, reading carefully, and using your technique with confidence.
-            </p>
-            <p className="font-display text-gray-700 text-base leading-relaxed">
-              Athletes, musicians and top performers all use visualisation to prepare for big moments.
-              When you rehearse something vividly in your mind, your brain treats it almost like real
-              practice &mdash; so the real day already feels familiar.
-            </p>
-            <p className="font-display text-sm text-purple-600 font-semibold leading-relaxed mt-1">
-              ✨ Try to do this 2&ndash;3 times a week, and every day in the week before your exam.
-            </p>
-          </div>
-
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 w-full mt-4 text-left border border-white/30">
-            <p className="font-display font-semibold text-white text-sm mb-2">Before you start:</p>
-            <ul className="space-y-1.5 text-sm text-white/80 font-display">
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🪑</span> Find a comfortable place to sit
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🤫</span> Somewhere quiet, with no distractions
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🎧</span> Headphones are ideal but not essential
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">😌</span> Close your eyes when the audio begins
-              </li>
+          <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
+            <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
+            <ul className="space-y-1.5 text-sm text-gray-700 font-display">
+              <li className="flex items-start gap-2"><span>🪑</span> Sit somewhere comfortable and quiet</li>
+              <li className="flex items-start gap-2"><span>🎧</span> Headphones are ideal but not essential</li>
+              <li className="flex items-start gap-2"><span>😌</span> Close your eyes when the audio begins</li>
+              <li className="flex items-start gap-2"><span>✨</span> Try 2–3 times a week — and every day the week before your exam</li>
             </ul>
           </div>
 
           <button
             onClick={() => setMode('script')}
-            className="mt-8 w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Play className="w-5 h-5" />
             I&rsquo;m ready &mdash; play
@@ -401,57 +378,32 @@ export function VisualisationPage() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center text-center px-4 pt-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-100 to-indigo-100 flex items-center justify-center mb-5">
-            <Wind className="w-10 h-10 text-violet-500" />
+        <div className="flex flex-col items-center text-center px-4 pt-2">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-indigo-100 flex items-center justify-center mb-4">
+            <Wind className="w-8 h-8 text-violet-500" />
           </div>
 
-          <h2 className="font-display text-2xl font-bold text-purple-700 mb-2">
+          <h2 className="font-display text-xl font-bold text-purple-700 mb-1">
             Box Breathing
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-6">
-            Go for as long as you like
+          <p className="text-purple-400 font-display text-sm mb-5">
+            Breathe in · Hold · Breathe out · Hold — go for as long as you like
           </p>
 
-          <div className="bg-white rounded-2xl p-5 w-full space-y-3 text-left shadow-sm">
-            <p className="font-display text-gray-700 text-base leading-relaxed">
-              Box breathing is a simple technique used by athletes, astronauts and even Navy SEALs to
-              calm nerves and sharpen focus. Breathe in, hold, breathe out, hold &mdash; each for 4 seconds.
-            </p>
-            <p className="font-display text-gray-700 text-base leading-relaxed">
-              Slow, steady breathing tells your nervous system that everything is OK &mdash; it lowers
-              your heart rate and clears your mind so you can think properly. Even a minute or two makes
-              a real difference. It&rsquo;s a brilliant tool to use just before an exam, before a practice
-              paper, or any time you feel the wobbles.
-            </p>
-            <p className="font-display text-sm text-purple-600 font-semibold leading-relaxed mt-1">
-              ✨ Practise a little every day &mdash; even just 4 or 5 cycles. The more you do it,
-              the quicker it works when you need it most.
-            </p>
-          </div>
-
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 w-full mt-4 text-left border border-white/30">
-            <p className="font-display font-semibold text-white text-sm mb-2">Before you start:</p>
-            <ul className="space-y-1.5 text-sm text-white/80 font-display">
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🪑</span> Sit comfortably with both feet on the floor
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🙌</span> Rest your hands in your lap
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">😌</span> Close your eyes or soften your gaze
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">🔵</span> Follow the circle &mdash; it will guide you
-              </li>
+          <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
+            <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
+            <ul className="space-y-1.5 text-sm text-gray-700 font-display">
+              <li className="flex items-start gap-2"><span>🪑</span> Sit comfortably, both feet on the floor</li>
+              <li className="flex items-start gap-2"><span>🙌</span> Rest your hands in your lap</li>
+              <li className="flex items-start gap-2"><span>😌</span> Close your eyes or soften your gaze</li>
+              <li className="flex items-start gap-2"><span>🔵</span> Follow the circle — it will guide you</li>
             </ul>
           </div>
 
           <button
             onClick={() => setMode('breathing')}
-            className="mt-8 w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-violet-500 via-purple-600 to-indigo-600 hover:from-violet-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-violet-500 via-purple-600 to-indigo-600 hover:from-violet-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Play className="w-5 h-5" />
             I&rsquo;m ready &mdash; let&rsquo;s breathe
@@ -461,28 +413,58 @@ export function VisualisationPage() {
     );
   }
 
-  /* ---------- Box breathing ---------- */
+  /* ---------- Box breathing — immersive full-screen ---------- */
   if (mode === 'breathing') {
     return (
-      <div className="space-y-6 py-2">
-        <div className="flex items-center justify-between">
+      <div
+        className="fixed inset-0 z-50 flex flex-col overflow-hidden"
+        style={{ background: 'linear-gradient(160deg, #1e1b4b 0%, #4c1d95 18%, #7c3aed 36%, #c026d3 56%, #db2777 76%, #be123c 100%)' }}
+      >
+        {/* Background orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute -top-28 -left-28 w-80 h-80 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.35) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.div
+            className="absolute -bottom-36 -right-24 w-96 h-96 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.25, 1], opacity: [0.4, 0.8, 0.4] }}
+            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          />
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1.5 h-1.5 rounded-full bg-white"
+              style={{ left: `${15 + i * 14}%`, top: `${20 + (i % 3) * 25}%` }}
+              animate={{ opacity: [0, 0.7, 0], scale: [0.5, 1.5, 0.5] }}
+              transition={{ duration: 2.5 + i * 0.6, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 flex flex-col h-full px-5 py-6 safe-area-inset">
           <button
             onClick={handleBack}
-            className="text-sm text-purple-500 font-display font-semibold flex items-center gap-1"
+            className="text-sm text-white/70 font-display font-semibold flex items-center gap-1 hover:text-white transition-colors self-start"
           >
             <ChevronLeft className="w-4 h-4" />
             Back
           </button>
-        </div>
 
-        <div className="text-center">
-          <h2 className="font-display text-xl font-bold text-purple-700">Box Breathing</h2>
-          <p className="text-purple-400 text-sm font-display mt-1">
-            Follow the circle. Breathe when it tells you.
-          </p>
-        </div>
+          <div className="text-center mt-4 mb-6">
+            <h2 className="font-display text-xl font-bold text-white">Box Breathing</h2>
+            <p className="text-white/60 text-sm font-display mt-1">
+              Follow the circle. Breathe when it tells you.
+            </p>
+          </div>
 
-        <BoxBreathingExercise config={boxBreathingConfig} />
+          <div className="flex-1 flex items-center justify-center">
+            <BoxBreathingExercise config={boxBreathingConfig} />
+          </div>
+        </div>
       </div>
     );
   }
@@ -583,8 +565,7 @@ function VisualisationPlayer({
 
   useEffect(() => () => { sound.stopAll(); }, [sound]);
 
-  const isExpanded = breathPhase === 'inhale' || breathPhase === 'hold-in';
-  const circleScale = isExpanded ? 1.3 : 0.8;
+  const circleScale = (breathPhase === 'inhale' || breathPhase === 'hold-in') ? 1.3 : 0.8;
   const phaseDuration =
     breathPhase === 'inhale' ? breathingConfig.inhaleSeconds :
     breathPhase === 'exhale' ? breathingConfig.exhaleSeconds : 0.3;
@@ -593,21 +574,6 @@ function VisualisationPlayer({
     breathPhase === 'inhale' ? 'Breathe in\u2026' :
     breathPhase === 'hold-in' ? 'Hold\u2026' :
     breathPhase === 'exhale' ? 'Breathe out\u2026' : 'Hold\u2026';
-
-  const breathColour =
-    breathPhase === 'inhale' ? 'text-teal-300' :
-    breathPhase === 'hold-in' ? 'text-indigo-300' :
-    breathPhase === 'exhale' ? 'text-emerald-300' : 'text-violet-300';
-
-  const ringBg =
-    breathPhase === 'inhale' ? 'bg-teal-400/20' :
-    breathPhase === 'hold-in' ? 'bg-indigo-400/20' :
-    breathPhase === 'exhale' ? 'bg-emerald-400/20' : 'bg-violet-400/20';
-
-  const innerBg =
-    breathPhase === 'inhale' ? 'bg-teal-400/30' :
-    breathPhase === 'hold-in' ? 'bg-indigo-400/30' :
-    breathPhase === 'exhale' ? 'bg-emerald-400/30' : 'bg-violet-400/30';
 
   const remainingMs = Math.max(0, totalDurationMs - elapsedMs);
   const remainingMin = Math.floor(remainingMs / 60000);
@@ -724,26 +690,29 @@ function VisualisationPlayer({
             </motion.div>
           ) : (
             <>
-              {/* Breathing circle */}
+              {/* Breathing circle — hue-rotate cycles blue → indigo → fuchsia → pink → blue */}
               <motion.div
-                animate={{ scale: circleScale }}
-                transition={{
-                  duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
-                  ease: 'easeInOut',
-                }}
-                className={`w-40 h-40 rounded-full ${ringBg} flex items-center justify-center`}
+                animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
               >
                 <motion.div
-                  animate={{ scale: circleScale * 0.55 }}
+                  animate={{ scale: circleScale }}
                   transition={{
                     duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
                     ease: 'easeInOut',
                   }}
-                  className={`w-24 h-24 rounded-full ${innerBg} flex items-center justify-center`}
+                  className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
                 >
-                  <span className="font-display font-black text-2xl text-white/60">
-                    😌
-                  </span>
+                  <motion.div
+                    animate={{ scale: circleScale * 0.55 }}
+                    transition={{
+                      duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
+                      ease: 'easeInOut',
+                    }}
+                    className="w-24 h-24 rounded-full bg-blue-400/30 flex items-center justify-center"
+                  >
+                    <span className="text-2xl text-white/60">😌</span>
+                  </motion.div>
                 </motion.div>
               </motion.div>
 
@@ -752,13 +721,13 @@ function VisualisationPlayer({
                 key={breathPhase}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`text-xl font-display font-bold ${breathColour}`}
+                className="text-xl font-display font-bold text-white"
               >
                 {breathLabel}
               </motion.p>
 
               {/* Gentle instruction */}
-              <p className="text-white/30 text-sm font-display text-center max-w-xs">
+              <p className="text-white/70 text-sm font-display text-center max-w-xs">
                 Close your eyes and listen. Follow the breathing if it helps.
               </p>
             </>
@@ -775,11 +744,12 @@ function VisualisationPlayer({
 
 type BreathPhase = 'inhale' | 'hold-in' | 'exhale' | 'hold-out';
 
-const PHASE_META: Record<BreathPhase, { label: string; colour: string; bgRing: string; innerBg: string }> = {
-  'inhale':   { label: 'Breathe in…',  colour: 'text-teal-600',    bgRing: 'bg-teal-200',    innerBg: 'bg-teal-300' },
-  'hold-in':  { label: 'Hold…',        colour: 'text-indigo-500',  bgRing: 'bg-indigo-200',  innerBg: 'bg-indigo-300' },
-  'exhale':   { label: 'Breathe out…', colour: 'text-emerald-500', bgRing: 'bg-emerald-200', innerBg: 'bg-emerald-300' },
-  'hold-out': { label: 'Hold…',        colour: 'text-violet-500',  bgRing: 'bg-violet-200',  innerBg: 'bg-violet-300' },
+// Hue-rotate wrapper cycles circle colour: blue → indigo → fuchsia → pink → blue
+const PHASE_LABELS: Record<BreathPhase, string> = {
+  'inhale':   'Breathe in…',
+  'hold-in':  'Hold…',
+  'exhale':   'Breathe out…',
+  'hold-out': 'Hold…',
 };
 
 function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
@@ -836,9 +806,7 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
     };
   }, [config, sound]);
 
-  const meta = PHASE_META[phase];
-  const isExpanded = phase === 'inhale' || phase === 'hold-in';
-  const circleScale = isExpanded ? 1.3 : 0.8;
+  const circleScale = (phase === 'inhale' || phase === 'hold-in') ? 1.3 : 0.8;
 
   // Duration of the current phase for the animation
   const phaseDuration =
@@ -846,30 +814,36 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
     phase === 'exhale' ? config.exhaleSeconds : 0.3;
 
   return (
-    <div className="min-h-[340px] flex flex-col items-center justify-center gap-8">
-      {/* Animated circle */}
+    <div className="flex flex-col items-center justify-center gap-8">
+      {/* Hue-rotate wrapper — cycles blue → indigo → fuchsia → pink → blue */}
       <motion.div
-        animate={{ scale: circleScale }}
-        transition={{
-          duration: phase === 'hold-in' || phase === 'hold-out' ? 0.3 : phaseDuration,
-          ease: 'easeInOut',
-        }}
-        className={`w-36 h-36 rounded-full ${meta.bgRing} flex items-center justify-center shadow-lg`}
+        animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       >
         <motion.div
-          animate={{ scale: circleScale * 0.55 }}
+          animate={{ scale: circleScale }}
           transition={{
             duration: phase === 'hold-in' || phase === 'hold-out' ? 0.3 : phaseDuration,
             ease: 'easeInOut',
           }}
-          className={`w-20 h-20 rounded-full ${meta.innerBg} flex items-center justify-center`}
+          className="w-36 h-36 rounded-full bg-blue-400/25 flex items-center justify-center"
+          style={{ boxShadow: '0 0 40px rgba(59,130,246,0.4)' }}
         >
-          <span className="font-display font-black text-3xl text-white">
-            {(phase === 'inhale' ? config.inhaleSeconds :
-              phase === 'hold-in' ? config.holdInSeconds :
-              phase === 'exhale' ? config.exhaleSeconds :
-              config.holdOutSeconds) - countdown + 1}
-          </span>
+          <motion.div
+            animate={{ scale: circleScale * 0.55 }}
+            transition={{
+              duration: phase === 'hold-in' || phase === 'hold-out' ? 0.3 : phaseDuration,
+              ease: 'easeInOut',
+            }}
+            className="w-20 h-20 rounded-full bg-blue-400/40 flex items-center justify-center"
+          >
+            <span className="font-display font-black text-3xl text-white">
+              {(phase === 'inhale' ? config.inhaleSeconds :
+                phase === 'hold-in' ? config.holdInSeconds :
+                phase === 'exhale' ? config.exhaleSeconds :
+                config.holdOutSeconds) - countdown + 1}
+            </span>
+          </motion.div>
         </motion.div>
       </motion.div>
 
@@ -878,13 +852,13 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
         key={phase}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`text-2xl font-display font-bold ${meta.colour}`}
+        className="text-2xl font-display font-bold text-white"
       >
-        {meta.label}
+        {PHASE_LABELS[phase]}
       </motion.p>
 
       {/* Cycle counter */}
-      <p className="text-sm text-gray-400 font-display">
+      <p className="text-sm text-white/60 font-display">
         {cycles === 0 ? 'Starting\u2026' : `${cycles} cycle${cycles === 1 ? '' : 's'} completed`}
       </p>
 
@@ -893,8 +867,8 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
         {(['inhale', 'hold-in', 'exhale', 'hold-out'] as BreathPhase[]).map(p => (
           <div
             key={p}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              p === phase ? `${PHASE_META[p].innerBg} scale-125` : 'bg-gray-200'
+            className={`rounded-full transition-all duration-300 ${
+              p === phase ? 'bg-white/60 scale-125 w-3 h-3' : 'bg-white/20 w-3 h-3'
             }`}
           />
         ))}

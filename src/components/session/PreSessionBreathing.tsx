@@ -64,34 +64,6 @@ const phaseDurations: Record<BreathPhase, number> = {
 
 const phaseOrder: BreathPhase[] = ['inhale', 'holdIn', 'exhale', 'holdOut'];
 
-// Phase-specific colour personality — warm on expand, cool on exhale
-const phaseColours: Record<BreathPhase, {
-  circleGradient: string;
-  glowColour: string;
-  labelColour: string;
-}> = {
-  inhale: {
-    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(251,207,232,0.95) 0%, rgba(236,72,153,0.75) 45%, rgba(168,85,247,0.55) 100%)',
-    glowColour: 'rgba(236,72,153,0.55)',
-    labelColour: 'text-pink-200',
-  },
-  holdIn: {
-    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(253,230,138,0.95) 0%, rgba(251,146,60,0.75) 45%, rgba(239,68,68,0.45) 100%)',
-    glowColour: 'rgba(251,146,60,0.5)',
-    labelColour: 'text-amber-200',
-  },
-  exhale: {
-    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(196,181,253,0.95) 0%, rgba(139,92,246,0.75) 45%, rgba(59,130,246,0.5) 100%)',
-    glowColour: 'rgba(139,92,246,0.5)',
-    labelColour: 'text-violet-200',
-  },
-  holdOut: {
-    circleGradient: 'radial-gradient(circle at 35% 35%, rgba(147,197,253,0.9) 0%, rgba(59,130,246,0.65) 45%, rgba(37,99,235,0.45) 100%)',
-    glowColour: 'rgba(59,130,246,0.4)',
-    labelColour: 'text-blue-200',
-  },
-};
-
 const phaseScale: Record<BreathPhase, number> = {
   inhale: 1.6,
   holdIn: 1.6,
@@ -113,7 +85,8 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [started, setStarted] = useState(false);
   const affirmation = getDailyAffirmation();
-  const colours = phaseColours[phase];
+  const circleGradient = 'radial-gradient(circle at 35% 35%, rgba(147,197,253,0.95) 0%, rgba(59,130,246,0.75) 45%, rgba(29,78,216,0.55) 100%)';
+  const glowBase = 'rgba(59,130,246,0.5)';
 
   const advancePhase = useCallback(() => {
     setPhase(prev => {
@@ -225,14 +198,16 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
 
       {/* Breathing circle */}
       <div className="relative z-10 flex flex-col items-center">
-        <div className="relative w-44 h-44 flex items-center justify-center">
-
+        {/* Hue-rotate wrapper cycles: blue → indigo → fuchsia → pink → blue */}
+        <motion.div
+          className="relative w-44 h-44 flex items-center justify-center"
+          animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        >
           {/* Outermost ambient pulse ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
-            style={{
-              background: `radial-gradient(circle, ${colours.glowColour} 0%, transparent 70%)`,
-            }}
+            style={{ background: `radial-gradient(circle, ${glowBase} 0%, transparent 70%)` }}
             animate={{
               scale: started && !isComplete ? phaseScale[phase] * 1.3 : 1,
               opacity: [0.5, 0.9, 0.5],
@@ -246,9 +221,7 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
           {/* Soft glow halo */}
           <motion.div
             className="absolute inset-3 rounded-full"
-            style={{
-              boxShadow: `0 0 60px ${colours.glowColour}, 0 0 120px ${colours.glowColour}`,
-            }}
+            style={{ boxShadow: `0 0 60px ${glowBase}, 0 0 120px ${glowBase}` }}
             animate={{ scale: started && !isComplete ? phaseScale[phase] : 1 }}
             transition={{ duration: circleDuration, ease: 'easeInOut' }}
           />
@@ -257,8 +230,8 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
           <motion.div
             className="relative w-32 h-32 rounded-full overflow-hidden"
             style={{
-              background: colours.circleGradient,
-              boxShadow: `0 0 60px ${colours.glowColour}, 0 0 120px ${colours.glowColour}, inset 0 0 30px rgba(255,255,255,0.2)`,
+              background: circleGradient,
+              boxShadow: `0 0 60px ${glowBase}, 0 0 120px ${glowBase}, inset 0 0 30px rgba(255,255,255,0.2)`,
             }}
             animate={{ scale: started && !isComplete ? phaseScale[phase] : 1 }}
             transition={{ duration: circleDuration, ease: 'easeInOut' }}
@@ -273,7 +246,7 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             />
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Phase label */}
         <AnimatePresence mode="wait">
@@ -286,10 +259,10 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35 }}
             >
-              <p className={`text-2xl font-display font-bold tracking-wide ${colours.labelColour}`}>
+              <p className="text-2xl font-display font-bold tracking-wide text-white">
                 {phaseLabels[phase]}
               </p>
-              <p className="text-white/35 text-xs font-display mt-1">
+              <p className="text-white/60 text-xs font-display mt-1">
                 {phaseDurations[phase]}s
               </p>
             </motion.div>

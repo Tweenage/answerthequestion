@@ -380,7 +380,7 @@ Defined in `src/utils/scoring.ts`. Every question gets a technique score (0-100%
 | Elimination | 20% | eliminated all wrong answers correctly |
 | Process Bonus | +10% | all steps used (read twice + eliminated + highlighted at least 1) |
 
-XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels require 20% more XP each time (`xpToNextLevel * 1.2`).
+XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), correctness adds 20. Maximum is 100 XP. Levels require 20% more XP each time (`xpToNextLevel * 1.2`).
 
 ---
 
@@ -420,7 +420,7 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - Welcome + payment confirmation + crib sheet emails via Zoho SMTP
 - Account deletion with CASCADE cleanup
 - Referral code system (generated per child, tracked via `referred_by`)
-- `console.log`/`console.debug`/`console.warn` stripped in production builds
+- `console.log`/`console.debug`/`console.warn`/`console.error` stripped in production builds (all four in Vite esbuild `pure` array)
 - Stripe webhook with manual HMAC-SHA256 verification (Deno-compatible)
 - Fire-and-forget email pattern in webhook to avoid CPU timeout
 - Resend confirmation email on both Login and Signup pages
@@ -432,7 +432,7 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - batch3-english keyWordIndices fixed to mark passage content words, not just question stems
 - `npm audit fix` runs automatically as postbuild step
 - Security documentation: secret rotation policy, backup/restore procedures, environment separation guide, guest checkout auth rationale (all in `docs/security/`)
-- Paywall enforced server-side only — no localStorage bypass (`usePaywall.ts` sources `hasPaid` exclusively from Supabase-fetched child profiles)
+- Paywall enforced server-side only — no localStorage bypass (`usePaywall.ts` sources `hasPaid` exclusively from Supabase-fetched child profiles; secondary `atq_has_paid_<id>` localStorage fallback removed from ChildPickerPage)
 - Security audit score: **22/22 (2 N/A) — SHIP**
 - DANGER_WORDS restricted to genuinely exam-critical words (removed over-broad: 'at', 'each', 'more', 'less', 'before', 'after', 'between', 'until')
 - "Session Complete!" (was "Quest Complete!" — brand language fix)
@@ -444,6 +444,14 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - C (Calm) step in techniques view explicitly links breathing exercise to CLEAR Method; "Start a session" CTA connects the two
 - Onboarding "A Note for Parents" slide moved from position 7 to position 2 (immediately after Welcome) — parents see it before their child advances
 - XP formula rebalanced: `techniquePercent × 0.8 + 20 (correct)` — technique now drives 80% of XP, reinforcing method over answer-guessing (max 100 XP unchanged)
+- **Fast Track mode fully implemented**: `useWeekConfig` hook wired into PracticePage, MockExamPage, DailyChallengePage, DashboardPage, and HomePage — replaces all inline `programmeWeeks[Math.min(currentWeek-1, 11)]` lookups. Fast Track badge (⚡) shown in PracticePage week note and DashboardPage week display
+- Mock exam unlock is proportional: `Math.ceil(totalWeeks / 2)` — adapts automatically for fast-track timelines
+- Certificate gate uses `progress.currentWeek > totalWeeks` (was hardcoded `> 12`) so it works correctly in Fast Track
+- Exam date persisted per-child to Supabase (`child_profiles.exam_date`) and kept in sync with `useSettingsStore.examDate` via `useEffect` in HomePage on child change
+- Crib sheet download (HomePage) switched from `getPublicUrl` to `createSignedUrl(120s)` — Supabase `assets` bucket is now private
+- `stripe-webhook` Edge Function uses `createSignedUrl(60s)` when emailing the crib sheet PDF attachment
+- Security fix: removed `localStorage.getItem('atq_has_paid_<childId>')` fallback from ChildPickerPage — `hasPaid` now sourced exclusively from `p.has_paid` (Supabase). This closes a client-side paywall bypass
+- Landing page Fast Track messaging added: JourneySection callout box (amber/orange), PricingSection feature list item (⚡), FaqSection accordion item ("What if my child's exam is only a few weeks away?")
 
 ---
 
@@ -460,7 +468,7 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - **Payment confirmation emails** can fail due to Supabase Edge Function CPU time limits when sending via Zoho SMTP — mitigated by fire-and-forget pattern but SMTP itself may be too slow
 - **Favicon** not displaying correctly
 - **UpgradePage** still references "VR & NVR" instead of merged "Reasoning" subject
-- **Crib sheet download** on HomePage uses `localStorage.getItem('atq-crib-sheet-purchased')` — this flag is lost on sign-out/device change. Needs to be stored in Supabase (e.g. on payments table or child_profiles) for persistence
+- **Crib sheet purchased flag** on HomePage uses `localStorage.getItem('atq-crib-sheet-purchased')` to decide whether to show the download button — this flag is lost on sign-out/device change. The download URL itself is secure (signed URL from private bucket); the problem is just that the button disappears. Needs the `include_crib_sheet` flag stored in Supabase (payments table already has the column) and fetched on load for persistence across devices
 
 ---
 
@@ -477,7 +485,7 @@ XP: `techniquePercent * 0.5` (up to 50 XP) + 30 bonus for correct answer. Levels
 - Rate limiting on all Edge Functions (sliding window per IP)
 - Service role key only used server-side (delete-account, stripe-webhook)
 - Redirect URL validation in checkout (must be trusted origin)
-- `console.log`/`warn`/`debug` stripped in production builds via Vite esbuild config
+- `console.log`/`warn`/`debug`/`error` stripped in production builds via Vite esbuild config
 - `npm audit` runs as prebuild step; `npm audit fix` runs as postbuild step
 - CORS whitelist restricted to production domains + Vercel previews
 - Paywall enforced server-side only — no localStorage bypass
@@ -609,7 +617,7 @@ Required secrets (set via `supabase secrets set`):
 
 28. **Interactive tutorial elimination**: The `show-answers` tutorial step has `interactive: true` in TUTORIAL_STEPS. `GuidedTutorial.tsx` detects this flag and renders each answer as a tappable button. Tapping a wrong answer adds it to `userEliminated[]` state, triggers a `setEliminationFeedback` with the `eliminationReason` from the option, and Professor Hoot's message changes to show the reason. When the last wrong answer is eliminated, Professor Hoot celebrates and the step auto-advances after 1.8 seconds. The correct answer is shown grayed out with "?" during elimination. No Next button is shown during interactive elimination.
 
-29. **Breathing page visual design**: `PreSessionBreathing.tsx` uses a fuchsia/pink/indigo/blue theme. Background: `linear-gradient(160deg, #1e1b4b → #4c1d95 → #7c3aed → #c026d3 → #db2777 → #be123c)`. Four animated background orbs with independent pulse durations/delays. Six twinkling star dots. Triple-layer breathing circle (ambient glow, halo ring, main circle with shimmer). Phase-specific colour personality: inhale=pink/fuchsia, hold-in=amber/orange, exhale=violet/indigo, hold-out=blue. "I'm Ready!" button has a purple→pink→orange gradient with glowing box-shadow. Cycle progress shown as expanding pills.
+29. **Breathing page visual design**: `PreSessionBreathing.tsx` uses a fuchsia/pink/indigo/blue theme. Background: `linear-gradient(160deg, #1e1b4b → #4c1d95 → #7c3aed → #c026d3 → #db2777 → #be123c)`. Four animated background orbs with independent pulse durations/delays. Six twinkling star dots. Triple-layer breathing circle (ambient glow, halo ring, main circle with shimmer). **Circle colour cycling**: All three circle layers use a single blue base gradient (`rgba(59,130,246,...)`) — a Framer Motion `hue-rotate(0° → 105° → 0°)` animation on a wrapper `motion.div` continuously cycles the colours: blue → indigo → fuchsia → pink → blue over 16 seconds (8s forward, 8s back). Phase label is always `text-white`. **Do NOT add phase-specific colours** — the hue-rotate wrapper handles all colour variation. The `VisualisationPage` box-breathing mode uses the same approach (same dark full-screen overlay, same hue-rotate cycling on the circle). Both `VisualisationPlayer` breathing circles and `BoxBreathingExercise` use the same `hue-rotate(0deg → 105deg → 0deg)` pattern. "I'm Ready!" button has a purple→pink→orange gradient with glowing box-shadow. Cycle progress shown as expanding pills.
 
 30. **CLEAR Method™ as single source of truth in techniques view**: `ChildTechniquesView` previously showed "5 Habits" (from `CORE_HABITS`) and "The 5 Steps" (from `CORE_STEPS`) as two separate sections — the same concepts presented twice in slightly different ways, which confused children. Both sections replaced with a single **CLEAR Method™** section using the new `CLEAR_STEPS` array in `techniques.ts`. `CLEAR_STEPS` maps directly to C/L/E/A/R with `gradient` and `textColour` fields for visual styling. The C step has `linkToBreathing: true` which renders a CTA linking to `/practice` (where the breathing exercise runs).
 
@@ -624,3 +632,5 @@ Required secrets (set via `supabase secrets set`):
 35. **Exam date is per-child, not global**: `exam_date` lives in `child_profiles` table (TEXT, nullable). Exposed as `examDate?: string | null` on the `User` interface. `useWeekConfig` reads it via `currentUser?.examDate`. `HomePage.handleSetExamDate` persists changes to Supabase and local auth store simultaneously. The global `useSettingsStore.examDate` is kept in sync via a `useEffect` in `HomePage` that copies `currentUser.examDate` into the store on child load (so `ExamCountdown` can use it). **Supabase migration required**: `ALTER TABLE child_profiles ADD COLUMN IF NOT EXISTS exam_date TEXT;` — must be run manually before deploying.
 
 36. **Mock exam unlock in Fast Track**: `MockExamPage` unlocks at `Math.ceil(totalWeeks / 2)`. Standard: week 6 of 12. Fast Track 3-week: week 2. Fast Track 6-week: week 3. This ensures the unlock is proportional — children aren't locked out of mock exams for their entire fast-track programme.
+
+37. **Crib sheet PDF is private — always use signed URLs**: The `assets` Supabase Storage bucket is private. Do NOT use `getPublicUrl` for the crib sheet. The stripe-webhook Edge Function fetches a 60-second signed URL (`createSignedUrl(60)`) when attaching the PDF to the confirmation email. The HomePage download button uses a 120-second signed URL (`createSignedUrl(120)`). If the `assets` bucket is ever accidentally made public, rotate the signed URL approach or restrict the bucket again immediately.
