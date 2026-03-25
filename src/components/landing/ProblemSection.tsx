@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
-const PAIN_POINTS = [
-  { emoji: '🤦', text: 'The question said "two reasons" — they gave one and moved on.' },
-  { emoji: '😤', text: 'They ace practice papers at home — then panic under timed conditions.' },
-  { emoji: '🚗', text: 'On the way to school they know it all. In the exam hall, it vanishes.' },
-  { emoji: '😬', text: 'They come out of the exam confident — and you already know what happened.' },
-  { emoji: '🔁', text: 'You\'ve said "read the question" so many times it\'s lost all meaning.' },
+const BULLETS = [
+  'They come out of the exam saying "I knew all of that" — but the marks don\'t reflect it.',
+  'The question said "give two reasons" — they gave one and moved on.',
+  'You\'ve said "read the question" so many times it\'s lost all meaning.',
+  'They ace practice papers at home, then panic and rush under timed conditions.',
+  'They knew the answer. They just didn\'t answer the question that was asked.',
 ];
 
 export function ProblemSection() {
@@ -17,75 +17,33 @@ export function ProblemSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
+          className="max-w-xl mx-auto"
         >
-          {/* Emotional hook */}
-          <p className="font-display font-extrabold text-xl md:text-2xl text-gray-900 text-center mb-6 leading-snug max-w-xl mx-auto">
-            Tearing your hair out watching your child lose easy marks&hellip; because they misread the question?
-          </p>
-
-          {/* Age badge */}
-          <div className="flex justify-center mb-4">
-            <span className="inline-block bg-purple-100 text-purple-700 font-display font-bold text-sm px-4 py-1.5 rounded-full">
-              Ages 7&ndash;11+
-            </span>
-          </div>
-
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-3 leading-tight">
-            Tutors teach the curriculum.
-            <br />
-            But how are you building the <span className="text-purple-700">focus&nbsp;habits</span> they need to remember it under pressure?
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-8 leading-tight">
+            If this sounds familiar&hellip;
           </h2>
 
-          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-4 leading-relaxed">
-            Your child is already learning the content &mdash; at home, with tutors, workbooks and practice papers.
-            You&rsquo;ve got that side covered.
+          <ul className="space-y-4 mb-8">
+            {BULLETS.map((text, i) => (
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="flex items-start gap-3 text-gray-700 font-display text-base leading-relaxed"
+              >
+                <span className="shrink-0 mt-1 w-2 h-2 rounded-full bg-fuchsia-400" />
+                {text}
+              </motion.li>
+            ))}
+          </ul>
+
+          <p className="font-display font-bold text-base md:text-lg text-gray-800 text-center leading-relaxed">
+            That&rsquo;s not a knowledge problem. It&rsquo;s an exam-technique habit.
+            <br />
+            And habits can be trained.
           </p>
-
-          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-4 leading-relaxed">
-            What&rsquo;s missing is the bit <strong className="text-gray-700">between</strong> knowing
-            the answer and writing it down: staying calm, reading carefully, and not throwing away marks
-            on questions they actually know.
-          </p>
-
-          <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-8 leading-relaxed">
-            <strong className="text-purple-700">AnswerTheQuestion!</strong> is the missing piece &mdash;
-            exam-day visualisation, breathing exercises, focus practice, instant feedback
-            and progress tracking, all in one place. Just a few minutes a day.
-          </p>
-
-          <p className="font-display font-extrabold text-xl md:text-2xl text-purple-700 text-center mb-10">
-            That&rsquo;s the gap. And that&rsquo;s what we train.
-          </p>
-
-          {/* Pain points */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 md:p-8 border border-amber-200/60 max-w-xl mx-auto">
-            <h3 className="font-display font-extrabold text-base text-gray-800 mb-5">
-              If this sounds familiar&hellip;
-            </h3>
-
-            <ul className="space-y-3.5">
-              {PAIN_POINTS.map((item, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="flex items-start gap-3 text-gray-700 font-display text-sm md:text-base leading-relaxed"
-                >
-                  <span className="shrink-0 mt-0.5 text-lg">{item.emoji}</span>
-                  {item.text}
-                </motion.li>
-              ))}
-            </ul>
-
-            <p className="font-display font-bold text-base text-gray-800 mt-6 text-center leading-relaxed">
-              That isn&rsquo;t a knowledge problem &mdash;
-              it&rsquo;s an <span className="text-purple-700">exam-technique habit</span>.
-              <br />
-              And habits can be trained.
-            </p>
-          </div>
         </motion.div>
       </div>
     </section>
