@@ -8,6 +8,8 @@ import { XpPopup } from '../celebrations/XpPopup';
 import { calculateXpFromResult } from '../../utils/scoring';
 import { ProfessorHoot } from '../mascot/ProfessorHoot';
 import { useSoundEffects } from '../../hooks/useSoundEffects';
+import { getLearningCard } from '../../data/learningCards';
+import { LearningCard } from '../session/LearningCard';
 
 // Detect the type of trap from the elimination reason text
 function getTrapLabel(reason: string): string {
@@ -296,6 +298,12 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
           </p>
         </motion.div>
       )}
+
+      {/* Question-type learning card — shown only on incorrect answers */}
+      {!isCorrect && (() => {
+        const card = getLearningCard(question.category);
+        return card ? <LearningCard card={card} /> : null;
+      })()}
 
       {/* Technique breakdown */}
       <div className="bg-white rounded-card p-4 border border-focus-100">
