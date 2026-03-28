@@ -16,7 +16,7 @@ export function StorySection() {
             the colour of&hellip;&rdquo; Her answer? Blue.
           </p>
 
-          <p className="text-gray-700 font-display text-base leading-relaxed italic mb-5">
+          <div className="bg-purple-50 border-l-4 border-purple-300 rounded-r-xl px-5 py-4 mb-5 font-display text-base text-gray-700 italic leading-[2]">
             &ldquo;Read it again,&rdquo; I said.<br />
             She read it again. &ldquo;Blue,&rdquo; she said.<br />
             I took a breath. &ldquo;No. Read it out loud. Every word.&rdquo;<br />
@@ -24,8 +24,8 @@ export function StorySection() {
             &ldquo;D&rsquo;uh! It is meant to be a year!&rdquo;<br />
             &ldquo;Yes. So, what is the answer?&rdquo;<br />
             &ldquo;1957.&rdquo;<br />
-            <span className="not-italic text-gray-400 text-sm">Finally.</span>
-          </p>
+            <span className="not-italic font-semibold text-purple-600">The penny dropped.</span>
+          </div>
 
           <p className="text-gray-700 font-display text-base leading-relaxed italic mb-5">
             She had known the answer the whole time. She just hadn&rsquo;t read the question.
@@ -35,8 +35,14 @@ export function StorySection() {
             Talking to other parents going through 11+ and independent school prep,
             the story was always the same. Bright, capable children losing marks &mdash;
             not because they didn&rsquo;t know the material &mdash; but because they
-            didn&rsquo;t read the question properly. So I researched the science of
-            exam technique, built the method, and turned it into a programme.
+            didn&rsquo;t read the question properly.
+          </p>
+
+          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
+            I searched for a programme that could help. I couldn&rsquo;t find anything
+            that hit the mark. So I drew on my background in consulting and psychology,
+            researched how to build the habit properly, and created this programme.
+            Which I now want to share with every parent who is tearing their hair out.
           </p>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
