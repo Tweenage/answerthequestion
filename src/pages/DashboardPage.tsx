@@ -163,7 +163,7 @@ export function DashboardPage() {
       </div>
 
       {/* Category Breakdown */}
-      <CategoryBreakdown categoryScores={analysis.categoryScores} />
+      <CategoryBreakdown categoryScores={analysis.categoryScores} categoryMastery={progress.categoryMastery ?? {}} />
 
       {/* Streak Calendar */}
       <div className="bg-white rounded-card p-4 shadow-sm">

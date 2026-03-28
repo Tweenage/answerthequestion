@@ -1,9 +1,12 @@
 import type { CategoryScore } from '../../utils/dashboardAnalytics';
 import type { Subject } from '../../types/question';
+import type { CategoryMastery } from '../../types/progress';
 import { getBondName, BOND_TAXONOMY } from '../../data/bondTaxonomy';
+import { getMasteryStatusForCategory } from '../../utils/masteryUtils';
 
 interface CategoryBreakdownProps {
   categoryScores: CategoryScore[];
+  categoryMastery: CategoryMastery;
 }
 
 const SUBJECT_LABELS: Record<Subject, string> = {
@@ -20,7 +23,7 @@ const RAG_STYLES: Record<CategoryScore['rag'], { dot: string; bg: string; text: 
 
 const SUBJECT_ORDER: Subject[] = ['english', 'maths', 'reasoning'];
 
-export function CategoryBreakdown({ categoryScores }: CategoryBreakdownProps) {
+export function CategoryBreakdown({ categoryScores, categoryMastery }: CategoryBreakdownProps) {
   if (categoryScores.length === 0) {
     return (
       <div className="bg-white rounded-card p-4 shadow-sm text-center">
@@ -53,6 +56,7 @@ export function CategoryBreakdown({ categoryScores }: CategoryBreakdownProps) {
           <div className="space-y-1.5">
             {scores.map(score => {
               const style = RAG_STYLES[score.rag];
+              const masteryStatus = getMasteryStatusForCategory(categoryMastery, score.category);
               return (
                 <div key={score.category} className={`flex items-center justify-between rounded-lg px-3 py-2 ${style.bg}`}>
                   <div className="flex items-center gap-2">
@@ -64,9 +68,17 @@ export function CategoryBreakdown({ categoryScores }: CategoryBreakdownProps) {
                       )}
                     </div>
                   </div>
-                  <span className={`font-display font-bold text-sm ${style.text}`}>
-                    {score.accuracyPct}%
-                  </span>
+                  <div className="flex items-center">
+                    {masteryStatus === 'mastered' && (
+                      <span className="font-display text-xs text-emerald-600 font-semibold ml-1">&#10003; Mastered</span>
+                    )}
+                    {masteryStatus === 'struggling' && (
+                      <span className="font-display text-xs text-red-500 font-semibold ml-1">Needs practice</span>
+                    )}
+                    <span className={`font-display font-bold text-sm ${style.text} ml-2`}>
+                      {score.accuracyPct}%
+                    </span>
+                  </div>
                 </div>
               );
             })}
