@@ -35,6 +35,10 @@ export function HeroSection() {
               technique that turns careless mistakes into confident, correct answers. Built
               for 11+, independent school entrance, and every exam beyond.
             </p>
+            <p className="text-white/80 font-display text-sm md:text-base leading-relaxed mt-3">
+              The only 11+ programme that builds exam technique <em>and</em> exam composure
+              &mdash; so your child walks in confident, not just prepared.
+            </p>
           </div>
 
           <Link
