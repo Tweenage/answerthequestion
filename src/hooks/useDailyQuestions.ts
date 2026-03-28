@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 import type { Question, Subject } from '../types/question';
 import type { WeekConfig } from '../types/programme';
+import type { CategoryMastery } from '../types/progress';
 import { allQuestions } from '../data/questions';
+import { getSelectionWeight, getMasteryStatusForCategory } from '../utils/masteryUtils';
 
 function shuffleArray<T>(arr: T[]): T[] {
   const shuffled = [...arr];
@@ -12,11 +14,37 @@ function shuffleArray<T>(arr: T[]): T[] {
   return shuffled;
 }
 
+function weightedSample<T>(
+  items: T[],
+  weightFn: (item: T) => number,
+  count: number,
+): T[] {
+  if (items.length === 0) return [];
+  const selected: T[] = [];
+  const pool = [...items];
+
+  for (let i = 0; i < count && pool.length > 0; i++) {
+    const totalWeight = pool.reduce((a, item) => a + weightFn(item), 0);
+    let r = Math.random() * totalWeight;
+    let idx = 0;
+    while (idx < pool.length - 1) {
+      r -= weightFn(pool[idx]);
+      if (r <= 0) break;
+      idx++;
+    }
+    selected.push(pool[idx]);
+    pool.splice(idx, 1);
+  }
+
+  return selected;
+}
+
 export function useDailyQuestions(
   weekConfig: WeekConfig,
   answeredIds: string[] = [],
   focusSubject?: Subject,
   mistakeQuestionIds: string[] = [],
+  categoryMastery: CategoryMastery = {},
 ): Question[] {
   return useMemo(() => {
     const selected: Question[] = [];
@@ -60,18 +88,23 @@ export function useDailyQuestions(
       );
 
       // Prioritise at-level, then fill with below-level if needed
-      let pool = [...shuffleArray(atLevel), ...shuffleArray(belowLevel)];
+      let candidateQuestions = [...atLevel, ...belowLevel];
 
       // If still not enough unanswered, allow repeats (prefer at-level repeats)
-      if (pool.length < count) {
+      if (candidateQuestions.length < count) {
         const atLevelAll = allQuestions.filter(q => q.subject === subject && q.difficulty === weekConfig.difficulty);
         const belowLevelAll = allQuestions.filter(q => q.subject === subject && q.difficulty < weekConfig.difficulty);
-        pool = [...shuffleArray(atLevelAll), ...shuffleArray(belowLevelAll)];
+        candidateQuestions = [...atLevelAll, ...belowLevelAll];
       }
 
-      selected.push(...pool.slice(0, count));
+      // Use weighted sampling to favour struggling categories over mastered ones
+      const weightFn = (q: Question) =>
+        getSelectionWeight(getMasteryStatusForCategory(categoryMastery, q.category ?? ''));
+
+      const sampled = weightedSample(candidateQuestions, weightFn, count);
+      selected.push(...sampled);
     }
 
     return shuffleArray([...mistakeQuestions, ...selected].slice(0, weekConfig.dailyQuestionCount));
-  }, [weekConfig.weekNumber, weekConfig.difficulty, focusSubject, mistakeQuestionIds.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [weekConfig.weekNumber, weekConfig.difficulty, focusSubject, mistakeQuestionIds.join(','), categoryMastery]); // eslint-disable-line react-hooks/exhaustive-deps
 }
