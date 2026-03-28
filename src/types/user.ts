@@ -1,3 +1,7 @@
+import type { ExamBoard } from '../data/programme/examBoardPresets';
+
+export type { ExamBoard };
+
 export interface AvatarConfig {
   baseCharacter: string;
   colour: string;
@@ -16,6 +20,7 @@ export interface User {
   hasPaid?: boolean;
   referralCode?: string;
   examDate?: string | null;
+  examBoard?: ExamBoard;
 }
 
 export const AVATAR_CHARACTERS = ['cat', 'owl', 'robot', 'unicorn', 'dragon', 'fox'] as const;
