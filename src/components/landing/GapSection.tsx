@@ -23,9 +23,12 @@ export function GapSection() {
         </p>
 
         <p className="text-white/85 font-display text-base md:text-lg leading-relaxed mb-10">
-          The CLEAR Method trains that habit &mdash; not by teaching more content, but by
-          building the automatic slow-down that prevents careless mistakes. It&rsquo;s what
-          sits between &ldquo;knowing the answer&rdquo; and &ldquo;getting the mark.&rdquo;
+          AnswerTheQuestion! is the only 11+ prep tool built around this. Every session
+          starts with a breathing exercise. Every question reinforces a five-step method
+          that builds calm, deliberate thinking. Children don&rsquo;t just learn to answer
+          questions &mdash; they learn to stay composed when it counts. That&rsquo;s the
+          difference between a child who <em>knows</em> the answer and a child who
+          <em>gets</em> the mark.
         </p>
 
         <Link
