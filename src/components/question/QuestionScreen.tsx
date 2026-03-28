@@ -34,10 +34,14 @@ export function QuestionScreen({
 }: QuestionScreenProps) {
   const { dyslexiaMode } = useDyslexiaMode();
   const flow = useQuestionFlow(question, weekConfig);
+  const timerMode = weekConfig.timerMode;
+  const timerEnabled = timerMode === 'visible' || timerMode === 'enforced';
+  // For 'visible' mode, use a very long duration so the timer never actually expires
+  const baseDuration = timerMode === 'visible' ? 600_000 : weekConfig.timePerQuestionMs;
   const timerDuration = dyslexiaMode
-    ? Math.round(weekConfig.timePerQuestionMs * 1.25)
-    : weekConfig.timePerQuestionMs;
-  const timer = useTimer(timerDuration);
+    ? Math.round(baseDuration * 1.25)
+    : baseDuration;
+  const timer = useTimer(timerDuration, timerEnabled);
   const { data } = flow;
   const { play } = useSoundEffects();
   const lastTickRef = useRef<number>(0);
@@ -59,9 +63,8 @@ export function QuestionScreen({
     setShowTimesUp(false);
   }, [question.id]);
 
-  // Timer tick sounds — only play in weeks 5+ (Building/Exam Ready phases)
-  // In Foundation phase (weeks 1-4), the timer is silent to avoid anxiety
-  const enableTimerSounds = weekConfig.weekNumber >= 5;
+  // Timer urgency sounds and auto-submit only apply in enforced mode
+  const enableTimerSounds = timerMode === 'enforced';
 
   useEffect(() => {
     if (!enableTimerSounds) return;
@@ -77,8 +80,9 @@ export function QuestionScreen({
     }
   }, [timer.percentRemaining, data.state, play, enableTimerSounds]);
 
-  // Auto-submit when timer runs out — show "Time's Up!" briefly first
+  // Auto-submit when timer runs out — only in enforced mode, show "Time's Up!" briefly first
   useEffect(() => {
+    if (timerMode !== 'enforced') return;
     if (timer.isExpired && dataStateRef.current !== 'FEEDBACK' && dataStateRef.current !== 'COMPLETE') {
       setShowTimesUp(true);
       const id = setTimeout(() => {
@@ -87,7 +91,7 @@ export function QuestionScreen({
       }, 1200);
       return () => clearTimeout(id);
     }
-  }, [timer.isExpired]);
+  }, [timer.isExpired, timerMode]);
 
   const handleComplete = useCallback(() => {
     if (!data.techniqueScore) return;
@@ -181,49 +185,53 @@ export function QuestionScreen({
           </span>
         </div>
 
-        <div
-          className={`flex items-center gap-2 text-sm px-2 py-1 rounded-lg transition-all ${
-            !enableTimerSounds
-              ? '' // Foundation: no colour changes, keep calm
-              : timer.percentRemaining < 20 ? 'bg-red-50 animate-pulse'
-              : timer.percentRemaining < 40 ? 'bg-amber-50' : ''
-          }`}
-          role="timer"
-          aria-live="polite"
-          aria-label={`${timer.display} remaining`}
-        >
-          <Clock className={`w-4 h-4 ${
-            !enableTimerSounds
-              ? (dyslexiaMode ? 'text-gray-600' : 'text-gray-400') // Foundation: always calm
-              : timer.percentRemaining < 20 ? 'text-rainbow-red'
-              : timer.percentRemaining < 40 ? 'text-celebrate-amber'
-              : dyslexiaMode ? 'text-gray-600' : 'text-gray-400'
-          }`} aria-hidden="true" />
-          <span className={`font-display font-bold ${
-            !enableTimerSounds
-              ? 'text-gray-600' // Foundation: always calm
-              : timer.percentRemaining < 20 ? 'text-rainbow-red text-base'
-              : timer.percentRemaining < 40 ? 'text-celebrate-amber'
-              : 'text-gray-600'
-          }`}>
-            {timer.display}
-          </span>
-        </div>
+        {timerMode !== 'off' && (
+          <div
+            className={`flex items-center gap-2 text-sm px-2 py-1 rounded-lg transition-all ${
+              !enableTimerSounds
+                ? '' // visible mode: no colour urgency
+                : timer.percentRemaining < 20 ? 'bg-red-50 animate-pulse'
+                : timer.percentRemaining < 40 ? 'bg-amber-50' : ''
+            }`}
+            role="timer"
+            aria-live="polite"
+            aria-label={`${timer.display} remaining`}
+          >
+            <Clock className={`w-4 h-4 ${
+              !enableTimerSounds
+                ? (dyslexiaMode ? 'text-gray-600' : 'text-gray-400') // visible mode: always calm
+                : timer.percentRemaining < 20 ? 'text-rainbow-red'
+                : timer.percentRemaining < 40 ? 'text-celebrate-amber'
+                : dyslexiaMode ? 'text-gray-600' : 'text-gray-400'
+            }`} aria-hidden="true" />
+            <span className={`font-display font-bold ${
+              !enableTimerSounds
+                ? 'text-gray-600' // visible mode: always calm
+                : timer.percentRemaining < 20 ? 'text-rainbow-red text-base'
+                : timer.percentRemaining < 40 ? 'text-celebrate-amber'
+                : 'text-gray-600'
+            }`}>
+              {timer.display}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Timer bar */}
-      <div className="h-2.5 bg-focus-100 rounded-full overflow-hidden" role="progressbar" aria-label="Time remaining" aria-valuenow={Math.round(timer.percentRemaining)} aria-valuemin={0} aria-valuemax={100}>
-        <div
-          className={`h-full rounded-full transition-all duration-1000 ${
-            !enableTimerSounds
-              ? 'bg-focus-400' // Foundation: always calm colour
-              : timer.percentRemaining < 20 ? 'bg-rainbow-red'
-              : timer.percentRemaining < 50 ? 'bg-celebrate-amber'
-              : 'bg-focus-400'
-          }`}
-          style={{ width: `${timer.percentRemaining}%` }}
-        />
-      </div>
+      {/* Timer bar — only shown when timer is active (visible or enforced) */}
+      {timerMode !== 'off' && (
+        <div className="h-2.5 bg-focus-100 rounded-full overflow-hidden" role="progressbar" aria-label="Time remaining" aria-valuenow={Math.round(timer.percentRemaining)} aria-valuemin={0} aria-valuemax={100}>
+          <div
+            className={`h-full rounded-full transition-all duration-1000 ${
+              !enableTimerSounds
+                ? 'bg-focus-400' // visible mode: always calm colour
+                : timer.percentRemaining < 20 ? 'bg-rainbow-red'
+                : timer.percentRemaining < 50 ? 'bg-celebrate-amber'
+                : 'bg-focus-400'
+            }`}
+            style={{ width: `${timer.percentRemaining}%` }}
+          />
+        </div>
+      )}
 
       {/* Step banner — big bold instructions for heavy scaffolding */}
       {showStepBanner && (
