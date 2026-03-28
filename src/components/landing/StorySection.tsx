@@ -21,9 +21,10 @@ export function StorySection() {
             She read it again. &ldquo;Blue,&rdquo; she said.<br />
             I took a breath. &ldquo;No. Read it out loud. Every word.&rdquo;<br />
             She sighed, picked up the paper, and read: &ldquo;In what year&hellip;&rdquo; She stopped.<br />
-            &ldquo;Oh. The question is asking for a year.&rdquo;<br />
-            &ldquo;So what is the answer?&rdquo;<br />
-            &ldquo;1957.&rdquo;
+            &ldquo;D&rsquo;uh! It is meant to be a year!&rdquo;<br />
+            &ldquo;Yes. So, what is the answer?&rdquo;<br />
+            &ldquo;1957.&rdquo;<br />
+            <span className="not-italic text-gray-400 text-sm">Finally.</span>
           </p>
 
           <p className="text-gray-700 font-display text-base leading-relaxed italic mb-5">
