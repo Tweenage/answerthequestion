@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Subject } from '../types/question';
-import type { DailySession, QuestionResult, StreakData, SubjectProgress, UserProgress, MistakeQueueItem } from '../types/progress';
+import type { DailySession, QuestionResult, StreakData, SubjectProgress, UserProgress, MistakeQueueItem, CategoryMastery } from '../types/progress';
 import type { EarnedBadge } from '../types/badge';
 import { supabase } from '../lib/supabase';
 import { showSyncToast } from '../components/SyncToast';
@@ -68,6 +68,7 @@ const createEmptyProgress = (userId: string): UserProgress => ({
   mistakeQueue: [],
   dailyChallenge: { lastCompletedDate: null, streak: 0, totalCompleted: 0, totalCorrect: 0 },
   mockExams: { totalAttempted: 0, bestScore: 0, lastAttemptDate: null },
+  categoryMastery: {},
 });
 
 interface ProgressState {
@@ -87,6 +88,7 @@ interface ProgressState {
   updateMistakeQueue: (userId: string, questionId: string, gotCorrect: boolean) => void;
   completeDailyChallenge: (userId: string, date: string, correct: boolean, xpEarned: number) => void;
   saveMockExam: (userId: string, score: number, date: string) => void;
+  updateCategoryMastery: (childId: string, category: string, correct: boolean) => void;
 
   // Supabase sync
   syncProgressToSupabase: (userId: string) => Promise<void>;
@@ -173,6 +175,10 @@ export const useProgressStore = create<ProgressState>()(
         // Ensure subjectScores has 'reasoning' (migrates old VR/NVR data)
         if (!p.subjectScores['reasoning'] || (p.subjectScores as Record<string, SubjectProgress>)['verbal-reasoning']) {
           p.subjectScores = migrateSubjectScores(p.subjectScores as Record<string, SubjectProgress>);
+        }
+        // Ensure categoryMastery exists for users who had progress before this field was added
+        if (!p.categoryMastery) {
+          p.categoryMastery = {};
         }
         return p;
       },
@@ -472,6 +478,27 @@ export const useProgressStore = create<ProgressState>()(
         if (updatedProgress) pushProgressToSupabase(updatedProgress).catch(syncError);
       },
 
+      updateCategoryMastery: (childId, category, correct) => {
+        set(state => {
+          const progress = state.progressByUser[childId];
+          if (!progress) return state;
+          const existing = progress.categoryMastery[category] ?? { recentAttempts: [], lastSeenDate: '' };
+          const recentAttempts = [...existing.recentAttempts, correct].slice(-10);
+          return {
+            progressByUser: {
+              ...state.progressByUser,
+              [childId]: {
+                ...progress,
+                categoryMastery: {
+                  ...progress.categoryMastery,
+                  [category]: { recentAttempts, lastSeenDate: new Date().toISOString().split('T')[0] },
+                },
+              },
+            },
+          };
+        });
+      },
+
       // ---- Supabase fetch/sync methods ----
 
       syncProgressToSupabase: async (userId) => {
@@ -560,6 +587,8 @@ export const useProgressStore = create<ProgressState>()(
             mistakeQueue: (progressData as Record<string, unknown>).mistake_queue as MistakeQueueItem[] ?? [],
             dailyChallenge: (progressData as Record<string, unknown>).daily_challenge as UserProgress['dailyChallenge'] ?? { lastCompletedDate: null, streak: 0, totalCompleted: 0, totalCorrect: 0 },
             mockExams: (progressData as Record<string, unknown>).mock_exams as UserProgress['mockExams'] ?? { totalAttempted: 0, bestScore: 0, lastAttemptDate: null },
+            // categoryMastery is local-only (not stored in Supabase); preserve local data when merging
+            categoryMastery: (get().progressByUser[userId]?.categoryMastery ?? {}) as CategoryMastery,
           } : null;
 
           // Merge: use whichever has more data

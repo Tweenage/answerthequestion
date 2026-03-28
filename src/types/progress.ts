@@ -59,6 +59,13 @@ export interface MockExamProgress {
   lastAttemptDate: string | null;
 }
 
+export interface CategoryMasteryEntry {
+  recentAttempts: boolean[];   // Last 10 correct/wrong results (true = correct)
+  lastSeenDate: string;        // ISO date string
+}
+
+export type CategoryMastery = Record<string, CategoryMasteryEntry>;
+
 export interface UserProgress {
   userId: string;
   currentWeek: number;
@@ -74,4 +81,5 @@ export interface UserProgress {
   mistakeQueue: MistakeQueueItem[];
   dailyChallenge: DailyChallengeProgress;
   mockExams: MockExamProgress;
+  categoryMastery: CategoryMastery;
 }

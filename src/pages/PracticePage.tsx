@@ -18,7 +18,7 @@ import { SUBJECT_LABELS } from '../types/question';
 
 export function PracticePage() {
   const currentUser = useCurrentUser();
-  const { getProgress, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue } = useProgressStore();
+  const { getProgress, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue, updateCategoryMastery } = useProgressStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const VALID_SUBJECTS: Subject[] = ['english', 'maths', 'reasoning'];
@@ -44,7 +44,7 @@ export function PracticePage() {
     [progress?.mistakeQueue, progress?.sessions]
   );
 
-  const questions = useDailyQuestions(weekConfig, answeredIds, focusSubject ?? undefined, mistakeQuestionIds);
+  const questions = useDailyQuestions(weekConfig, answeredIds, focusSubject ?? undefined, mistakeQuestionIds, progress?.categoryMastery ?? {});
 
   const [showBreathing, setShowBreathing] = useState(true);
   const currentWeek = progress?.currentWeek ?? 1;
@@ -94,10 +94,18 @@ export function PracticePage() {
           updateMistakeQueue(currentUser.id, r.questionId, true);
         }
       }
+
+      // Update category mastery for adaptive question selection
+      for (const r of results) {
+        const q = questions.find(q => q.id === r.questionId);
+        if (q?.category) {
+          updateCategoryMastery(currentUser.id, q.category, r.correct);
+        }
+      }
     }
 
     setSessionComplete(true);
-  }, [results, questions.length, currentUser, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue, mistakeQuestionIds]);
+  }, [results, questions, currentUser, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue, updateCategoryMastery, mistakeQuestionIds]);
 
   const handleQuestionComplete = useCallback((result: QuestionResult) => {
     setResults(prev => {
