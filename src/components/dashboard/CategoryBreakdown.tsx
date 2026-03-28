@@ -1,5 +1,6 @@
 import type { CategoryScore } from '../../utils/dashboardAnalytics';
 import type { Subject } from '../../types/question';
+import { getBondName, BOND_TAXONOMY } from '../../data/bondTaxonomy';
 
 interface CategoryBreakdownProps {
   categoryScores: CategoryScore[];
@@ -9,55 +10,6 @@ const SUBJECT_LABELS: Record<Subject, string> = {
   english: 'English',
   maths: 'Maths',
   reasoning: 'Reasoning',
-};
-
-const CATEGORY_LABELS: Record<string, string> = {
-  'comprehension-what': 'What questions',
-  'comprehension-who': 'Who questions',
-  'comprehension-where': 'Where questions',
-  'comprehension-when': 'When questions',
-  'comprehension-why': 'Why questions',
-  'comprehension-how-many': 'How many questions',
-  'comprehension-inference': 'Inference',
-  'vocabulary': 'Vocabulary',
-  'vocabulary-synonyms': 'Synonyms',
-  'vocabulary-antonyms': 'Antonyms',
-  'vocabulary-in-context': 'Vocabulary in context',
-  'summarising': 'Summarising',
-  'figurative-language': 'Figurative language',
-  'authors-purpose': "Author's purpose",
-  'word-problems': 'Word problems',
-  'fractions': 'Fractions',
-  'percentages': 'Percentages',
-  'ratio': 'Ratio',
-  'algebra': 'Algebra',
-  'geometry': 'Geometry',
-  'averages': 'Averages',
-  'sequences': 'Sequences',
-  'place-value': 'Place value',
-  'number-properties': 'Number properties',
-  'arithmetic': 'Arithmetic',
-  'decimals': 'Decimals',
-  'negative-numbers': 'Negative numbers',
-  'missing-digits': 'Missing digits',
-  'measurement': 'Measurement',
-  'time': 'Time',
-  'money': 'Money',
-  'data': 'Data & charts',
-  'symmetry': 'Symmetry',
-  'coordinates': 'Coordinates',
-  'bodmas': 'BODMAS',
-  'probability': 'Probability',
-  'invented-operations': 'Invented operations',
-  'venn-diagrams': 'Venn diagrams',
-  'logic-sequence': 'Logic: sequences',
-  'logic-code': 'Logic: codes',
-  'logic-direction': 'Logic: directions',
-  'logic-venn': 'Logic: Venn',
-  'logic-grid': 'Logic: grids',
-  'logic-pattern': 'Logic: patterns',
-  'logic-deduction': 'Logic: deduction',
-  'compass': 'Compass directions',
 };
 
 const RAG_STYLES: Record<CategoryScore['rag'], { dot: string; bg: string; text: string }> = {
@@ -101,12 +53,16 @@ export function CategoryBreakdown({ categoryScores }: CategoryBreakdownProps) {
           <div className="space-y-1.5">
             {scores.map(score => {
               const style = RAG_STYLES[score.rag];
-              const label = CATEGORY_LABELS[score.category] ?? score.category;
               return (
                 <div key={score.category} className={`flex items-center justify-between rounded-lg px-3 py-2 ${style.bg}`}>
                   <div className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full shrink-0 ${style.dot}`} />
-                    <span className="font-display text-sm text-gray-700">{label}</span>
+                    <div className="flex flex-col">
+                      <span className="font-display text-sm text-gray-700">{getBondName(score.category)}</span>
+                      {BOND_TAXONOMY[score.category]?.description && (
+                        <span className="font-display text-xs text-gray-400">{BOND_TAXONOMY[score.category].description}</span>
+                      )}
+                    </div>
                   </div>
                   <span className={`font-display font-bold text-sm ${style.text}`}>
                     {score.accuracyPct}%
