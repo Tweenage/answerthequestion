@@ -8,6 +8,8 @@ import type { Subject } from '../types/question';
 import { useWeekConfig } from '../hooks/useWeekConfig';
 import { PHASE_LABELS } from '../types/programme';
 import { analyzeWeeklyProgress } from '../utils/dashboardAnalytics';
+import { allQuestions } from '../data/questions';
+import { CategoryBreakdown } from '../components/dashboard/CategoryBreakdown';
 
 const subjects: Subject[] = ['english', 'maths', 'reasoning'];
 const subjectBarColours: Record<Subject, string> = {
@@ -26,7 +28,7 @@ export function DashboardPage() {
   if (!currentUser) return null;
   const progress = getProgress(currentUser.id);
 
-  const analysis = analyzeWeeklyProgress(progress.sessions, progress.subjectScores, progress.streak);
+  const analysis = analyzeWeeklyProgress(progress.sessions, progress.subjectScores, progress.streak, allQuestions);
 
   return (
     <div className="space-y-4 py-2">
@@ -159,6 +161,9 @@ export function DashboardPage() {
           })}
         </div>
       </div>
+
+      {/* Category Breakdown */}
+      <CategoryBreakdown categoryScores={analysis.categoryScores} />
 
       {/* Streak Calendar */}
       <div className="bg-white rounded-card p-4 shadow-sm">

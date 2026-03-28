@@ -1,5 +1,14 @@
 import type { DailySession, SubjectProgress, StreakData } from '../types/progress';
-import type { Subject } from '../types/question';
+import type { Subject, Question } from '../types/question';
+
+export interface CategoryScore {
+  category: string;
+  subject: Subject;
+  attempted: number;
+  correct: number;
+  accuracyPct: number;  // 0-100
+  rag: 'red' | 'amber' | 'green';
+}
 
 export interface WeeklyAnalysis {
   sessionsThisWeek: number;
@@ -13,12 +22,14 @@ export interface WeeklyAnalysis {
   recommendations: string[];
   streakCalendar: { date: string; status: 'practised' | 'missed' | 'freeze' | 'future' }[];
   recentSessions: DailySession[];
+  categoryScores: CategoryScore[];
 }
 
 export function analyzeWeeklyProgress(
   sessions: DailySession[],
   subjectScores: Record<Subject, SubjectProgress>,
   streak: StreakData,
+  questions: Question[],
 ): WeeklyAnalysis {
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
@@ -106,6 +117,36 @@ export function analyzeWeeklyProgress(
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 14);
 
+  // Build category lookup from question bank
+  const questionLookup = new Map(questions.map(q => [q.id, { category: q.category, subject: q.subject }]));
+
+  // Accumulate per-category stats across all sessions
+  const catMap = new Map<string, { subject: Subject; attempted: number; correct: number }>();
+
+  for (const session of sessions) {
+    for (const result of session.questions) {
+      const meta = questionLookup.get(result.questionId);
+      if (!meta?.category) continue;
+      const key = meta.category;
+      const existing = catMap.get(key) ?? { subject: meta.subject, attempted: 0, correct: 0 };
+      catMap.set(key, {
+        subject: meta.subject,
+        attempted: existing.attempted + 1,
+        correct: existing.correct + (result.correct ? 1 : 0),
+      });
+    }
+  }
+
+  // Convert to sorted array, compute RAG (weakest first)
+  const categoryScores: CategoryScore[] = Array.from(catMap.entries())
+    .filter(([, v]) => v.attempted >= 3)
+    .map(([category, v]) => {
+      const accuracyPct = Math.round((v.correct / v.attempted) * 100);
+      const rag: CategoryScore['rag'] = accuracyPct >= 80 ? 'green' : accuracyPct >= 60 ? 'amber' : 'red';
+      return { category, subject: v.subject, attempted: v.attempted, correct: v.correct, accuracyPct, rag };
+    })
+    .sort((a, b) => a.accuracyPct - b.accuracyPct);
+
   return {
     sessionsThisWeek: last7.length,
     sessionsLastWeek: prev7.length,
@@ -118,5 +159,6 @@ export function analyzeWeeklyProgress(
     recommendations,
     streakCalendar: calendar,
     recentSessions,
+    categoryScores,
   };
 }
