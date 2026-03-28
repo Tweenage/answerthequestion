@@ -14,10 +14,18 @@ export function StorySection() {
             My daughter had just finished her 11+ comprehension practice. I started marking
             and stopped cold at Question 1: &ldquo;In what year did scientists discover
             the colour of&hellip;&rdquo; Her answer? Blue.
-            <br /><br />
-            I asked her to read it again &mdash; out loud. She got to &ldquo;In what
-            year&hellip;&rdquo; and immediately: &ldquo;D&rsquo;uh! It&rsquo;s meant to be
-            1957!&rdquo; She had known the answer all along. She just hadn&rsquo;t read
+          </p>
+
+          <p className="text-gray-700 font-display text-base leading-relaxed italic mb-5">
+            &ldquo;Read it again,&rdquo; I said. She read it again. &ldquo;Blue,&rdquo;
+            she said. I took a breath. &ldquo;Read it out loud. Every word.&rdquo;
+            She sighed, picked up the paper, and read: &ldquo;In what year&hellip;&rdquo;
+            She stopped. &ldquo;Oh. The question is asking for a year.&rdquo;
+            &ldquo;So what is the answer?&rdquo; &ldquo;1957.&rdquo;
+          </p>
+
+          <p className="text-gray-700 font-display text-base leading-relaxed italic mb-5">
+            She had known the answer the whole time. She just hadn&rsquo;t read
             the question.
           </p>
 
