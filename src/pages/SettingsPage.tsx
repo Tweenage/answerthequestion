@@ -7,8 +7,6 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useDyslexiaMode } from '../hooks/useDyslexiaMode';
 import { supabase } from '../lib/supabase';
 import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
-import { EXAM_BOARD_PRESETS } from '../data/programme/examBoardPresets';
-import type { ExamBoard } from '../data/programme/examBoardPresets';
 
 const CHARACTER_EMOJIS: Record<string, string> = {
   cat: '🐱',
@@ -39,10 +37,6 @@ export function SettingsPage() {
   const [selectedColour, setSelectedColour] = useState(currentUser?.avatar.colour ?? '#8b5cf6');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  const [selectedExamBoard, setSelectedExamBoard] = useState<ExamBoard>(currentUser?.examBoard ?? 'generic');
-  const [examBoardSaving, setExamBoardSaving] = useState(false);
-  const [examBoardSaved, setExamBoardSaved] = useState(false);
 
   // Delete account state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -76,18 +70,6 @@ export function SettingsPage() {
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
-  };
-
-  const handleSaveExamBoard = async (board: ExamBoard) => {
-    setExamBoardSaving(true);
-    updateChildLocally(currentUser.id, { examBoard: board });
-    await supabase
-      .from('child_profiles')
-      .update({ exam_board: board })
-      .eq('id', currentUser.id);
-    setExamBoardSaving(false);
-    setExamBoardSaved(true);
-    setTimeout(() => setExamBoardSaved(false), 2000);
   };
 
   return (
@@ -203,43 +185,6 @@ export function SettingsPage() {
           </motion.button>
         )}
         {saved && (
-          <p className="text-center text-sm font-display font-bold text-green-600">
-            ✅ Saved!
-          </p>
-        )}
-      </div>
-
-      {/* Exam Board */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm space-y-3">
-        <div>
-          <h3 className="font-display font-bold text-base text-gray-800">Which exam is your child preparing for?</h3>
-          <p className="text-sm text-gray-500 font-display mt-1">
-            This adjusts the mix of question types to match your exam board.
-          </p>
-        </div>
-        <div className="space-y-2">
-          {(Object.entries(EXAM_BOARD_PRESETS) as [ExamBoard, typeof EXAM_BOARD_PRESETS[ExamBoard]][]).map(([key, preset]) => (
-            <button
-              key={key}
-              onClick={async () => {
-                setSelectedExamBoard(key);
-                await handleSaveExamBoard(key);
-              }}
-              className={`w-full text-left px-3 py-2.5 rounded-xl transition-all border ${
-                selectedExamBoard === key
-                  ? 'ring-2 ring-purple-400 border-purple-300 bg-purple-50'
-                  : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
-              }`}
-            >
-              <p className="font-display font-bold text-sm text-gray-800">{preset.label}</p>
-              <p className="font-display text-xs text-gray-500 mt-0.5">{preset.description}</p>
-            </button>
-          ))}
-        </div>
-        {examBoardSaving && (
-          <p className="text-center text-sm font-display text-gray-400">Saving...</p>
-        )}
-        {examBoardSaved && (
           <p className="text-center text-sm font-display font-bold text-green-600">
             ✅ Saved!
           </p>
