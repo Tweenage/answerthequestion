@@ -6,15 +6,15 @@ const PHASES = [
     name: 'Foundation',
     emoji: '🌱',
     weeks: '1–4',
-    description: 'Learn the CLEAR Method. Build the habit of reading carefully.',
+    description: 'Build the habit from scratch. Slow down. Breathe. Read every word. The five CLEAR steps, repeated every session — until they start to feel natural.',
     bg: 'bg-amber-500',
     tint: 'bg-amber-50 border-amber-200/60',
   },
   {
-    name: 'Improvers',
+    name: 'Building',
     emoji: '🔥',
     weeks: '5–8',
-    description: 'Faster pace, trickier questions. Sharpen under time pressure.',
+    description: 'The pace increases. The questions get harder. The habit holds. This is where composure under pressure starts to form — and where children begin to trust the method.',
     bg: 'bg-orange-500',
     tint: 'bg-orange-50 border-orange-200/60',
   },
@@ -22,7 +22,7 @@ const PHASES = [
     name: 'Exam Ready',
     emoji: '🚀',
     weeks: '9–12',
-    description: 'Embedded habits. Real confidence. Exam ready.',
+    description: 'The method is locked in. No scaffolding, no prompts. Just a child who knows exactly what to do when the clock is running — and stays calm enough to do it.',
     bg: 'bg-rose-500',
     tint: 'bg-rose-50 border-rose-200/60',
   },
@@ -49,8 +49,8 @@ export function JourneySection() {
             The 12-Week Journey
           </h2>
           <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-10">
-            A structured programme that builds real exam technique &mdash;
-            week by week, step by step.
+            Twelve weeks from hesitant to automatic. Not just technique &mdash; the calm,
+            deliberate thinking that holds up when it actually matters.
           </p>
 
           {/* Phases */}
@@ -90,7 +90,7 @@ export function JourneySection() {
               10 questions. 10 minutes. Done.
             </p>
             <p className="font-display text-sm md:text-base text-purple-600 mt-2">
-              Short enough to fit around homework &mdash; powerful enough to build a lasting habit.
+              Short enough to fit around homework. Repeated often enough to lock the habit in for good.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export function JourneySection() {
               to="/checkout"
               className="inline-block w-full max-w-md py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get started &mdash; &pound;19.99
+              Get Answer the Question &mdash; &pound;19.99 &rarr;
             </Link>
           </div>
         </motion.div>
