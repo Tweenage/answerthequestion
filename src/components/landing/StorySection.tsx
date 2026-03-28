@@ -39,7 +39,7 @@ export function StorySection() {
           </p>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            &ldquo;Within a week of using the programme, my daughter&rsquo;s practice
+            &ldquo;Within a couple of weeks of using the programme, my daughter&rsquo;s practice
             test scores improved by over 10%.&rdquo;
           </p>
 
