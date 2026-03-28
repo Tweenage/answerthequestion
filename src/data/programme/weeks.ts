@@ -5,6 +5,7 @@ export const programmeWeeks: WeekConfig[] = [
   // Generous timers — children are learning the technique steps
   {
     weekNumber: 1,
+    timerMode: 'off',
     phase: 'foundation',
     difficulty: 1,
     scaffoldingLevel: 'heavy',
@@ -18,6 +19,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 2,
+    timerMode: 'off',
     phase: 'foundation',
     difficulty: 1,
     scaffoldingLevel: 'heavy',
@@ -31,6 +33,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 3,
+    timerMode: 'visible',
     phase: 'foundation',
     difficulty: 1,
     scaffoldingLevel: 'heavy',
@@ -44,6 +47,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 4,
+    timerMode: 'visible',
     phase: 'foundation',
     difficulty: 1,
     scaffoldingLevel: 'heavy',
@@ -60,6 +64,7 @@ export const programmeWeeks: WeekConfig[] = [
   // Less scaffolding = fewer steps = can go a bit faster
   {
     weekNumber: 5,
+    timerMode: 'enforced',
     phase: 'building',
     difficulty: 2,
     scaffoldingLevel: 'medium',
@@ -73,6 +78,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 6,
+    timerMode: 'enforced',
     phase: 'building',
     difficulty: 2,
     scaffoldingLevel: 'medium',
@@ -86,6 +92,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 7,
+    timerMode: 'enforced',
     phase: 'building',
     difficulty: 2,
     scaffoldingLevel: 'medium',
@@ -99,6 +106,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 8,
+    timerMode: 'enforced',
     phase: 'building',
     difficulty: 2,
     scaffoldingLevel: 'medium',
@@ -115,6 +123,7 @@ export const programmeWeeks: WeekConfig[] = [
   // Approaching real exam pace (~50-60s per question)
   {
     weekNumber: 9,
+    timerMode: 'enforced',
     phase: 'exam-ready',
     difficulty: 3,
     scaffoldingLevel: 'light',
@@ -128,6 +137,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 10,
+    timerMode: 'enforced',
     phase: 'exam-ready',
     difficulty: 3,
     scaffoldingLevel: 'light',
@@ -141,6 +151,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 11,
+    timerMode: 'enforced',
     phase: 'exam-ready',
     difficulty: 3,
     scaffoldingLevel: 'light',
@@ -154,6 +165,7 @@ export const programmeWeeks: WeekConfig[] = [
   },
   {
     weekNumber: 12,
+    timerMode: 'enforced',
     phase: 'exam-ready',
     difficulty: 3,
     scaffoldingLevel: 'light',

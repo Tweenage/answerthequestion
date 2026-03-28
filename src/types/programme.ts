@@ -2,9 +2,11 @@ import type { Difficulty, Subject } from './question';
 
 export type Phase = 'foundation' | 'building' | 'exam-ready';
 export type ScaffoldingLevel = 'heavy' | 'medium' | 'light';
+export type TimerMode = 'off' | 'visible' | 'enforced';
 
 export interface WeekConfig {
   weekNumber: number;
+  timerMode: TimerMode;
   phase: Phase;
   difficulty: Difficulty;
   scaffoldingLevel: ScaffoldingLevel;
