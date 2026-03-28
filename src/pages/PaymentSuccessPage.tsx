@@ -315,7 +315,7 @@ export function PaymentSuccessPage() {
           >
             {isGuest
               ? 'Payment received! Create your account to start the 12-week programme.'
-              : 'Full access unlocked! All 12 weeks of technique training, mock exams, and more are now yours. Let\u2019s keep building those exam skills!'}
+              : 'Full access unlocked! All 12 weeks of technique training, Timed Challenges, and more are now yours. Let\u2019s keep building those exam skills!'}
           </motion.p>
         </div>
 

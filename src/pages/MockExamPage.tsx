@@ -88,7 +88,7 @@ export function MockExamPage() {
         <ProfessorHoot
           mood="teaching"
           size="lg"
-          message={`Mock exams unlock in Week ${Math.ceil(totalWeeks / 2)}, ${currentUser.name}! You're on Week ${progress.currentWeek} — keep building your technique!`}
+          message={`Timed Challenges unlock in Week ${Math.ceil(totalWeeks / 2)}, ${currentUser.name}! You're on Week ${progress.currentWeek} — keep building your technique!`}
           showSpeechBubble
           animate
         />
@@ -119,9 +119,9 @@ export function MockExamPage() {
 
     const getMessage = () => {
       if (score >= 90) return `Exam confidence: HIGH! You're absolutely ready, ${currentUser.name}!`;
-      if (score >= 75) return `Great exam practice, ${currentUser.name}! A few more mocks and you'll be flying!`;
-      if (score >= 50) return `Good effort, ${currentUser.name}! Focus on your weaker subjects before the next mock.`;
-      return `Every mock exam helps you learn, ${currentUser.name}. You're building strength!`;
+      if (score >= 75) return `Great exam practice, ${currentUser.name}! A few more Timed Challenges and you'll be flying!`;
+      if (score >= 50) return `Good effort, ${currentUser.name}! Focus on your weaker subjects before the next Timed Challenge.`;
+      return `Every Timed Challenge helps you learn, ${currentUser.name}. You're building strength!`;
     };
 
     return (
@@ -148,7 +148,7 @@ export function MockExamPage() {
       <div className="mb-3 text-center">
         <span className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-700 text-white px-5 py-2 rounded-full text-sm font-display font-bold shadow-md">
           <BarChart3 className="w-4 h-4" />
-          Mock Exam · {currentIndex + 1}/{questions.length}
+          Timed Challenge · {currentIndex + 1}/{questions.length}
         </span>
       </div>
       <QuestionScreen
@@ -188,7 +188,7 @@ function MockExamResultScreen({
       <ConfettiExplosion trigger={showConfetti} />
 
       <div className="text-center pt-2">
-        <h2 className="font-display font-extrabold text-2xl text-white">Mock Exam Complete!</h2>
+        <h2 className="font-display font-extrabold text-2xl text-white">Timed Challenge Complete!</h2>
       </div>
 
       {/* Big score */}
@@ -253,7 +253,7 @@ function MockExamResultScreen({
       {/* Action buttons */}
       <div className="space-y-3">
         <button onClick={onTryAgain} className="w-full py-3.5 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-indigo-600 to-purple-700 hover:opacity-90 transition-opacity">
-          Try Another Mock 📝
+          Try Another Timed Challenge 📝
         </button>
         <button onClick={onGoHome} className="w-full py-3.5 rounded-button font-display font-bold text-white text-lg rainbow-gradient hover:opacity-90 transition-opacity">
           Back to the Nest! 🦉

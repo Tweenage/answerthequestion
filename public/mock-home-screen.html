@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #1e1b4b 0%, #4c1d95 25%, #7c3aed 55%, #c026d3 80%, #db2777 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  .phone {
+    width: 390px;
+    min-height: 844px;
+    padding: 16px 16px 80px;
+    position: relative;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .header-left h2 { color: white; font-weight: 900; font-size: 20px; }
+  .header-left p { color: rgba(255,255,255,0.65); font-size: 12px; font-weight: 600; margin-top: 1px; }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    background: linear-gradient(135deg, rgba(139,92,246,0.4) 0%, rgba(236,72,153,0.3) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .stat-value { color: white; font-weight: 900; font-size: 22px; line-height: 1; }
+  .stat-label { color: rgba(255,255,255,0.65); font-size: 10px; font-weight: 700; margin-top: 3px; letter-spacing: 0.03em; }
+  .stat-icon { font-size: 16px; margin-bottom: 3px; }
+
+  /* Daily challenge card */
+  .challenge-card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .card-title { font-weight: 900; font-size: 15px; color: #1f2937; }
+  .badge {
+    background: linear-gradient(90deg, #a855f7, #ec4899);
+    color: white; font-size: 10px; font-weight: 800;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .week-label { color: #6b7280; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+
+  /* Progress dots */
+  .dots-row { display: flex; gap: 5px; margin-bottom: 14px; }
+  .dot {
+    height: 8px; border-radius: 999px;
+    transition: all .3s;
+  }
+  .dot.done { background: linear-gradient(90deg, #a855f7, #ec4899); width: 16px; }
+  .dot.active { background: #a855f7; width: 24px; opacity: 0.5; }
+  .dot.todo { background: #e5e7eb; width: 8px; }
+
+  .start-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    color: white; border: none; border-radius: 14px;
+    padding: 13px; font-family: 'Nunito', sans-serif;
+    font-weight: 800; font-size: 15px; cursor: pointer;
+  }
+
+  /* Week journey */
+  .journey-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .journey-title { color: white; font-weight: 900; font-size: 14px; margin-bottom: 12px; }
+  .phase-row { display: flex; gap: 6px; }
+  .phase-block {
+    flex: 1; border-radius: 10px; padding: 8px 6px; text-align: center;
+  }
+  .phase-block.done { background: rgba(168,85,247,0.4); }
+  .phase-block.active { background: rgba(236,72,153,0.35); border: 1px solid rgba(236,72,153,0.5); }
+  .phase-block.future { background: rgba(255,255,255,0.08); }
+  .phase-name { color: white; font-size: 10px; font-weight: 800; }
+  .phase-weeks { color: rgba(255,255,255,0.6); font-size: 9px; font-weight: 600; margin-top: 2px; }
+  .phase-week-indicator { color: white; font-size: 11px; font-weight: 900; margin-top: 3px; }
+
+  /* Streak info */
+  .streak-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 10px 14px; margin-bottom: 12px;
+  }
+  .streak-fire { font-size: 22px; }
+  .streak-text strong { color: white; font-size: 14px; font-weight: 900; display: block; }
+  .streak-text span { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 390px;
+    background: rgba(15,10,40,0.92);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-around;
+    padding: 10px 0 16px;
+  }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .nav-icon { font-size: 20px; }
+  .nav-label { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 700; }
+  .nav-item.active .nav-label { color: #a855f7; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h2>Hi, Amelia! 👋</h2>
+      <p>Week 3 · Foundation phase</p>
+    </div>
+    <div class="avatar">🦉</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value">7</div>
+      <div class="stat-label">Day streak</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-value">840</div>
+      <div class="stat-label">Total XP</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">78%</div>
+      <div class="stat-label">Technique</div>
+    </div>
+  </div>
+
+  <!-- Daily challenge -->
+  <div class="challenge-card">
+    <div class="card-header">
+      <div class="card-title">Today's Session</div>
+      <div class="badge">10 min</div>
+    </div>
+    <div class="week-label">10 questions · Maths, English & Reasoning</div>
+    <div class="dots-row">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot active"></div>
+      <div class="dot todo"></div>
+      <div class="dot todo"></div>
+      <div class="dot todo"></div>
+    </div>
+    <button class="start-btn">▶ Start today's session</button>
+  </div>
+
+  <!-- Week journey -->
+  <div class="journey-card">
+    <div class="journey-title">🗺️ Your 12-Week Journey</div>
+    <div class="phase-row">
+      <div class="phase-block active">
+        <div class="phase-name">Foundation</div>
+        <div class="phase-weeks">Weeks 1–4</div>
+        <div class="phase-week-indicator">W3 ▶</div>
+      </div>
+      <div class="phase-block future">
+        <div class="phase-name">Building</div>
+        <div class="phase-weeks">Weeks 5–8</div>
+      </div>
+      <div class="phase-block future">
+        <div class="phase-name">Exam Ready</div>
+        <div class="phase-weeks">Weeks 9–12</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Streak -->
+  <div class="streak-bar">
+    <span class="streak-fire">🔥</span>
+    <div class="streak-text">
+      <strong>7-day streak — keep it going!</strong>
+      <span>Longest streak: 7 days</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<div class="bottom-nav">
+  <div class="nav-item active">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label" style="color:#a855f7">Home</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">Progress</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">🏆</div>
+    <div class="nav-label">Badges</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">Settings</div>
+  </div>
+</div>
+
+</body>
+</html>

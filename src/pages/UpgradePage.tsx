@@ -11,7 +11,7 @@ import { supabase } from '../lib/supabase';
 const FEATURES = [
   { emoji: '📖', text: 'All 12 weeks of guided technique training' },
   { emoji: '🎯', text: 'English, Maths & Reasoning questions' },
-  { emoji: '📝', text: 'Full mock exams with real timing' },
+  { emoji: '📝', text: 'Full Timed Challenges with real timing' },
   { emoji: '🏅', text: 'Complete badge collection & achievements' },
   { emoji: '🧘', text: 'Visualisation & breathing exercises' },
   { emoji: '📊', text: 'Parent dashboard with progress tracking' },

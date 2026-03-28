@@ -89,7 +89,11 @@
       "Bash(for dir:*)",
       "Read(//Users/rebeccaeverton/11+ Read the Question/$dir/**)",
       "Bash(wc -l \"/Users/rebeccaeverton/11+ Read the Question/src/data/questions/\"*.ts)",
-      "Bash(find src/data/questions -name '*.ts' -exec wc -l {} +)"
+      "Bash(find src/data/questions -name '*.ts' -exec wc -l {} +)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(grep -h \"category:\" src/data/questions/*.ts)"
     ]
   }
 }

@@ -1,0 +1,94 @@
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f8f7ff; }
+
+  .label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+
+  .side-by-side { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px; max-width: 960px; margin: 0 auto; }
+  @media (max-width: 700px) { .side-by-side { grid-template-columns: 1fr; } }
+
+  .hero-card {
+    border-radius: 16px; overflow: hidden; cursor: pointer;
+    border: 3px solid transparent; transition: border-color .2s, box-shadow .2s;
+  }
+  .hero-card:hover { box-shadow: 0 0 0 3px #a855f7; }
+  .hero-card.selected { border-color: #a855f7; box-shadow: 0 0 0 3px #a855f7; }
+  .hero-card .tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 999px; margin-bottom: 12px;
+  }
+
+  /* Option A — keep gradient, clean it up */
+  .hero-a {
+    background: linear-gradient(145deg, #1e1b4b 0%, #5b21b6 40%, #db2777 100%);
+    padding: 28px 24px 32px;
+    color: white;
+  }
+  .hero-a nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; font-size: 13px; opacity: .8; }
+  .hero-a h1 { font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 14px; }
+  .hero-a h1 span { color: #f9a8d4; }
+  .hero-a p { font-size: 13px; line-height: 1.6; opacity: .85; margin-bottom: 20px; }
+  .hero-a .cta { background: linear-gradient(90deg, #ec4899, #8b5cf6); color: white; border: none; border-radius: 12px; padding: 14px 20px; font-weight: 800; font-size: 14px; width: 100%; cursor: pointer; }
+  .hero-a .micro { font-size: 11px; opacity: .6; margin-top: 10px; text-align: center; }
+  .hero-a .tag { background: rgba(255,255,255,.15); color: white; }
+
+  /* Option B — clean white with colour accent */
+  .hero-b {
+    background: #ffffff;
+    padding: 28px 24px 32px;
+    border: 1px solid #e5e7eb;
+  }
+  .hero-b nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; font-size: 13px; color: #6b7280; }
+  .hero-b nav strong { color: #111; }
+  .hero-b h1 { font-size: 22px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 14px; }
+  .hero-b h1 span { color: #7c3aed; }
+  .hero-b p { font-size: 13px; line-height: 1.6; color: #4b5563; margin-bottom: 20px; }
+  .hero-b .cta { background: linear-gradient(90deg, #ec4899, #8b5cf6); color: white; border: none; border-radius: 12px; padding: 14px 20px; font-weight: 800; font-size: 14px; width: 100%; cursor: pointer; }
+  .hero-b .micro { font-size: 11px; color: #9ca3af; margin-top: 10px; text-align: center; }
+  .hero-b .tag { background: #f3f4f6; color: #374151; }
+
+  .choice-label {
+    font-size: 13px; font-weight: 700; padding: 8px 14px;
+    background: #1e1b4b; color: white; text-align: center;
+  }
+  .hero-b .choice-label { background: #f9fafb; color: #374151; border-top: 1px solid #e5e7eb; }
+  .check { color: #a855f7; margin-right: 4px; }
+</style>
+
+<h2 style="text-align:center;padding:20px 20px 4px;font-size:18px;font-weight:800;">Hero section — which direction?</h2>
+<p class="subtitle" style="text-align:center;padding-bottom:16px;">Both use the exact same copy from the brief. Click to select your preference.</p>
+
+<div class="side-by-side">
+
+  <!-- Option A -->
+  <div class="hero-card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="hero-a">
+      <div class="tag">Option A</div>
+      <nav><span>🦉 AnswerTheQuestion!</span><span>Sign in</span></nav>
+      <h1>Your child knew the answer.<br>They just didn't <span>read the question.</span></h1>
+      <p>AnswerTheQuestion! is a 12-week programme that trains children to slow down, read carefully, and stop losing marks they already know. Built for 11+ and independent school exams. Just 10 minutes a day.</p>
+      <button class="cta">Start the 12-week programme — £19.99</button>
+      <p class="micro">One-time payment · Whole family · 7-day money-back guarantee</p>
+    </div>
+    <div class="choice-label">
+      <span class="check">◆</span> Keep the gradient — tidy it up
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="hero-card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="hero-b">
+      <div class="tag">Option B</div>
+      <nav><strong>🦉 AnswerTheQuestion!</strong><span>Sign in</span></nav>
+      <h1>Your child knew the answer.<br>They just didn't <span>read the question.</span></h1>
+      <p>AnswerTheQuestion! is a 12-week programme that trains children to slow down, read carefully, and stop losing marks they already know. Built for 11+ and independent school exams. Just 10 minutes a day.</p>
+      <button class="cta">Start the 12-week programme — £19.99</button>
+      <p class="micro">One-time payment · Whole family · 7-day money-back guarantee</p>
+    </div>
+    <div class="choice-label">
+      <span class="check">◆</span> Clean white — colour on CTA only
+    </div>
+  </div>
+
+</div>

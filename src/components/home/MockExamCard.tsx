@@ -16,7 +16,7 @@ export function MockExamCard({ currentWeek, mockExams }: MockExamCardProps) {
         <div className="flex items-center gap-3 opacity-60">
           <span className="text-2xl">🔒</span>
           <div>
-            <p className="font-display font-bold text-sm text-white">📝 Mock Exam Mode</p>
+            <p className="font-display font-bold text-sm text-white">📝 Timed Challenge Mode</p>
             <p className="text-xs font-display text-white/70">
               Unlocks in Week 6 — {6 - currentWeek} week{6 - currentWeek !== 1 ? 's' : ''} to go!
             </p>
@@ -33,7 +33,7 @@ export function MockExamCard({ currentWeek, mockExams }: MockExamCardProps) {
           <div className="flex items-center gap-3">
             <span className="text-2xl">📝</span>
             <div>
-              <p className="font-display font-bold text-sm text-white">Mock Exam Mode</p>
+              <p className="font-display font-bold text-sm text-white">Timed Challenge Mode</p>
               <p className="text-xs font-display text-white/70">
                 20 questions · exam conditions
               </p>
