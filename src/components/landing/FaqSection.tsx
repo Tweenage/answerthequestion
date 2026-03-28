@@ -33,9 +33,9 @@ const FAQ_ITEMS = [
       'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and Answer the Question automatically adapts the programme to fit the time you have. A short time with the right method beats a long time without it.',
   },
   {
-    question: 'We\u2019re already using Bond books \u2014 will this work alongside them?',
+    question: 'We\u2019re using Bond books. Will this work alongside them?',
     answer:
-      'Perfectly. Bond books are excellent for building knowledge. Answer the Question picks up where paper can\u2019t: it tracks exactly which question types your child is getting wrong, adapts to focus on their gaps, and builds the technique habits that paper practice alone won\u2019t drill. Many families use both \u2014 Bond for content coverage, ATQ to make sure the marks reflect what the child actually knows.',
+      'Yes \u2014 and it fills the gap Bond can\u2019t. Most 11+ exams are now taken on a screen, not on paper. Bond books build knowledge on paper; Answer the Question builds the exam technique on the same medium your child will actually be tested on. Many families use both: Bond for content coverage, ATQ to make sure the habit and the composure transfer to the real thing.',
   },
 ];
 
