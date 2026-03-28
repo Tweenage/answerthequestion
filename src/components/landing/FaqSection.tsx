@@ -3,49 +3,34 @@ import { motion } from 'framer-motion';
 
 const FAQ_ITEMS = [
   {
-    question: 'Which subjects does it cover?',
+    question: 'Why does my child lose marks when they know the content?',
     answer:
-      'AnswerTheQuestion! isn\u2019t about teaching the curriculum \u2014 it\u2019s about teaching exam technique. The questions are in the style of English, Maths and Reasoning, so your child practises the CLEAR Method across all the core 11+ and independent school exam subjects. It works because it teaches how to approach any question, not just specific content.',
+      'Knowing the content and answering the question correctly are two different skills. Most 11+ prep focuses on the first one. The CLEAR Method fixes the second — training children to read carefully, think deliberately, and answer what\u2019s actually on the page.',
   },
   {
-    question: 'How is this different from doing more practice papers?',
+    question: 'Is Answer the Question instead of Atom Learning?',
     answer:
-      'Practice papers test your child. AnswerTheQuestion! trains them. Even when children already know the material, they lose marks because they rush, misread, or panic. The CLEAR Method builds the exam-technique habit that practice papers assume your child already has.',
+      'No. Answer the Question is exam technique \u2014 the thing that makes content revision land under timed conditions. Atom Learning builds knowledge. This builds what you do with it when the clock is running.',
   },
   {
-    question: 'How long is each session?',
+    question: 'What age is it for?',
     answer:
-      'Each daily session is 10 questions and takes around 10 minutes. The timing gets shorter as your child moves through the programme, building speed and confidence under pressure. It\u2019s designed to be short enough to fit alongside homework and other activities, but focused enough to build real exam technique.',
+      'Year 4, 5 and 6 \u2014 ages 8\u201311. It works alongside existing tutoring or self-study, and one purchase covers the whole family.',
   },
   {
-    question: 'Which schools and exams is this for?',
+    question: 'Do I need to be involved?',
     answer:
-      'AnswerTheQuestion! is designed for children preparing for 11+ exams (GL, CEM, ISEB) and independent school entrance tests. However, the CLEAR Method is a universal exam technique that helps with school tests, SATs, and assessments of every kind.',
+      'Your child can work independently. You\u2019ll get the most from it if you review sessions together using the same method \u2014 the parent dashboard shows exactly where they\u2019re strong and where they\u2019re dropping marks.',
   },
   {
-    question: 'What year group is it best for?',
+    question: 'Is this only useful for the 11+?',
     answer:
-      'It\u2019s ideal for children in Year 4 and Year 5 who are preparing for entrance exams. Some families start in late Year 3. It\u2019s also useful for Year 6 children preparing to go to any secondary school \u2014 the exam-technique habits transfer to SATs, school tests, and beyond. The programme works well alongside existing tutoring or self-study.',
+      'No. Staying calm under pressure, reading carefully before answering, working through a method rather than rushing \u2014 these habits help children in every exam they\u2019ll ever sit. The 11+ is the context. The skills last longer than that.',
   },
   {
-    question: 'Can I use it for more than one child?',
+    question: 'Only a few weeks left \u2014 is it worth starting?',
     answer:
-      'Yes! One purchase covers your whole family. You can add multiple child profiles, and each child gets their own independent 12-week journey with separate progress tracking, badges, and a personalised certificate.',
-  },
-  {
-    question: "What if my child's exam is only a few weeks away?",
-    answer:
-      "AnswerTheQuestion! includes Fast Track mode for exactly this situation. Enter your child\u2019s exam date and the app automatically adapts the programme to fit your timeline \u2014 compressing the progression from gentle start to exam pace into the weeks you have left. Whether you have 2 weeks or 10, the CLEAR Method can still make a real difference.",
-  },
-  {
-    question: 'Is this a subscription?',
-    answer:
-      'No. It\u2019s a one-time payment of \u00a319.99 for lifetime access to the full 12-week programme \u2014 for the whole family. No recurring charges, no hidden fees.',
-  },
-  {
-    question: 'What if it doesn\u2019t work for my child?',
-    answer:
-      'We offer a 7-day money-back guarantee. If it\u2019s not the right fit, just email us and we\u2019ll refund you in full \u2014 no questions asked.',
+      'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and Answer the Question automatically adapts the programme to fit the time you have. A short time with the right method beats a long time without it.',
   },
 ];
 

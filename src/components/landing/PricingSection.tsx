@@ -22,7 +22,7 @@ export function PricingSection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-10 leading-tight">
-            One price. One time. The whole family.
+            &pound;19.99. That&rsquo;s it.
           </h2>
 
           {/* Price card */}
@@ -43,9 +43,12 @@ export function PricingSection() {
 
           {/* Anchor */}
           <p className="font-display text-base text-gray-500 text-center max-w-md mx-auto mb-8 leading-relaxed">
-            One private tutor session costs &pound;30&ndash;&pound;50.
+            One payment. Full 12-week programme. No subscription.
             <br />
-            AnswerTheQuestion! costs less &mdash; and over 12 weeks, builds focus and exam technique.
+            <span className="text-gray-700 font-medium">Atom Learning costs up to &pound;69.99 a month.</span>
+            <br />
+            Answer the Question is &pound;19.99 once &mdash; and it teaches the skill
+            that makes every practice paper count.
           </p>
 
           {/* Features */}
@@ -92,7 +95,7 @@ export function PricingSection() {
               to="/checkout"
               className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get started &mdash; &pound;19.99
+              Get Answer the Question &mdash; &pound;19.99 &rarr;
             </Link>
 
             <div className="flex items-center justify-center gap-4 text-gray-400 text-xs font-display mt-4">
