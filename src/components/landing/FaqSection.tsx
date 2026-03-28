@@ -32,6 +32,11 @@ const FAQ_ITEMS = [
     answer:
       'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and Answer the Question automatically adapts the programme to fit the time you have. A short time with the right method beats a long time without it.',
   },
+  {
+    question: 'We\u2019re already using Bond books \u2014 will this work alongside them?',
+    answer:
+      'Perfectly. Bond books are excellent for building knowledge. Answer the Question picks up where paper can\u2019t: it tracks exactly which question types your child is getting wrong, adapts to focus on their gaps, and builds the technique habits that paper practice alone won\u2019t drill. Many families use both \u2014 Bond for content coverage, ATQ to make sure the marks reflect what the child actually knows.',
+  },
 ];
 
 export function FaqSection() {
