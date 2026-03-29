@@ -335,7 +335,6 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - The `visualisation/` component directory is empty — visualisation logic is likely inline in `VisualisationPage.tsx`
 - **Supabase Auth confirmation emails** may not arrive reliably — a "Resend confirmation email" button exists on both Login and Signup pages as a workaround
 - **Payment confirmation emails** can fail due to Supabase Edge Function CPU time limits when sending via Zoho SMTP — mitigated by fire-and-forget pattern but SMTP itself may be too slow
-- **UpgradePage** still references "VR & NVR" instead of merged "Reasoning" subject
 
 ---
 
