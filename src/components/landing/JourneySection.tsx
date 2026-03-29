@@ -100,7 +100,7 @@ export function JourneySection() {
               <span className="text-2xl shrink-0">⚡</span>
               <div>
                 <p className="font-display font-extrabold text-base text-amber-900 mb-1">
-                  Exam in less than 12 weeks?
+                  Exam in fewer than 12 weeks?
                 </p>
                 <p className="font-display text-sm text-amber-800 leading-relaxed">
                   No problem. Just enter your child&rsquo;s exam date and the app automatically switches
