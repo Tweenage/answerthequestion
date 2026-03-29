@@ -32,8 +32,8 @@ export function StorySection() {
           {/* Wrong answer */}
           <div className="flex items-center gap-3 mb-5">
             <span className="text-gray-500 font-display text-sm shrink-0">Her answer:</span>
-            <span className="bg-red-50 border border-red-200 text-red-600 font-display font-bold text-base px-4 py-1.5 rounded-lg line-through decoration-red-400">
-              &ldquo;Blue.&rdquo;
+            <span className="bg-red-50 border border-red-200 font-display font-bold text-base px-4 py-1.5 rounded-lg line-through decoration-red-400">
+              &ldquo;<span className="text-blue-500">Blue</span><span className="text-red-500">.</span>&rdquo;
             </span>
           </div>
 
