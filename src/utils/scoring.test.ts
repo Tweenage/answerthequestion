@@ -12,10 +12,10 @@ const makeQuestion = (overrides: Partial<Question> = {}): Question => ({
   questionTokens: ['What', ' ', 'is', ' ', '2', ' ', '+', ' ', '2', '?'],
   keyWordIndices: [2, 4, 8], // 'is', '2', '2'
   options: [
-    { text: '3', eliminationReason: 'Too small' },
-    { text: '4', eliminationReason: '' },
-    { text: '5', eliminationReason: 'Too large' },
-    { text: '6', eliminationReason: 'Way too large' },
+    { text: '3', isEliminatable: true, eliminationReason: 'Too small' },
+    { text: '4', isEliminatable: false },
+    { text: '5', isEliminatable: true, eliminationReason: 'Too large' },
+    { text: '6', isEliminatable: true, eliminationReason: 'Way too large' },
   ],
   correctOptionIndex: 1,
   explanation: '2 + 2 = 4',
@@ -23,7 +23,7 @@ const makeQuestion = (overrides: Partial<Question> = {}): Question => ({
 });
 
 const makeWeekConfig = (overrides: Partial<WeekConfig> = {}): WeekConfig => ({
-  week: 1,
+  weekNumber: 1,
   phase: 'foundation',
   difficulty: 1,
   scaffoldingLevel: 'heavy',
@@ -32,6 +32,7 @@ const makeWeekConfig = (overrides: Partial<WeekConfig> = {}): WeekConfig => ({
   minReadingTimeMs: 5000,
   minHighlights: 1,
   minEliminations: 1,
+  dailyQuestionCount: 10,
   subjectDistribution: { english: 4, maths: 4, reasoning: 2 },
   ...overrides,
 });
