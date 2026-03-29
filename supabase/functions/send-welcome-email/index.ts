@@ -1,16 +1,14 @@
 // Supabase Edge Function: send-welcome-email
-// Sends a branded welcome email via Zoho SMTP when a new account is created.
+// Sends a branded welcome email via Resend when a new account is created.
 // Called from the frontend after successful signup.
 // Deploy: supabase functions deploy send-welcome-email
-// Required secrets: ZOHO_SMTP_PASSWORD
+// Required secrets: RESEND_API_KEY
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 
-const SMTP_FROM = 'rebecca@answerthequestion.co.uk';
-const SMTP_FROM_NAME = 'AnswerTheQuestion!';
+const EMAIL_FROM = 'AnswerTheQuestion! <rebecca@answerthequestion.co.uk>';
 
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
@@ -135,38 +133,35 @@ serve(async (req) => {
       });
     }
 
-    const smtpPassword = Deno.env.get('ZOHO_SMTP_PASSWORD');
-    if (!smtpPassword) {
-      console.error('ZOHO_SMTP_PASSWORD not set');
+    const apiKey = Deno.env.get('RESEND_API_KEY');
+    if (!apiKey) {
+      console.error('RESEND_API_KEY not set');
       return new Response(JSON.stringify({ error: 'Email service not configured' }), {
         status: 500,
         headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
       });
     }
 
-    const client = new SMTPClient({
-      connection: {
-        hostname: 'smtppro.zoho.eu',
-        port: 465,
-        tls: true,
-        auth: {
-          username: SMTP_FROM,
-          password: smtpPassword,
-        },
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
-    });
-
-    try {
-      await client.send({
-        from: `${SMTP_FROM_NAME} <${SMTP_FROM}>`,
-        to: user.email,
+      body: JSON.stringify({
+        from: EMAIL_FROM,
+        to: [user.email],
         subject: 'Welcome to AnswerTheQuestion! 🦉',
         html: WELCOME_EMAIL_HTML,
-      });
-      console.log(`Welcome email sent to ${user.email}`);
-    } finally {
-      await client.close();
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Resend error ${res.status}: ${text}`);
     }
+
+    console.log(`Welcome email sent to ${user.email}`);
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },

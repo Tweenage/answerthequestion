@@ -1,26 +1,25 @@
 // Supabase Edge Function: stripe-webhook
 // Handles Stripe webhook events (checkout.session.completed).
-// Sends payment confirmation + optional crib sheet email via Zoho SMTP.
+// Sends payment confirmation + optional crib sheet email via Resend.
 // Deploy: supabase functions deploy stripe-webhook --no-verify-jwt
-// Required secrets: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ZOHO_SMTP_PASSWORD
+// Required secrets: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY
 //
 // SECURITY: In-memory rate limiting (100 req/min per IP) + Stripe signature verification.
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
+import { encodeBase64 } from 'https://deno.land/std@0.224.0/encoding/base64.ts';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
-import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
 
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
 
-const SMTP_FROM = 'rebecca@answerthequestion.co.uk';
-const SMTP_FROM_NAME = 'AnswerTheQuestion!';
+const EMAIL_FROM = 'AnswerTheQuestion! <rebecca@answerthequestion.co.uk>';
 
-// ─── SMTP Helper ────────────────────────────────────────────────
+// ─── Resend Helper ───────────────────────────────────────────────
 
 async function sendEmail(options: {
   to: string;
@@ -28,45 +27,41 @@ async function sendEmail(options: {
   html: string;
   attachments?: Array<{ filename: string; content: Uint8Array; contentType: string }>;
 }): Promise<void> {
-  const smtpPassword = Deno.env.get('ZOHO_SMTP_PASSWORD');
-  if (!smtpPassword) {
-    console.error('ZOHO_SMTP_PASSWORD not set — skipping email');
+  const apiKey = Deno.env.get('RESEND_API_KEY');
+  if (!apiKey) {
+    console.error('RESEND_API_KEY not set — skipping email');
     return;
   }
 
-  const client = new SMTPClient({
-    connection: {
-      hostname: 'smtppro.zoho.eu',
-      port: 465,
-      tls: true,
-      auth: {
-        username: SMTP_FROM,
-        password: smtpPassword,
-      },
+  const body: Record<string, unknown> = {
+    from: EMAIL_FROM,
+    to: [options.to],
+    subject: options.subject,
+    html: options.html,
+  };
+
+  if (options.attachments?.length) {
+    body.attachments = options.attachments.map(a => ({
+      filename: a.filename,
+      content: encodeBase64(a.content),
+    }));
+  }
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(body),
   });
 
-  try {
-    const emailConfig: Record<string, unknown> = {
-      from: `${SMTP_FROM_NAME} <${SMTP_FROM}>`,
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-    };
-
-    if (options.attachments?.length) {
-      emailConfig.attachments = options.attachments.map(a => ({
-        filename: a.filename,
-        content: a.content,
-        contentType: a.contentType,
-      }));
-    }
-
-    await client.send(emailConfig);
-    console.log(`Email sent to ${options.to}: "${options.subject}"`);
-  } finally {
-    await client.close();
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Resend error ${res.status}: ${text}`);
   }
+
+  console.log(`Email sent to ${options.to}: "${options.subject}"`);
 }
 
 // ─── Email Templates ────────────────────────────────────────────
