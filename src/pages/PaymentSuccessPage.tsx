@@ -240,18 +240,18 @@ export function PaymentSuccessPage() {
     }
   }, [isGuest, sessionId]);
 
-  const handleDownloadCribSheet = () => {
+  const handleDownloadCribSheet = async () => {
     setDownloading(true);
     try {
-      // Direct download from Supabase Storage public bucket
-      const { data } = supabase.storage
+      // Use signed URL — assets bucket is private
+      const { data, error } = await supabase.storage
         .from('assets')
-        .getPublicUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', {
-          download: 'CLEAR-Method-Crib-Sheet.pdf',
-        });
-
-      // Open the download URL directly — avoids CORS issues with fetch
-      window.open(data.publicUrl, '_blank');
+        .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 120);
+      if (!error && data?.signedUrl) {
+        window.open(data.signedUrl, '_blank');
+      } else {
+        generateCribSheetPdf();
+      }
     } catch {
       // Fallback: generate a PDF client-side with jsPDF
       generateCribSheetPdf();

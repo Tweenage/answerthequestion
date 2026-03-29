@@ -10,7 +10,7 @@ import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { encodeBase64 } from 'https://deno.land/std@0.224.0/encoding/base64.ts';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import Stripe from 'https://esm.sh/stripe@14?target=deno';
+import Stripe from 'https://esm.sh/stripe@14.21.0?target=deno';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
@@ -341,7 +341,7 @@ serve(async (req) => {
       console.log(`Payment completed for session ${session.id}, parentId=${parentId ?? 'guest'}, crib_sheet=${includeCribSheet}`);
 
       // Send emails in background — don't block the response to Stripe
-      // (SMTP is slow and can exceed Supabase Edge CPU limits)
+      // (email API calls can be slow; fire-and-forget avoids Edge CPU timeout)
       if (customerEmail) {
         // Fire-and-forget: use EdgeRuntime.waitUntil if available, otherwise just don't await
         const emailPromise = (async () => {

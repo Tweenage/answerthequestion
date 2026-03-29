@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSettingsStore } from '../stores/useSettingsStore';
 
 export type SoundEffect =
@@ -88,6 +88,13 @@ function playNotes(ctx: AudioContext, notes: Note[]) {
 export function useSoundEffects() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const soundEnabled = useSettingsStore(s => s.soundEnabled);
+
+  useEffect(() => {
+    return () => {
+      audioCtxRef.current?.close();
+      audioCtxRef.current = null;
+    };
+  }, []);
 
   const play = useCallback((effect: SoundEffect) => {
     if (!soundEnabled) return;

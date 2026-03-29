@@ -14,13 +14,19 @@ const PROD_ORIGINS = [
   'https://www.answerthequestion.co.uk',
 ];
 
-const ALLOWED_ORIGINS = Deno.env.get('ALLOW_LOCALHOST') === 'true'
-  ? [...PROD_ORIGINS, 'http://localhost:5173']
-  : PROD_ORIGINS;
+function isTrustedOrigin(origin: string): boolean {
+  if (PROD_ORIGINS.includes(origin)) return true;
+  if (/^https:\/\/[\w-]+\.vercel\.app$/.test(origin)) return true;
+  if (
+    Deno.env.get('ALLOW_LOCALHOST') === 'true' &&
+    /^http:\/\/localhost(:\d+)?$/.test(origin)
+  ) return true;
+  return false;
+}
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('Origin') ?? '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowedOrigin = isTrustedOrigin(origin) ? origin : PROD_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
