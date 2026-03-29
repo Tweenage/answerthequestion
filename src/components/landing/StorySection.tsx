@@ -34,7 +34,7 @@ export function StorySection() {
           </p>
 
           <p className="text-gray-700 font-display font-semibold text-base leading-relaxed mb-5">
-            That&rsquo;s Answer the Question. Built for my daughter first. Now for yours.
+            That&rsquo;s AnswerTheQuestion! Built for my child first. Sharing it now with yours.
           </p>
 
           <p className="font-display font-bold text-base text-purple-700">

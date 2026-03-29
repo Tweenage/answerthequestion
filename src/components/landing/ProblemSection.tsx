@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 const BULLETS = [
-  'They come out of the exam saying "I knew all of that" — but the marks don\'t reflect it.',
+  'They come out of the exam saying "That was easy" — but the marks don\'t reflect it.',
   'The question said "give two reasons" — they gave one and moved on.',
   'You\'ve said "read the question" so many times it\'s lost all meaning.',
   'They ace practice papers at home, then panic and rush under timed conditions.',
