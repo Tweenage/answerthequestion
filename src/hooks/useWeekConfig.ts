@@ -14,8 +14,6 @@ import {
   getFastTrackWeekConfig,
   getFastTrackTotalWeeks,
 } from '../data/programme/fast-track';
-import { applyExamBoardPreset } from '../data/programme/examBoardPresets';
-import type { ExamBoard } from '../data/programme/examBoardPresets';
 import type { WeekConfig } from '../types/programme';
 
 export interface WeekConfigResult {
@@ -55,14 +53,8 @@ export function useWeekConfig(): WeekConfigResult {
     totalWeeks = 12;
   }
 
-  const examBoard = (currentUser?.examBoard ?? 'generic') as ExamBoard;
-  const adjustedConfig: WeekConfig = {
-    ...weekConfig,
-    subjectDistribution: applyExamBoardPreset(weekConfig.subjectDistribution, examBoard),
-  };
-
   return {
-    weekConfig: adjustedConfig,
+    weekConfig,
     isFastTrack: fastTrack,
     totalWeeks,
     currentWeek,
