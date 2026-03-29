@@ -84,7 +84,7 @@ export function SettingsPage() {
           <div>
             <h3 className="font-display font-bold text-base text-gray-800">Dyslexia-friendly mode</h3>
             <p className="text-sm text-gray-500 font-display mt-1">
-              Adds 25% extra time, softens backgrounds and improves text contrast
+              During practice: Lexend font, crème background and wider spacing. Timer extended by 25%.
             </p>
           </div>
           <button
