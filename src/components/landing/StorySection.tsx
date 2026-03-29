@@ -10,30 +10,66 @@ export function StorySection() {
         transition={{ duration: 0.6 }}
       >
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-white/30 max-w-xl mx-auto">
-          <p className="text-gray-700 font-display text-base leading-relaxed mb-5">
+
+          <p className="text-gray-700 font-display text-base leading-relaxed mb-6">
             We had the tutor. We were doing papers at home. I was doing everything I could
             to support her. But she was still dropping marks. She knew the content &mdash;
             I was certain of that. I couldn&rsquo;t work out why.
           </p>
 
-          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            Then one afternoon, working through an English comprehension, she hit a question
-            that began: <em>&ldquo;In what year did scientists discover the colour of&hellip;&rdquo;</em>
+          <p className="text-gray-600 font-display text-base leading-relaxed mb-4">
+            Then one afternoon, working through an English comprehension, she hit this question:
           </p>
 
-          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            Her answer: <strong className="text-gray-800">&ldquo;Blue.&rdquo;</strong>
-          </p>
+          {/* Exam question card */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-4 font-display">
+            <p className="text-xs text-amber-600 font-semibold uppercase tracking-wide mb-2">Exam question</p>
+            <p className="text-gray-800 text-base italic">
+              &ldquo;In what year did scientists discover the colour of&hellip;&rdquo;
+            </p>
+          </div>
 
-          <div className="text-gray-600 font-display text-base leading-relaxed mb-5 space-y-3">
-            <p>I asked her to read it again. Still blue.</p>
-            <p>A third time &mdash; confident as ever.</p>
-            <p>Finally I said: <em>&ldquo;What is the question actually asking you?&rdquo;</em></p>
-            <p>A pause.</p>
-            <p><em>&ldquo;Oh! It&rsquo;s asking for a year!&rdquo;</em></p>
-            <p><em>&ldquo;Yes. So what&rsquo;s the answer?&rdquo;</em></p>
-            <p>Without hesitation: <em>&ldquo;1957.&rdquo;</em></p>
-            <p>She knew it all along. She just hadn&rsquo;t read the question.</p>
+          {/* Wrong answer */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="text-gray-500 font-display text-sm shrink-0">Her answer:</span>
+            <span className="bg-red-50 border border-red-200 text-red-600 font-display font-bold text-base px-4 py-1.5 rounded-lg line-through decoration-red-400">
+              &ldquo;Blue.&rdquo;
+            </span>
+          </div>
+
+          {/* Dialogue */}
+          <div className="space-y-2 mb-5 border-l-2 border-purple-100 pl-4">
+            <p className="text-gray-500 font-display text-sm italic">I asked her to read it again. Still blue. A third time — confident as ever.</p>
+            <div className="pt-1 space-y-2">
+              <div className="flex gap-2">
+                <span className="text-purple-400 font-display text-xs font-bold shrink-0 pt-0.5">Me</span>
+                <p className="text-gray-700 font-display text-base">&ldquo;What is the question actually asking you?&rdquo;</p>
+              </div>
+              <p className="text-gray-400 font-display text-sm italic pl-6">A pause.</p>
+              <div className="flex gap-2">
+                <span className="text-fuchsia-400 font-display text-xs font-bold shrink-0 pt-0.5">Her</span>
+                <p className="text-gray-700 font-display text-base">&ldquo;Oh! It&rsquo;s asking for a year!&rdquo;</p>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-purple-400 font-display text-xs font-bold shrink-0 pt-0.5">Me</span>
+                <p className="text-gray-700 font-display text-base">&ldquo;Yes. So what&rsquo;s the answer?&rdquo;</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Correct answer */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="text-gray-500 font-display text-sm shrink-0">Without hesitation:</span>
+            <span className="bg-green-50 border border-green-200 text-green-700 font-display font-bold text-base px-4 py-1.5 rounded-lg">
+              &ldquo;1957.&rdquo; ✓
+            </span>
+          </div>
+
+          {/* Revelation */}
+          <div className="bg-purple-50 border border-purple-100 rounded-xl px-5 py-4 mb-6">
+            <p className="text-purple-900 font-display font-semibold text-base leading-relaxed">
+              She knew it all along. She just hadn&rsquo;t read the question.
+            </p>
           </div>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
