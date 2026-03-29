@@ -1,6 +1,7 @@
 import { HeroSection } from '../components/landing/HeroSection';
 import { ProblemSection } from '../components/landing/ProblemSection';
 import { StorySection } from '../components/landing/StorySection';
+import { ForParentsSection } from '../components/landing/ForParentsSection';
 import { GapSection } from '../components/landing/GapSection';
 import { ClearMethodSection } from '../components/landing/ClearMethodSection';
 import { ScreenshotsSection } from '../components/landing/ScreenshotsSection';
@@ -17,6 +18,7 @@ export function LandingPage() {
       <HeroSection />
       <ProblemSection />
       <StorySection />
+      <ForParentsSection />
       <GapSection />
       <ClearMethodSection />
       <ScreenshotsSection />

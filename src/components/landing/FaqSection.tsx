@@ -37,6 +37,16 @@ const FAQ_ITEMS = [
     answer:
       'Yes \u2014 and it fills the gap Bond can\u2019t. Most 11+ exams are now taken on a screen, not on paper. Bond books build knowledge on paper; Answer the Question builds the exam technique on the same medium your child will actually be tested on. Many families use both: Bond for content coverage, ATQ to make sure the habit and the composure transfer to the real thing.',
   },
+  {
+    question: 'What do I do as a parent?',
+    answer:
+      "You don\u2019t need to do anything except support the habit. Each session takes around 10 minutes. Your child works through it independently. The parent dashboard shows progress so you can see how it\u2019s going without interrogating them at dinner.",
+  },
+  {
+    question: 'Will this reduce my child\u2019s anxiety?',
+    answer:
+      'The breathing and visualisation element specifically targets exam-day nerves. Most parents notice their child becomes calmer \u2014 not because we tell them not to worry, but because they have a technique to use.',
+  },
 ];
 
 export function FaqSection() {
