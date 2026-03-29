@@ -25,13 +25,16 @@ export function StorySection() {
             Her answer: <strong className="text-gray-800">&ldquo;Blue.&rdquo;</strong>
           </p>
 
-          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            I asked her to read it again. Still blue. A third time &mdash; confident as ever.
-            Finally I said: <em>&ldquo;What is the question actually asking you?&rdquo;</em> A pause.
-            Then: <em>&ldquo;Oh! It&rsquo;s asking for a year!&rdquo;</em> And immediately, without
-            hesitation: <em>&ldquo;1957.&rdquo;</em> She knew it all along. She just hadn&rsquo;t
-            read the question.
-          </p>
+          <div className="text-gray-600 font-display text-base leading-relaxed mb-5 space-y-3">
+            <p>I asked her to read it again. Still blue.</p>
+            <p>A third time &mdash; confident as ever.</p>
+            <p>Finally I said: <em>&ldquo;What is the question actually asking you?&rdquo;</em></p>
+            <p>A pause.</p>
+            <p><em>&ldquo;Oh! It&rsquo;s asking for a year!&rdquo;</em></p>
+            <p><em>&ldquo;Yes. So what&rsquo;s the answer?&rdquo;</em></p>
+            <p>Without hesitation: <em>&ldquo;1957.&rdquo;</em></p>
+            <p>She knew it all along. She just hadn&rsquo;t read the question.</p>
+          </div>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
             It wasn&rsquo;t a comprehension problem. It wasn&rsquo;t a knowledge problem.
@@ -47,7 +50,7 @@ export function StorySection() {
           </p>
 
           <p className="text-gray-700 font-display font-semibold text-base leading-relaxed mb-5">
-            That&rsquo;s AnswerTheQuestion! Built for my child first. Sharing it now with yours.
+            Built to help my child. Now here to help yours.
           </p>
 
           <p className="font-display font-bold text-base text-purple-700">
