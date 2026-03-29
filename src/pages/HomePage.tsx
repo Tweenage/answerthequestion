@@ -122,6 +122,7 @@ export function HomePage() {
   if (!currentUser.hasSeenOnboarding) {
     return (
       <OnboardingFlow
+        childId={currentUser.id}
         onComplete={() => {
           markOnboardingSeen();
         }}

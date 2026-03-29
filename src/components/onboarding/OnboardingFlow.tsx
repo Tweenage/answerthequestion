@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { ProfessorHoot } from '../mascot/ProfessorHoot';
 import type { HootMood } from '../mascot/ProfessorHoot';
+import { useDyslexiaStore } from '../../stores/useDyslexiaStore';
 
 interface OnboardingSlide {
   hootMood: HootMood;
@@ -88,15 +89,28 @@ const slides: OnboardingSlide[] = [
   },
 ];
 
+const DYSLEXIA_SLIDE_INDEX = slides.length - 1; // insert just before the last slide
+
 interface OnboardingFlowProps {
   onComplete: () => void;
+  childId: string;
 }
 
-export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
+export function OnboardingFlow({ onComplete, childId }: OnboardingFlowProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(1);
-  const isLast = currentSlide === slides.length - 1;
-  const slide = slides[currentSlide];
+  const { isDyslexiaMode, toggleDyslexiaMode } = useDyslexiaStore();
+  const dyslexiaOn = isDyslexiaMode(childId);
+
+  // Total slides = regular slides + 1 dyslexia slide inserted before the last
+  const totalSlides = slides.length + 1;
+  const isDyslexiaSlide = currentSlide === DYSLEXIA_SLIDE_INDEX;
+  const isLast = currentSlide === totalSlides - 1;
+
+  // Map visual slide index to slides array index (accounting for inserted dyslexia slide)
+  const slide = currentSlide < DYSLEXIA_SLIDE_INDEX
+    ? slides[currentSlide]
+    : slides[currentSlide - 1];
 
   const goNext = () => {
     if (isLast) {
@@ -113,6 +127,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       setCurrentSlide(i => i - 1);
     }
   };
+
+  const dotCount = totalSlides;
 
   const renderBody = (text: string, highlight?: string) => {
     if (!highlight) return text;
@@ -152,45 +168,90 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="text-center"
           >
-            {/* Professor Hoot */}
-            <div className="flex justify-center mb-5">
-              <ProfessorHoot
-                mood={slide.hootMood}
-                size="xl"
-                animate
-                showSpeechBubble={false}
-              />
-            </div>
-
-            {/* Title */}
-            <h2 className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-md mb-4">
-              {slide.title}
-            </h2>
-
-            {/* Body */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-lg">
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed font-display">
-                {renderBody(slide.body, slide.highlight)}
-              </p>
-
-              {/* Tips list */}
-              {slide.tips && (
-                <div className="mt-4 space-y-2.5">
-                  {slide.tips.map((tip, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.15 + i * 0.1 }}
-                      className="flex items-center gap-3 bg-purple-50 rounded-xl px-4 py-2.5 text-left"
-                    >
-                      <span className="text-xl shrink-0">{tip.emoji}</span>
-                      <span className="font-display font-semibold text-sm text-gray-700">{tip.text}</span>
-                    </motion.div>
-                  ))}
+            {isDyslexiaSlide ? (
+              /* ── Dyslexia opt-in slide ── */
+              <>
+                <div className="flex justify-center mb-5">
+                  <ProfessorHoot mood="teaching" size="xl" animate showSpeechBubble={false} />
                 </div>
-              )}
-            </div>
+                <h2 className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-md mb-4">
+                  One quick thing&hellip;
+                </h2>
+                <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-lg text-left">
+                  <p className="font-display text-base text-gray-700 leading-relaxed mb-5 text-center">
+                    Does your child find reading easier with a different font and background?
+                    Dyslexia-friendly mode uses a specially designed font and softer colours
+                    to reduce visual stress.
+                  </p>
+
+                  {/* Toggle card */}
+                  <button
+                    onClick={() => toggleDyslexiaMode(childId)}
+                    className={`w-full rounded-2xl p-5 border-2 transition-all ${
+                      dyslexiaOn
+                        ? 'border-purple-400 bg-[#FAFAC8]'
+                        : 'border-gray-200 bg-gray-50 hover:border-purple-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className={`font-display font-bold text-base ${dyslexiaOn ? 'text-gray-800' : 'text-gray-600'}`}
+                        style={dyslexiaOn ? { fontFamily: 'Lexend, sans-serif', letterSpacing: '0.05em' } : {}}>
+                        📖 Dyslexia-friendly mode
+                      </span>
+                      <div className={`w-12 h-6 rounded-full transition-colors ${dyslexiaOn ? 'bg-purple-500' : 'bg-gray-300'}`}>
+                        <div className={`w-5 h-5 rounded-full bg-white shadow mt-0.5 transition-transform ${dyslexiaOn ? 'translate-x-6.5' : 'translate-x-0.5'}`} />
+                      </div>
+                    </div>
+                    <p className={`font-display text-sm leading-relaxed text-left ${dyslexiaOn ? 'text-gray-700' : 'text-gray-400'}`}
+                      style={dyslexiaOn ? { fontFamily: 'Lexend, sans-serif', letterSpacing: '0.04em', wordSpacing: '0.2em' } : {}}>
+                      {dyslexiaOn
+                        ? 'On — this is how the app will look. Tap to turn off.'
+                        : 'Off — tap to see what dyslexia-friendly mode looks like.'}
+                    </p>
+                  </button>
+
+                  <p className="font-display text-xs text-gray-400 text-center mt-4">
+                    You can change this any time in Settings.
+                  </p>
+                </div>
+              </>
+            ) : (
+              /* ── Regular slide ── */
+              <>
+                <div className="flex justify-center mb-5">
+                  <ProfessorHoot
+                    mood={slide.hootMood}
+                    size="xl"
+                    animate
+                    showSpeechBubble={false}
+                  />
+                </div>
+                <h2 className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-md mb-4">
+                  {slide.title}
+                </h2>
+                <div className="bg-white/90 backdrop-blur-sm rounded-card p-5 shadow-lg">
+                  <p className="text-base md:text-lg text-gray-700 leading-relaxed font-display">
+                    {renderBody(slide.body, slide.highlight)}
+                  </p>
+                  {slide.tips && (
+                    <div className="mt-4 space-y-2.5">
+                      {slide.tips.map((tip, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.15 + i * 0.1 }}
+                          className="flex items-center gap-3 bg-purple-50 rounded-xl px-4 py-2.5 text-left"
+                        >
+                          <span className="text-xl shrink-0">{tip.emoji}</span>
+                          <span className="font-display font-semibold text-sm text-gray-700">{tip.text}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -199,7 +260,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       <div className="w-full max-w-md space-y-5 pb-4">
         {/* Dot indicators */}
         <div className="flex justify-center gap-2">
-          {slides.map((_, i) => (
+          {Array.from({ length: dotCount }).map((_, i) => (
             <div
               key={i}
               className={`h-2 rounded-full transition-all duration-300 ${
