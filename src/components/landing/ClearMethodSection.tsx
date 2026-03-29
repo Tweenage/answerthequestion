@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const STEPS = [
-  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath before you start. A settled mind reads more carefully than a rushing one.' },
-  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question before looking at any answers. Every word. Every time.' },
-  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out answers that are obviously wrong. The right one is easier to find when the wrong ones are gone.' },
+  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath. A settled mind reads more carefully than a rushing one.' },
+  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question before looking at any answers. Every word.' },
+  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out wrong answers first. The right one is easier to spot.' },
   { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'What is the question actually asking? Not what you expect — what it says.' },
-  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question before moving on. One last check.' },
+  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question. One last check.' },
 ];
 
 export function ClearMethodSection() {
