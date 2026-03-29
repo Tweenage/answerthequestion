@@ -17,7 +17,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
 
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
 
-const EMAIL_FROM = 'AnswerTheQuestion! <rebecca@answerthequestion.co.uk>';
+const EMAIL_FROM = 'AnswerTheQuestion! <hello@answerthequestion.co.uk>';
 
 // ─── Resend Helper ───────────────────────────────────────────────
 

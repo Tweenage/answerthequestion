@@ -8,7 +8,7 @@ import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 
-const EMAIL_FROM = 'AnswerTheQuestion! <rebecca@answerthequestion.co.uk>';
+const EMAIL_FROM = 'AnswerTheQuestion! <hello@answerthequestion.co.uk>';
 
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
