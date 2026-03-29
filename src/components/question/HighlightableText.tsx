@@ -120,7 +120,7 @@ export function HighlightableText({
   };
 
   return (
-    <div className="leading-[2.0] text-[1.3rem] font-display">
+    <div className={`leading-[2.0] text-[1.3rem] font-display ${dyslexiaMode ? 'dyslexia-text' : ''}`}>
       {tokens.map((token, index) => {
         const danger = showDangerWords && isDangerWord(token) && !highlightedIndices.includes(index);
         const isClickable = numberExtractionMode

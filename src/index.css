@@ -43,6 +43,11 @@
   /* Fonts */
   --font-display: 'Nunito', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
+  --font-dyslexia: 'Lexend', Arial, system-ui, sans-serif;
+
+  /* Dyslexia mode colours (W3C/Rello research — black on crème) */
+  --color-dyslexia-bg: #FAFAC8;
+  --color-dyslexia-text: #2D2D2D;
 
   /* Custom spacing */
   --spacing-tap: 44px;
@@ -160,4 +165,52 @@ button, [role="button"], a {
 
 .skip-link:focus {
   top: 0;
+}
+
+/* ── Dyslexia-friendly mode ─────────────────────────────────────────────────
+   Evidence base: BDA Style Guide 2023, Galliussi et al. (2020), W3C/Rello (2012)
+
+   Key principles applied:
+   - Lexend font: reduces visual crowding (Shaver-Troup / Google research)
+   - Letter + word spacing ALWAYS set together (Galliussi 2020 — setting one
+     without the other makes reading worse, not better)
+   - Crème background #FAFAC8: fastest reading for dyslexic readers (Rello 2012)
+   - Dark grey text #2D2D2D: avoids extreme 21:1 contrast of pure black on white
+   - line-height 1.75: BDA minimum is 1.5; 1.75 is the children's sweet spot
+   - max-width 52ch: 45–60 chars/line recommended for ages 9–12
+   - font-variant-ligatures none: merged letter shapes increase confusion
+   - No italics: jagged slant significantly increases misreading
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dyslexia-text {
+  font-family: var(--font-dyslexia) !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  font-variant-ligatures: none !important;
+  letter-spacing: 0.35ch !important;
+  word-spacing: 1.225ch !important;
+  line-height: 1.75 !important;
+  color: var(--color-dyslexia-text) !important;
+  text-align: left !important;
+}
+
+/* Answer option text in dyslexia mode */
+.dyslexia-option {
+  font-family: var(--font-dyslexia) !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  font-variant-ligatures: none !important;
+  letter-spacing: 0.25ch !important;
+  word-spacing: 0.875ch !important;
+  line-height: 1.6 !important;
+  color: var(--color-dyslexia-text) !important;
+  text-align: left !important;
+}
+
+/* Container-level constraints */
+.dyslexia-question-container {
+  background-color: var(--color-dyslexia-bg) !important;
+  max-width: 52ch;
 }

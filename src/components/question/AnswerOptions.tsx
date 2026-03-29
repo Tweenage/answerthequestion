@@ -13,6 +13,7 @@ interface AnswerOptionsProps {
   onEliminate: (index: number) => void;
   onSelect?: (index: number) => void;
   scaffoldingLevel: ScaffoldingLevel;
+  dyslexiaMode?: boolean;
 }
 
 const optionLetters = ['A', 'B', 'C', 'D', 'E'];
@@ -26,6 +27,7 @@ export function AnswerOptions({
   onEliminate,
   onSelect,
   scaffoldingLevel,
+  dyslexiaMode = false,
 }: AnswerOptionsProps) {
   const showAnswers = !['READING_FIRST', 'READING_SECOND', 'HIGHLIGHTING'].includes(flowState);
   const isEliminating = flowState === 'ELIMINATING';
@@ -147,7 +149,7 @@ export function AnswerOptions({
             </span>
 
             {/* Option text */}
-            <span className="text-lg font-display flex-1">{option.text}</span>
+            <span className={`font-display flex-1 ${dyslexiaMode ? 'dyslexia-option' : 'text-lg'}`}>{option.text}</span>
 
             {/* Eliminated X */}
             {eliminatedIndices.includes(index) && (

@@ -251,7 +251,8 @@ export function QuestionScreen({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`${dyslexiaMode ? 'bg-amber-50' : 'bg-white'} rounded-card p-5 shadow-sm border border-focus-100`}
+        className="rounded-card p-5 shadow-sm border border-focus-100"
+        style={dyslexiaMode ? { backgroundColor: '#FAFAC8' } : { backgroundColor: '#ffffff' }}
       >
         {/* Reading prompt — only for medium/light (heavy uses StepBanner above) */}
         {canAdvanceReading && !showStepBanner && (
@@ -354,6 +355,7 @@ export function QuestionScreen({
           onEliminate={flow.toggleEliminate}
           onSelect={flow.selectAnswer}
           scaffoldingLevel={weekConfig.scaffoldingLevel}
+          dyslexiaMode={dyslexiaMode}
         />
 
         {/* A — Answer: Lock In button — transitions to R — Review step */}
