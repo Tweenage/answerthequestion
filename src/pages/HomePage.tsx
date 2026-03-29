@@ -37,8 +37,29 @@ export function HomePage() {
   const [showReferral, setShowReferral] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const { needsPayment } = usePaywall();
-  const hasCribSheet = localStorage.getItem('atq-crib-sheet-purchased') === 'true';
+  const [hasCribSheet, setHasCribSheet] = useState(false);
   const [downloadingCribSheet, setDownloadingCribSheet] = useState(false);
+
+  // Fetch crib sheet purchase status from Supabase payments table
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data } = await supabase
+          .from('payments')
+          .select('include_crib_sheet')
+          .eq('parent_id', user.id)
+          .eq('status', 'completed')
+          .eq('include_crib_sheet', true)
+          .limit(1)
+          .maybeSingle();
+        if (data) setHasCribSheet(true);
+      } catch {
+        // silent fail — non-critical
+      }
+    })();
+  }, []);
 
   const handleDownloadCribSheet = async () => {
     setDownloadingCribSheet(true);

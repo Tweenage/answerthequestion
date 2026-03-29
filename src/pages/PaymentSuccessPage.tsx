@@ -7,8 +7,6 @@ import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
 import { useAuthStore } from '../stores/useAuthStore';
 import { supabase } from '../lib/supabase';
 
-const CRIB_SHEET_STORAGE_KEY = 'atq-crib-sheet-purchased';
-
 /**
  * Generate and download a one-page A4 CLEAR Method crib sheet PDF.
  * Uses jsPDF drawing primitives — no external images or fonts required.
@@ -195,13 +193,6 @@ export function PaymentSuccessPage() {
   const [childName, setChildName] = useState('');
 
   const isGuest = !parentSession;
-
-  // Persist crib sheet purchase so HomePage can show the download card later
-  useEffect(() => {
-    if (hasCribSheet) {
-      localStorage.setItem(CRIB_SHEET_STORAGE_KEY, 'true');
-    }
-  }, [hasCribSheet]);
 
   // For authenticated users: optimistically mark all children as paid,
   // and re-fetch from Supabase to confirm webhook processed

@@ -179,10 +179,7 @@ export function ChildPickerPage() {
         if (claimData?.claimed) {
           claimedPayment = true;
           newChild.has_paid = true;
-          // Persist crib sheet flag if it was part of the claimed payment
-          if (claimData.includeCribSheet) {
-            localStorage.setItem('atq-crib-sheet-purchased', 'true');
-          }
+          // Crib sheet flag is now sourced from Supabase payments table — no localStorage needed
         }
       } catch {
         // Non-critical — if claim fails, the user can still use the app (just not paid)

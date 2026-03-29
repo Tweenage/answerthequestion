@@ -128,7 +128,6 @@ export const useAuthStore = create<AuthState>()(
         try {
           localStorage.removeItem('rtq-progress');
           localStorage.removeItem('rtq-settings');
-          localStorage.removeItem('atq-crib-sheet-purchased');
           // Remove any review-prompted flags (atq_review_prompted_week_*)
           const keysToRemove: string[] = [];
           for (let i = 0; i < localStorage.length; i++) {
