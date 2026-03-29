@@ -71,10 +71,10 @@ export function CalmSection() {
                   Dyslexia-friendly mode included
                 </p>
                 <p className="font-display text-sm text-gray-600 leading-relaxed">
-                  One toggle in Settings gives your child 25% extra time per question
-                  (matching the standard exam provision), softer backgrounds, higher
-                  contrast text, and larger supporting text. Because every child
-                  deserves the right conditions to show what they can do.
+                  One toggle in Settings switches the app to the Lexend font, a crème
+                  background, wider letter and word spacing, and increased line height —
+                  all based on peer-reviewed research. Because every child deserves
+                  the right conditions to show what they can do.
                 </p>
               </div>
             </div>

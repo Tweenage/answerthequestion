@@ -9,6 +9,7 @@ const INCLUDES = [
   ['📊', 'Parent progress dashboard'],
   ['🦉', 'Professor Hoot companion'],
   ['🏆', 'Certificate of Achievement'],
+  ['♿', 'Dyslexia-friendly mode'],
 ];
 
 export function PricingSection() {
