@@ -40,21 +40,12 @@ export function HomePage() {
   const [hasCribSheet, setHasCribSheet] = useState(false);
   const [downloadingCribSheet, setDownloadingCribSheet] = useState(false);
 
-  // Fetch crib sheet purchase status from Supabase payments table
+  // Fetch crib sheet purchase status via RPC (bypasses RLS on payments table)
   useEffect(() => {
     (async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data } = await supabase
-          .from('payments')
-          .select('include_crib_sheet')
-          .eq('parent_id', user.id)
-          .eq('status', 'completed')
-          .eq('include_crib_sheet', true)
-          .limit(1)
-          .maybeSingle();
-        if (data) setHasCribSheet(true);
+        const { data } = await supabase.rpc('check_crib_sheet_purchase');
+        if (data === true) setHasCribSheet(true);
       } catch {
         // silent fail — non-critical
       }
