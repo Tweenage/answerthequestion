@@ -33,12 +33,6 @@ export function PricingSection() {
             <p className="font-display text-base text-gray-500 mt-2 font-medium">
               One-time payment &middot; Lifetime access
             </p>
-
-            <div className="bg-purple-100/80 rounded-xl px-4 py-2.5 mt-4 inline-block">
-              <p className="font-display text-sm text-purple-700 font-bold">
-                Beta price &mdash; will increase after launch
-              </p>
-            </div>
           </div>
 
           {/* Anchor */}
