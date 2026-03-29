@@ -13,6 +13,7 @@ export default defineConfig({
     pure: ['console.log', 'console.debug', 'console.warn', 'console.error'],
   },
   build: {
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks: {
