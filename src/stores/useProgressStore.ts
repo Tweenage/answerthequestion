@@ -525,7 +525,7 @@ export const useProgressStore = create<ProgressState>()(
             .from('user_progress')
             .select('*')
             .eq('child_id', userId)
-            .single();
+            .maybeSingle();
 
           // Fetch sessions
           const { data: sessionsData } = await supabase
