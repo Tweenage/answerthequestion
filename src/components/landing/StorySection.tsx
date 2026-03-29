@@ -68,9 +68,9 @@ export function StorySection() {
           {/* Callouts */}
           <div className="space-y-2.5 mb-6">
             {[
-              { emoji: '🧠', text: 'Not a knowledge gap. A focus habit.' },
+              { emoji: '🧠', text: 'Not a knowledge gap. A focus challenge.' },
               { emoji: '🔍', text: 'I searched for a tool to fix it. Found nothing.' },
-              { emoji: '🛠️', text: 'So I built it myself.' },
+              { emoji: '🛠️', text: 'So I did the research and built the system myself.' },
               { emoji: '📈', text: 'Marks went up. Frustration came down.' },
             ].map(({ emoji, text }) => (
               <div key={text} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5">
