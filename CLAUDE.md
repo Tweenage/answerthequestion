@@ -41,7 +41,7 @@ Every question, every scaffold, every UI interaction must reinforce CLEAR. This 
 | Package manager | npm |
 | Node | v22 (nvm) |
 
-**GitHub:** imperial-design/readthequestion
+**GitHub:** Tweenage/answerthequestion
 **Domain:** answerthequestion.co.uk
 **Vercel:** readthequestion.vercel.app
 
@@ -161,7 +161,7 @@ All deployed to Supabase. All use the shared `_shared/rate-limit.ts` (in-memory 
 | `create-checkout-session` | 10/min | Optional | Creates Stripe Checkout Session. Supports guest (email in body) or authenticated (JWT in header) |
 | `stripe-webhook` | 100/min | Stripe sig | Handles `checkout.session.completed`. Marks payment complete, sends emails (fire-and-forget) |
 | `claim-payment` | 10/min | Required | Matches unclaimed payments by email, marks child profiles as paid |
-| `send-welcome-email` | (has limit) | Required | Sends branded HTML welcome email via Zoho SMTP |
+| `send-welcome-email` | (has limit) | Required | Sends branded HTML welcome email via Resend |
 | `delete-account` | 3/min | Required | Uses service role key to delete user from Supabase Auth + all data |
 
 **CORS**: All functions whitelist `answerthequestion.co.uk`, `www.answerthequestion.co.uk`, Vercel preview URLs (`*.vercel.app`), and `localhost:5173` when `ALLOW_LOCALHOST=true`.
@@ -169,7 +169,7 @@ All deployed to Supabase. All use the shared `_shared/rate-limit.ts` (in-memory 
 **Secrets required**:
 - `STRIPE_SECRET_KEY` (create-checkout-session, stripe-webhook)
 - `STRIPE_WEBHOOK_SECRET` (stripe-webhook)
-- `ZOHO_SMTP_PASSWORD` (stripe-webhook, send-welcome-email)
+- `RESEND_API_KEY` (stripe-webhook, send-welcome-email)
 - `SUPABASE_SERVICE_ROLE_KEY` (delete-account, stripe-webhook — auto-available in Supabase functions)
 
 ---
@@ -288,7 +288,7 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - PWA with service worker
 - Comprehensive security headers (CSP, HSTS, X-Frame-Options, etc.)
 - Rate limiting on all Edge Functions
-- Welcome + payment confirmation + crib sheet emails via Zoho SMTP
+- Welcome + payment confirmation + crib sheet emails via Resend (from hello@answerthequestion.co.uk)
 - Account deletion with CASCADE cleanup
 - Referral code system (generated per child, tracked via `referred_by`)
 - `console.log`/`console.debug`/`console.warn`/`console.error` stripped in production builds (all four in Vite esbuild `pure` array)
@@ -334,7 +334,7 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - Sound effects hook exists (`useSoundEffects.ts`) but sound assets not visible in public directory
 - The `visualisation/` component directory is empty — visualisation logic is likely inline in `VisualisationPage.tsx`
 - **Supabase Auth confirmation emails** may not arrive reliably — a "Resend confirmation email" button exists on both Login and Signup pages as a workaround
-- **Payment confirmation emails** can fail due to Supabase Edge Function CPU time limits when sending via Zoho SMTP — mitigated by fire-and-forget pattern but SMTP itself may be too slow
+- **Resend domain verification** — `answerthequestion.co.uk` must be verified in Resend dashboard before emails will send. Check resend.com → Domains.
 
 ---
 
@@ -410,7 +410,7 @@ supabase functions deploy delete-account
 Required secrets (set via `supabase secrets set`):
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
-- `ZOHO_SMTP_PASSWORD`
+- `RESEND_API_KEY`
 - `ALLOW_LOCALHOST=true` (for local dev only)
 
 ---
@@ -421,7 +421,7 @@ Required secrets (set via `supabase secrets set`):
 - **Edge Functions**: Deployed to Supabase separately via CLI.
 - **Stripe Webhook**: Endpoint is the Supabase function URL. Must be configured in Stripe Dashboard to send `checkout.session.completed` events.
 - **Domain**: `answerthequestion.co.uk` (Vercel)
-- **Email**: `rebecca@answerthequestion.co.uk` via Zoho SMTP
+- **Email**: `hello@answerthequestion.co.uk` via Resend
 
 ---
 
@@ -457,7 +457,7 @@ Required secrets (set via `supabase secrets set`):
 
 15. **Stripe SDK incompatibility in Deno**: The `stripe-webhook` Edge Function cannot use `stripe.webhooks.constructEvent()` or `constructEventAsync()` — they fail with `Deno.core.runMicrotasks` errors. Webhook signature verification is implemented manually using Web Crypto API HMAC-SHA256. Do not attempt to revert to the SDK method.
 
-16. **Fire-and-forget emails in Edge Functions**: Email sending (Zoho SMTP via `denomailer`) exceeds Supabase Edge Function CPU time limits if done synchronously. The webhook returns 200 to Stripe immediately after DB updates, then sends emails in a non-blocking `try/catch` block. Uses `EdgeRuntime.waitUntil` if available.
+16. **Fire-and-forget emails in Edge Functions**: The webhook returns 200 to Stripe immediately after DB updates, then sends emails via Resend in a non-blocking `try/catch` block. Uses `EdgeRuntime.waitUntil` if available. Resend is an HTTP API call so it's fast — no SMTP handshake overhead.
 
 17. **`has_paid` column**: Was missing from `child_profiles` table initially — had to be added via `ALTER TABLE`. All payment-related updates were silently failing without it. If setting up a fresh Supabase instance, ensure this column exists: `ALTER TABLE child_profiles ADD COLUMN has_paid boolean DEFAULT false;`
 
@@ -475,7 +475,7 @@ Required secrets (set via `supabase secrets set`):
 
 24. **Key word quality in question bank**: The `keyWordIndices` arrays in question files should mark ~60-70% passage content words (nouns, verbs, figurative language, key facts) and ~30-40% question focus words. The original batch3-english questions only marked question-stem words (e.g. "Which sentence best summarises") which meant children couldn't score well even when highlighting correctly. Fixed in March 2026 — other question files may need similar review.
 
-25. **Zoho email delivery**: Emails sent from `rebecca@answerthequestion.co.uk` may fail to deliver to `@answerthequestion.co.uk` addresses if MX records don't resolve correctly. Check MX records point to `mx.zoho.eu`, `mx2.zoho.eu`, `mx3.zoho.eu`. Emails to external addresses (Gmail, Outlook) work fine.
+25. **Resend domain verification**: `answerthequestion.co.uk` must be a verified domain in the Resend dashboard for emails to send. Add the SPF and DKIM DNS records Resend provides, then click "Verify". The from address is `hello@answerthequestion.co.uk` — Resend trusts the whole domain, not individual addresses. Incoming email (replies to hello@) is handled separately via Cloudflare Email Routing → personal Gmail.
 
 26. **Security documentation**: Security policies live in `docs/security/`: `secret-rotation.md` (90-day rotation schedule), `backup-restore.md` (Supabase backup + quarterly restore testing), `environment-separation.md` (separate dev/prod Supabase projects + Stripe test/live keys), `guest-checkout-auth.md` (rationale for unauthenticated checkout endpoint with mitigations).
 
