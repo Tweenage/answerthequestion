@@ -1,5 +1,5 @@
 # CLAUDE.md — AnswerTheQuestion (ATQ)
-*Last updated: 25 March 2026*
+*Last updated: 29 March 2026*
 
 ---
 
@@ -330,16 +330,12 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 
 - The `gamification/` component directory is empty — gamification features are scattered across other components
 - The `auth/`, `dashboard/`, `ui/` component directories are empty — functionality may be inline in pages
-- The README is still the default Vite template
 - Question files use old 4-subject naming convention (`verbal-reasoning.ts`, `non-verbal-reasoning.ts`) even though the type system uses 3 subjects. This is cosmetic but could confuse contributors.
 - Sound effects hook exists (`useSoundEffects.ts`) but sound assets not visible in public directory
 - The `visualisation/` component directory is empty — visualisation logic is likely inline in `VisualisationPage.tsx`
-- No automated tests
 - **Supabase Auth confirmation emails** may not arrive reliably — a "Resend confirmation email" button exists on both Login and Signup pages as a workaround
 - **Payment confirmation emails** can fail due to Supabase Edge Function CPU time limits when sending via Zoho SMTP — mitigated by fire-and-forget pattern but SMTP itself may be too slow
-- **Favicon** not displaying correctly
 - **UpgradePage** still references "VR & NVR" instead of merged "Reasoning" subject
-- **Crib sheet purchased flag** on HomePage uses `localStorage.getItem('atq-crib-sheet-purchased')` to decide whether to show the download button — this flag is lost on sign-out/device change. The download URL itself is secure (signed URL from private bucket); the problem is just that the button disappears. Needs the `include_crib_sheet` flag stored in Supabase (payments table already has the column) and fetched on load for persistence across devices
 
 ---
 
