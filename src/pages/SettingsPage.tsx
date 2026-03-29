@@ -192,8 +192,11 @@ export function SettingsPage() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm">
-        <h3 className="font-display font-bold text-sm text-gray-700 mb-2">Account</h3>
+      <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-card p-4 shadow-sm border-2 border-red-200">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-red-500 text-base">⚠️</span>
+          <h3 className="font-display font-bold text-sm text-red-600 uppercase tracking-wide">Danger Zone</h3>
+        </div>
         <button
           onClick={() => setShowDeleteModal(true)}
           className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 font-display font-bold transition-colors"
