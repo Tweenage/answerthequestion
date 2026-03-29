@@ -17,20 +17,33 @@ export function StorySection() {
           </p>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            There was a piece of the puzzle missing, and I was running out of ideas.
+            Then one afternoon, working through an English comprehension, she hit a question
+            that began: <em>&ldquo;In what year did scientists discover the colour of&hellip;&rdquo;</em>
           </p>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
-            So I went back to basics. I started looking at how she was approaching questions,
-            not just whether she knew the answers. And I saw it: she was answering the question
-            she <em>expected</em>, not the one on the page.
+            Her answer: <strong className="text-gray-800">&ldquo;Blue.&rdquo;</strong>
+          </p>
+
+          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
+            I asked her to read it again. Still blue. A third time &mdash; confident as ever.
+            Finally I said: <em>&ldquo;What is the question actually asking you?&rdquo;</em> A pause.
+            Then: <em>&ldquo;Oh! It&rsquo;s asking for a year!&rdquo;</em> And immediately, without
+            hesitation: <em>&ldquo;1957.&rdquo;</em> She knew it all along. She just hadn&rsquo;t
+            read the question.
+          </p>
+
+          <p className="text-gray-600 font-display text-base leading-relaxed mb-5">
+            It wasn&rsquo;t a comprehension problem. It wasn&rsquo;t a knowledge problem.
+            It was a focus problem &mdash; the kind that builds up in a world of tablets and
+            short videos, where children aren&rsquo;t trained to slow down and read carefully.
+            I searched for something to help her build that specific skill. Found nothing useful.
+            So I built it myself.
           </p>
 
           <p className="text-gray-600 font-display text-base leading-relaxed mb-6">
-            Once I knew what the problem was, I built something to fix it. I made it into a
-            game. Before we started, we&rsquo;d picture the exam room: settled, ready. We&rsquo;d
-            work through the method together, track her progress, mark the moments she got it
-            right. The pressure came down. The marks went up. We started having fun with it.
+            In just a few minutes a day, she developed the read-the-question muscle. The marks
+            went up. The frustration came down. I stopped dragging my hand down my face in despair.
           </p>
 
           <p className="text-gray-700 font-display font-semibold text-base leading-relaxed mb-5">
@@ -38,7 +51,7 @@ export function StorySection() {
           </p>
 
           <p className="font-display font-bold text-base text-purple-700">
-            &mdash; Rebecca, Founder
+            &mdash; Rebecca, Tweenage Founder
           </p>
         </div>
       </motion.div>
