@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
-const LETTERS = [
-  { letter: 'C', bg: 'bg-blue-500' },
-  { letter: 'L', bg: 'bg-violet-500' },
-  { letter: 'E', bg: 'bg-pink-500' },
-  { letter: 'A', bg: 'bg-amber-500' },
-  { letter: 'R', bg: 'bg-emerald-500' },
+const STEPS = [
+  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath before you start. A settled mind reads more carefully than a rushing one.' },
+  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question before looking at any answers. Every word. Every time.' },
+  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out answers that are obviously wrong. The right one is easier to find when the wrong ones are gone.' },
+  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'What is the question actually asking? Not what you expect — what it says.' },
+  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question before moving on. One last check.' },
 ];
 
 export function ClearMethodSection() {
@@ -30,8 +30,9 @@ export function ClearMethodSection() {
             week one. They use it automatically by week twelve.
           </p>
 
-          <div className="flex items-center justify-center gap-4">
-            {LETTERS.map((step, i) => (
+          {/* Letter circles */}
+          <div className="flex items-center justify-center gap-4 mb-10">
+            {STEPS.map((step, i) => (
               <motion.div
                 key={step.letter}
                 initial={{ opacity: 0, scale: 0.7 }}
@@ -43,6 +44,28 @@ export function ClearMethodSection() {
                 <span className="font-display font-extrabold text-2xl text-white">
                   {step.letter}
                 </span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Step breakdown */}
+          <div className="space-y-3 text-left">
+            {STEPS.map((step, i) => (
+              <motion.div
+                key={step.letter}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100"
+              >
+                <div className={`w-9 h-9 rounded-full ${step.bg} flex items-center justify-center shrink-0 mt-0.5`}>
+                  <span className="font-display font-extrabold text-base text-white">{step.letter}</span>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-gray-900 text-base">{step.name}</p>
+                  <p className="font-display text-sm text-gray-500 leading-relaxed mt-0.5">{step.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>
