@@ -25,8 +25,8 @@ export function PrivacyPolicyPage() {
             Answer The Question ("we", "us", "our") is a UK-based company that provides an online
             11+ exam technique training application ("the App"). If you have any questions about
             this policy or your data, contact us at{' '}
-            <a href="mailto:rebecca@answerthequestion.co.uk" className="text-purple-600 underline">
-              rebecca@answerthequestion.co.uk
+            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
+              hello@answerthequestion.co.uk
             </a>.
           </p>
         </Section>
@@ -104,8 +104,8 @@ export function PrivacyPolicyPage() {
           </ul>
           <p className="mt-2">
             To exercise any of these rights, email{' '}
-            <a href="mailto:rebecca@answerthequestion.co.uk" className="text-purple-600 underline">
-              rebecca@answerthequestion.co.uk
+            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
+              hello@answerthequestion.co.uk
             </a>.
             We will respond within 30 days.
           </p>
