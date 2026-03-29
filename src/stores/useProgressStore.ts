@@ -536,7 +536,7 @@ export const useProgressStore = create<ProgressState>()(
 
           // Fetch question results for all sessions
           const sessionIds = (sessionsData ?? []).map(s => s.id);
-          let questionResults: Record<string, QuestionResult[]> = {};
+          const questionResults: Record<string, QuestionResult[]> = {};
 
           if (sessionIds.length > 0) {
             const { data: resultsData } = await supabase

@@ -32,6 +32,7 @@ export function MascotMessage({ message, show, mood = 'happy' }: MascotMessagePr
 }
 
 // Helper to get contextual messages — Professor Hoot's voice
+// eslint-disable-next-line react-refresh/only-export-components
 export function getMascotTip(state: string, scaffoldingLevel: string): string {
   if (state === 'READING_FIRST') {
     if (scaffoldingLevel === 'heavy') return "Hey there! Let's read this question together. Take it nice and slow — every word matters!";

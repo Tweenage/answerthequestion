@@ -93,7 +93,23 @@
       "Bash(curl -s http://localhost:5173)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(grep -h \"category:\" src/data/questions/*.ts)"
+      "Bash(grep -h \"category:\" src/data/questions/*.ts)",
+      "Bash(ls -la .env*)",
+      "Bash(supabase secrets:*)",
+      "Bash(brew upgrade:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test:*)",
+      "Bash(curl -s https://www.bdadyslexia.org.uk/advice/employers/creating-a-dyslexia-friendly-workplace/dyslexia-friendly-style-guide)",
+      "Bash(curl -s https://www.bdadyslexia.org.uk/advice/schools/creating-a-dyslexia-friendly-practice/the-dyslexia-friendly-quality-mark-dfqm)",
+      "WebFetch(domain:www.bdadyslexia.org.uk)",
+      "WebFetch(domain:cdn.bdadyslexia.org.uk)",
+      "WebFetch(domain:pmc.ncbi.nlm.nih.gov)",
+      "WebFetch(domain:www.smashingmagazine.com)",
+      "WebFetch(domain:uxmovement.com)",
+      "WebFetch(domain:dyslexiascotland.org.uk)",
+      "Bash(npm run:*)",
+      "Bash(convert --version)",
+      "Bash(python3 -c \"from PIL import Image; print\\(''pillow ok''\\)\")"
     ]
   }
 }

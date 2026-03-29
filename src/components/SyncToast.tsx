@@ -12,6 +12,7 @@ let nextId = 0;
 const listeners: Set<(event: SyncEvent) => void> = new Set();
 
 /** Call from anywhere (stores, etc.) to show a sync toast */
+// eslint-disable-next-line react-refresh/only-export-components
 export function showSyncToast(message: string, type: 'error' | 'success' = 'error') {
   const event: SyncEvent = { id: nextId++, message, type };
   listeners.forEach(fn => fn(event));

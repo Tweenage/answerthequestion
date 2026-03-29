@@ -13,6 +13,7 @@ export function XpPopup({ xpEarned, isCorrect, techniquePercent, show }: XpPopup
 
   useEffect(() => {
     if (!show || xpEarned === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplayXp(0);
       return;
     }

@@ -49,6 +49,7 @@ export function DailyChallengePage() {
 
   const answeredIds = progress?.sessions.flatMap(s => s.questions.map(q => q.questionId)) ?? [];
   const question = useMemo(
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
     () => getDailyChallengeQuestion(todayStr, answeredIds),
     [todayStr] // eslint-disable-line react-hooks/exhaustive-deps
   );

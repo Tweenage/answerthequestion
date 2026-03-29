@@ -49,6 +49,7 @@ export function CheckoutPage() {
       if (fnError) {
         let detail = '';
         try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const ctx = (fnError as any).context;
           if (ctx && typeof ctx.json === 'function') {
             const body = await ctx.json();

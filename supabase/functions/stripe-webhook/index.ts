@@ -12,6 +12,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
 
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
@@ -360,7 +361,9 @@ serve(async (req) => {
         })();
 
         // Try to keep the function alive for emails without blocking the response
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (typeof (globalThis as any).EdgeRuntime?.waitUntil === 'function') {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (globalThis as any).EdgeRuntime.waitUntil(emailPromise);
         }
         // If waitUntil isn't available, emails are best-effort

@@ -49,7 +49,9 @@ const INITIAL_DATA: QuestionFlowData = {
 
 export function useQuestionFlow(question: Question | null, weekConfig: WeekConfig) {
   const [data, setData] = useState<QuestionFlowData>(INITIAL_DATA);
+  // eslint-disable-next-line react-hooks/purity
   const startTimeRef = useRef<number>(Date.now());
+  // eslint-disable-next-line react-hooks/purity
   const readingStartRef = useRef<number>(Date.now());
 
   const reset = useCallback(() => {

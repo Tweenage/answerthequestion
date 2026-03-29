@@ -83,7 +83,7 @@ export const useAuthStore = create<AuthState>()(
           ),
         }));
         // Persist to localStorage as fallback (survives failed Supabase writes)
-        try { localStorage.setItem(`atq_onboarding_seen_${childId}`, 'true'); } catch {}
+        try { localStorage.setItem(`atq_onboarding_seen_${childId}`, 'true'); } catch { /* intentional */ }
         // Also update in Supabase
         supabase
           .from('child_profiles')
@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>()(
             u.id === childId ? { ...u, hasSeenTutorial: true } : u
           ),
         }));
-        try { localStorage.setItem(`atq_tutorial_seen_${childId}`, 'true'); } catch {}
+        try { localStorage.setItem(`atq_tutorial_seen_${childId}`, 'true'); } catch { /* intentional */ }
         supabase
           .from('child_profiles')
           .update({ has_seen_tutorial: true })

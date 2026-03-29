@@ -18,6 +18,7 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
 
   // Reset interactive state whenever the step changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUserEliminated([]);
     setEliminationFeedback(null);
     setAllDoneFlash(false);

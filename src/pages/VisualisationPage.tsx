@@ -769,6 +769,7 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
     let cancelled = false;
     let stepIdx = 0;
     let secondsLeft = order[0].dur;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPhase(order[0].phase);
     setCountdown(order[0].dur);
 

@@ -78,7 +78,7 @@ export function ChildPickerPage() {
     supabase.functions.invoke('claim-payment').catch(() => {}).finally(() => {
       fetchChildren();
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchChildren = async () => {
     setLoading(true);

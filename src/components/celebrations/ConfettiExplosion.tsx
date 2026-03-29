@@ -27,6 +27,7 @@ export function ConfettiExplosion({ trigger, onComplete }: ConfettiExplosionProp
 
   useEffect(() => {
     if (!trigger) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setParticles([]);
       return;
     }

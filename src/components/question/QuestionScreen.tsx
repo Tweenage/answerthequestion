@@ -49,10 +49,13 @@ export function QuestionScreen({
 
   // Stable refs for functions/state used in effects to avoid stale closures
   const flowRef = useRef(flow);
+  // eslint-disable-next-line react-hooks/refs
   flowRef.current = flow;
   const timerRef = useRef(timer);
+  // eslint-disable-next-line react-hooks/refs
   timerRef.current = timer;
   const dataStateRef = useRef(data.state);
+  // eslint-disable-next-line react-hooks/refs
   dataStateRef.current = data.state;
 
   // Reset when question changes

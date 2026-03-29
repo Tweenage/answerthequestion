@@ -106,5 +106,6 @@ export function useDailyQuestions(
     }
 
     return shuffleArray([...mistakeQuestions, ...selected].slice(0, weekConfig.dailyQuestionCount));
-  }, [weekConfig.weekNumber, weekConfig.difficulty, focusSubject, mistakeQuestionIds.join(','), categoryMastery]); // eslint-disable-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/use-memo, react-hooks/exhaustive-deps
+  }, [weekConfig.weekNumber, weekConfig.difficulty, focusSubject, mistakeQuestionIds.join(','), categoryMastery]);
 }

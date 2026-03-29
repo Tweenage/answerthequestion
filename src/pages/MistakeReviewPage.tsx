@@ -22,7 +22,7 @@ export function MistakeReviewPage() {
   // Fallback: if location.state is missing (page refresh), derive from the most recent session
   const mistakeData = useMemo(() => {
     let results = locationResults;
-    let ids = questionIds;
+    const ids = questionIds;
 
     if (!results && !ids && currentUser) {
       const progress = getProgress(currentUser.id);
