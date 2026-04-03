@@ -6,25 +6,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useDyslexiaMode } from '../hooks/useDyslexiaMode';
 import { supabase } from '../lib/supabase';
-import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
-
-const CHARACTER_EMOJIS: Record<string, string> = {
-  cat: '🐱',
-  owl: '🦉',
-  robot: '🤖',
-  unicorn: '🦄',
-  dragon: '🐉',
-  fox: '🦊',
-};
-
-const CHARACTER_LABELS: Record<string, string> = {
-  cat: 'Cat',
-  owl: 'Owl',
-  robot: 'Robot',
-  unicorn: 'Unicorn',
-  dragon: 'Dragon',
-  fox: 'Fox',
-};
+import { AVATAR_CHARACTERS, AVATAR_COLOURS, CHARACTER_EMOJIS, CHARACTER_LABELS } from '../types/user';
 
 export function SettingsPage() {
   const currentUser = useCurrentUser();
@@ -278,7 +260,7 @@ export function SettingsPage() {
 
                     await supabase.auth.signOut();
                     logout();
-                    navigate('/');
+                    navigate('/login');
                   } catch (err) {
                     setDeleteError(
                       err instanceof Error ? err.message : 'Something went wrong. Please try again.'

@@ -51,12 +51,11 @@ export function TermsPage() {
 
         <Section title="4. Payments & Access">
           <p>
-            Week 1 of the programme is available free of charge with no payment required. To access
-            Weeks 2–12 and all premium features, a one-time payment of £19.99 is required.
-            Payment is processed securely by Stripe. Upon successful payment, full access is granted
-            immediately and does not expire. See our{' '}
+            Access to the full 12-week programme requires a one-time payment of £29.99.
+            Payment is processed securely by LemonSqueezy. Upon successful payment, full access is granted
+            immediately and does not expire. A 7-day money-back guarantee applies — see our{' '}
             <Link to="/refunds" className="text-purple-600 underline">Refund Policy</Link>{' '}
-            for details on refunds.
+            for details.
           </p>
         </Section>
 

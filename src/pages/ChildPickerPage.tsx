@@ -3,28 +3,10 @@ import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../stores/useAuthStore';
-import { AVATAR_CHARACTERS, AVATAR_COLOURS } from '../types/user';
+import { AVATAR_CHARACTERS, AVATAR_COLOURS, CHARACTER_EMOJIS, CHARACTER_LABELS } from '../types/user';
 import type { AvatarConfig } from '../types/user';
 import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
 import { LogOut } from 'lucide-react';
-
-const CHARACTER_EMOJIS: Record<string, string> = {
-  cat: '🐱',
-  owl: '🦉',
-  robot: '🤖',
-  unicorn: '🦄',
-  dragon: '🐉',
-  fox: '🦊',
-};
-
-const CHARACTER_LABELS: Record<string, string> = {
-  cat: 'Cat',
-  owl: 'Owl',
-  robot: 'Robot',
-  unicorn: 'Unicorn',
-  dragon: 'Dragon',
-  fox: 'Fox',
-};
 
 interface ChildProfile {
   id: string;

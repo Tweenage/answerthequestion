@@ -115,7 +115,7 @@ serve(async (req: Request) => {
       );
     }
 
-    console.log('Account deleted:', user.id, user.email);
+    console.log('Account deleted:', user.id);
 
     return new Response(
       JSON.stringify({ success: true }),

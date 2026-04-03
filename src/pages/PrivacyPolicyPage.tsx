@@ -37,7 +37,7 @@ export function PrivacyPolicyPage() {
             <li><strong>Parent account:</strong> email address and hashed password (via Supabase Auth)</li>
             <li><strong>Child profile:</strong> first name and avatar preference only — no surname, date of birth, or school</li>
             <li><strong>Practice data:</strong> question responses, technique scores, timestamps, streak counts, and badge progress</li>
-            <li><strong>Payment data:</strong> processed securely by Stripe — we never see or store your card details</li>
+            <li><strong>Payment data:</strong> processed securely by LemonSqueezy — we never see or store your card details</li>
           </ul>
         </Section>
 
@@ -71,7 +71,7 @@ export function PrivacyPolicyPage() {
           <p>We do not sell, rent, or trade your data. We share data only with:</p>
           <ul className="list-disc list-inside space-y-1 mt-2 text-gray-600">
             <li><strong>Supabase:</strong> our data processor, for hosting and authentication</li>
-            <li><strong>Stripe:</strong> for payment processing (they have their own privacy policy)</li>
+            <li><strong>LemonSqueezy:</strong> for payment processing (they have their own privacy policy)</li>
           </ul>
           <p className="mt-2">No data is transferred outside the EU/UK unless required by these processors under appropriate safeguards.</p>
         </Section>

@@ -31,8 +31,8 @@ export function RefundPolicyPage() {
         <Section title="After 7 Days">
           <p>
             After 7 days from the date of purchase, we are unable to offer a refund as the
-            programme content will have been accessed. We encourage you to make full use of
-            the free Week 1 trial before purchasing to make sure the App is right for your child.
+            programme content will have been accessed. The 7-day window gives you ample opportunity
+            to explore the programme and make sure the App is right for your child.
           </p>
         </Section>
 

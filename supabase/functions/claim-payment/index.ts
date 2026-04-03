@@ -123,7 +123,7 @@ serve(async (req) => {
           .eq('parent_id', user.id);
 
         const hasCribSheet = existingPayments.some(p => p.include_crib_sheet);
-        console.log(`Re-applied paid status for user ${user.id} (${user.email}) — ${existingPayments.length} existing payment(s)`);
+        console.log(`Re-applied paid status for user ${user.id} — ${existingPayments.length} existing payment(s)`);
 
         return new Response(JSON.stringify({
           claimed: true,
@@ -162,7 +162,7 @@ serve(async (req) => {
       .eq('parent_id', user.id);
 
     const hasCribSheet = payments.some(p => p.include_crib_sheet);
-    console.log(`Claimed ${payments.length} payment(s) for user ${user.id} (${user.email}), crib_sheet=${hasCribSheet}`);
+    console.log(`Claimed ${payments.length} payment(s) for user ${user.id}, crib_sheet=${hasCribSheet}`);
 
     return new Response(JSON.stringify({
       claimed: true,

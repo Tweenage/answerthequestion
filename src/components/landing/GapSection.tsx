@@ -35,7 +35,7 @@ export function GapSection() {
           to="/checkout"
           className="inline-block px-8 py-4 rounded-2xl font-display font-bold text-white text-base bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all border border-white/40 hover:scale-[1.02] active:scale-[0.98]"
         >
-          See how it works &mdash; &pound;19.99
+          See how it works &mdash; &pound;29.99
         </Link>
       </motion.div>
     </section>

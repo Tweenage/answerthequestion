@@ -80,11 +80,11 @@ function generateCribSheetPdf() {
     },
     {
       letter: 'E',
-      name: 'Extract',
-      emoji: '✏️',
+      name: 'Eliminate',
+      emoji: '✂️',
       color: [168, 85, 247] as [number, number, number],
-      instruction: 'Underline the key words.',
-      detail: 'Circle or underline the important words: numbers, command words (explain, list, compare), and any tricky details.',
+      instruction: 'Cross out answers that are obviously wrong.',
+      detail: 'Go through each option and rule out anything that can\'t be right. Narrowing down first makes the correct answer much easier to spot.',
     },
     {
       letter: 'A',
@@ -182,7 +182,7 @@ function generateCribSheetPdf() {
 export function PaymentSuccessPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get('session_id');
+  const sessionId = searchParams.get('ls');
   const hasCribSheet = searchParams.get('crib_sheet') === '1';
   const parentSession = useAuthStore(s => s.parentSession);
   const updateChildLocally = useAuthStore(s => s.updateChildLocally);
@@ -337,7 +337,7 @@ export function PaymentSuccessPage() {
                 {downloading ? 'Downloading\u2026' : 'Download Crib Sheet'}
               </motion.button>
               <p className="font-display text-xs text-gray-400">
-                You can also re-download this anytime from your parent dashboard
+                You can also re-download this anytime from your home screen
               </p>
             </div>
           </motion.div>

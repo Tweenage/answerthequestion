@@ -103,7 +103,7 @@ export function UpgradePage() {
         <div className="text-center mb-5">
           <div className="flex items-center justify-center gap-2 mb-1">
             <Sparkles className="w-5 h-5 text-amber-500" />
-            <span className="font-display font-extrabold text-3xl text-gray-800">£19.99</span>
+            <span className="font-display font-extrabold text-3xl text-gray-800">£29.99</span>
           </div>
           <p className="text-sm text-gray-500 font-display">One-time payment · Full access forever</p>
         </div>
@@ -151,7 +151,7 @@ export function UpgradePage() {
           disabled={loading}
           className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-500 hover:from-purple-700 hover:via-fuchsia-700 hover:to-pink-600 transition-opacity disabled:opacity-50 shadow-lg"
         >
-          {loading ? 'Redirecting to checkout…' : `Unlock Full Access — £${includeCribSheet ? '24.98' : '19.99'} 🔓`}
+          {loading ? 'Redirecting to checkout…' : `Unlock Full Access — £${includeCribSheet ? '34.98' : '29.99'} 🔓`}
         </motion.button>
 
         {error && (
@@ -168,7 +168,7 @@ export function UpgradePage() {
         <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-400 font-display">
           <div className="flex items-center gap-1">
             <Shield className="w-3.5 h-3.5" />
-            <span>Secure payment via Stripe</span>
+            <span>Secure payment</span>
           </div>
           <span>·</span>
           <Link to="/refunds" className="underline hover:text-gray-600">

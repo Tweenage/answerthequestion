@@ -161,7 +161,7 @@ serve(async (req) => {
       throw new Error(`Resend error ${res.status}: ${text}`);
     }
 
-    console.log(`Welcome email sent to ${user.email}`);
+    console.log(`Welcome email sent to user ${user.id}`);
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },

@@ -30,7 +30,7 @@ export function SocialProofSection() {
             science of thinking about thinking. The EEF Teaching and Learning
             Toolkit identifies metacognitive strategies as one of the most
             effective and cost-efficient ways to improve learning outcomes.
-            That&rsquo;s exactly what the CLEAR Method trains your child to do.
+            That&rsquo;s exactly what the CLEAR Method™ trains your child to do.
           </p>
 
           {/* Three confidence pillars */}
@@ -44,12 +44,12 @@ export function SocialProofSection() {
               {
                 icon: Brain,
                 title: 'Research-backed method',
-                body: 'The CLEAR Method teaches the metacognitive skills that turn careless mistakes into confident answers.',
+                body: 'The CLEAR Method™ teaches the metacognitive skills that turn careless mistakes into confident answers.',
               },
               {
                 icon: Shield,
                 title: 'Calm & focused exam habits',
-                body: 'Built-in breathing exercises and the CLEAR Method help your child stay calm under pressure and think before they answer.',
+                body: 'Built-in breathing exercises and the CLEAR Method™ help your child stay calm under pressure and think before they answer.',
               },
             ].map((item, i) => (
               <motion.div

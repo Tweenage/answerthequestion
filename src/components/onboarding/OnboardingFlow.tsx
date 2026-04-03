@@ -36,8 +36,8 @@ const slides: OnboardingSlide[] = [
     title: 'What is the CLEAR Method?',
     body: "It's 5 simple steps you follow for every question. Practise them daily and they become automatic — just like tying your shoes! Let me show you...",
     tips: [
-      { emoji: '📖', text: 'C — Comprehend: read the question twice' },
-      { emoji: '🔍', text: 'L — Look for key words and danger words' },
+      { emoji: '🧘', text: 'C — Calm: take a breath before you start' },
+      { emoji: '👀', text: 'L — Look: read the whole question carefully' },
       { emoji: '❌', text: 'E — Eliminate the wrong answers' },
       { emoji: '✅', text: 'A — Answer with confidence' },
       { emoji: '🔄', text: 'R — Review and check your work' },
@@ -45,14 +45,14 @@ const slides: OnboardingSlide[] = [
   },
   {
     hootMood: 'thinking',
-    title: 'C — Comprehend',
-    body: "Nearly a third of all exam mistakes come from misreading. So we always read the question twice — and cover the answers so you can't peek! Only then do you look at the choices.",
-    highlight: 'read the question twice',
+    title: 'C — Calm',
+    body: "Before you read a single word, take one slow breath. Put your pencil down. Breathe in for 3 counts, out for 3. A calm mind reads better than a rushing one — and rushing is where marks get lost.",
+    highlight: 'one slow breath',
   },
   {
     hootMood: 'teaching',
-    title: 'L — Look for Key Words',
-    body: "Highlight the FEWEST words that tell you what the question is really asking — could you answer it using only those words? Always highlight danger words: NOT, except, least, never, only. Only highlight a name if there are two or more people in the question. In the app you'll tap to highlight. In your real exam, underline with your pencil!",
+    title: 'L — Look',
+    body: "Read the whole question — all the way to the end — before you look at any answers. Then tap to highlight the key words: what is it actually asking? Always highlight danger words: NOT, except, least, never, only. In your real exam, underline with your pencil!",
     highlight: 'danger words',
   },
   {

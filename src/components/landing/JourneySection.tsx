@@ -87,7 +87,7 @@ export function JourneySection() {
           {/* Session format */}
           <div className="bg-gradient-to-r from-purple-50 to-fuchsia-50 rounded-2xl p-6 md:p-8 border border-purple-200/50 text-center mb-4">
             <p className="font-display font-extrabold text-xl md:text-2xl text-purple-800">
-              10 questions. 10 minutes. Done.
+              10 questions. 15 minutes. Done.
             </p>
             <p className="font-display text-sm md:text-base text-purple-600 mt-2">
               Short enough to fit around homework. Repeated often enough to lock the habit in for good.
@@ -105,7 +105,7 @@ export function JourneySection() {
                 <p className="font-display text-sm text-amber-800 leading-relaxed">
                   No problem. Just enter your child&rsquo;s exam date and the app automatically switches
                   to <strong>Fast Track mode</strong> &mdash; a compressed programme that accelerates from
-                  gentle start to exam pace in the time you have left. The same CLEAR Method, the same
+                  gentle start to exam pace in the time you have left. The same CLEAR Method™, the same
                   proven technique, just adapted to your timeline.
                 </p>
               </div>
@@ -136,7 +136,7 @@ export function JourneySection() {
               to="/checkout"
               className="inline-block w-full max-w-md py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get Answer the Question &mdash; &pound;19.99 &rarr;
+              Start AnswerTheQuestion! &mdash; &pound;29.99 &rarr;
             </Link>
           </div>
         </motion.div>

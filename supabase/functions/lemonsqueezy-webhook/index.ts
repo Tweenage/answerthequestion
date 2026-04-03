@@ -1,21 +1,15 @@
-// Supabase Edge Function: stripe-webhook
-// Handles Stripe webhook events (checkout.session.completed).
+// Supabase Edge Function: lemonsqueezy-webhook
+// Handles LemonSqueezy webhook events (order_created).
 // Sends payment confirmation + optional crib sheet email via Resend.
-// Deploy: supabase functions deploy stripe-webhook --no-verify-jwt
-// Required secrets: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY
+// Deploy: supabase functions deploy lemonsqueezy-webhook --no-verify-jwt
+// Required secrets: LEMONSQUEEZY_WEBHOOK_SECRET, RESEND_API_KEY
 //
-// SECURITY: In-memory rate limiting (100 req/min per IP) + Stripe signature verification.
+// SECURITY: In-memory rate limiting (100 req/min per IP) + LemonSqueezy signature verification.
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { encodeBase64 } from 'https://deno.land/std@0.224.0/encoding/base64.ts';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import Stripe from 'https://esm.sh/stripe@14.21.0?target=deno';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
-
-const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
 
 const EMAIL_FROM = 'AnswerTheQuestion! <hello@answerthequestion.co.uk>';
 
@@ -61,7 +55,7 @@ async function sendEmail(options: {
     throw new Error(`Resend error ${res.status}: ${text}`);
   }
 
-  console.log(`Email sent to ${options.to}: "${options.subject}"`);
+  console.log(`Email sent: "${options.subject}"`);
 }
 
 // ─── Email Templates ────────────────────────────────────────────
@@ -154,8 +148,7 @@ const CRIB_SHEET_EMAIL_HTML = `<!DOCTYPE html>
       </div>
       <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">
         Print it out. Stick it on the fridge, the desk, or inside a homework folder.
-        When the screens are off and the pen is in hand, the principles are still
-        right there.
+        When the screens are off and the pen is in hand, the principles are still right there.
       </p>
       <p style="font-size:15px;line-height:1.6;margin:0 0 4px;">
         You&rsquo;ve got this &mdash; and so has your child. 💪
@@ -188,17 +181,13 @@ async function sendPaymentConfirmationEmail(customerEmail: string): Promise<void
   }
 }
 
-async function sendCribSheetEmail(
-  customerEmail: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabaseAdmin: any,
-): Promise<void> {
-  // Fetch the PDF via a short-lived signed URL so the bucket can be kept private
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function sendCribSheetEmail(customerEmail: string, supabaseAdmin: any): Promise<void> {
   let pdfAttachment: { filename: string; content: Uint8Array; contentType: string } | undefined;
   try {
     const { data: signedData, error: signedError } = await supabaseAdmin.storage
       .from('assets')
-      .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 60); // 60-second expiry
+      .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 60);
 
     if (signedError || !signedData?.signedUrl) {
       console.error('Failed to create signed URL for crib sheet:', signedError);
@@ -231,6 +220,26 @@ async function sendCribSheetEmail(
   }
 }
 
+// ─── Webhook Signature Verification ────────────────────────────
+// LemonSqueezy uses HMAC-SHA256 of the raw body, hex-encoded, in X-Signature header.
+
+async function verifySignature(body: string, signature: string, secret: string): Promise<boolean> {
+  // Reject obviously invalid signatures before touching crypto
+  if (!/^[0-9a-f]+$/i.test(signature)) return false;
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify']
+  );
+  // Decode hex signature to bytes and verify using crypto.subtle.verify,
+  // which performs a constant-time comparison internally.
+  const sigBytes = new Uint8Array(signature.match(/.{2}/g)!.map(b => parseInt(b, 16)));
+  return crypto.subtle.verify('HMAC', key, sigBytes, encoder.encode(body));
+}
+
 // ─── Main Webhook Handler ───────────────────────────────────────
 
 serve(async (req) => {
@@ -238,112 +247,100 @@ serve(async (req) => {
     return new Response('ok', { status: 200 });
   }
 
-  // Rate limit: 100 requests per minute per IP (Stripe sends bursts)
   const clientIp = getClientIp(req);
   const rateLimitResult = checkRateLimit(clientIp, 100, 60_000);
   if (!rateLimitResult.allowed) {
-    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
     return new Response(JSON.stringify({ error: 'Too many requests' }), {
       status: 429,
-      headers: {
-        'Content-Type': 'application/json',
-        'Retry-After': String(retryAfterSec),
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   try {
     const body = await req.text();
-    const sig = req.headers.get('stripe-signature');
+    const signature = req.headers.get('X-Signature');
 
-    if (!sig) {
-      return new Response('Missing stripe-signature header', { status: 400 });
+    if (!signature) {
+      return new Response('Missing X-Signature header', { status: 400 });
     }
 
-    // Manual HMAC-SHA256 signature verification (compatible with Supabase Edge / Deno)
-    const sigParts = Object.fromEntries(
-      sig.split(',').map(part => {
-        const [key, ...rest] = part.split('=');
-        return [key, rest.join('=')];
-      })
-    );
-    const timestamp = sigParts['t'];
-    const expectedSig = sigParts['v1'];
-
-    if (!timestamp || !expectedSig) {
-      return new Response('Invalid stripe-signature format', { status: 400 });
+    const webhookSecret = Deno.env.get('LEMONSQUEEZY_WEBHOOK_SECRET');
+    if (!webhookSecret) {
+      console.error('LEMONSQUEEZY_WEBHOOK_SECRET not set');
+      return new Response('Webhook not configured', { status: 500 });
     }
 
-    // Check timestamp is within 5 minutes (300 seconds)
-    const now = Math.floor(Date.now() / 1000);
-    if (Math.abs(now - parseInt(timestamp)) > 300) {
-      console.error(`Webhook timestamp too old: ${timestamp} vs now ${now}`);
-      return new Response('Webhook timestamp out of tolerance', { status: 400 });
-    }
-
-    // Compute HMAC-SHA256 using Web Crypto API
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      'raw',
-      encoder.encode(webhookSecret),
-      { name: 'HMAC', hash: 'SHA-256' },
-      false,
-      ['sign']
-    );
-    const signedPayload = `${timestamp}.${body}`;
-    const signatureBytes = await crypto.subtle.sign('HMAC', key, encoder.encode(signedPayload));
-    const computedSig = Array.from(new Uint8Array(signatureBytes))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-
-    if (computedSig !== expectedSig) {
-      console.error('Signature mismatch — computed:', computedSig.substring(0, 16), 'expected:', expectedSig.substring(0, 16));
+    const valid = await verifySignature(body, signature, webhookSecret);
+    if (!valid) {
+      console.error('LemonSqueezy webhook signature verification failed');
       return new Response('Webhook signature verification failed', { status: 400 });
     }
 
-    console.log('Webhook signature verified successfully');
-    const event = JSON.parse(body) as Stripe.Event;
+    const event = JSON.parse(body);
+    const eventName = event?.meta?.event_name;
 
-    // Handle the event
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const parentId = session.metadata?.parentId; // null for guest checkout
-      const includeCribSheet = session.metadata?.includeCribSheet === 'true';
-      const customerEmail = session.customer_email || session.customer_details?.email;
+    if (eventName === 'order_created') {
+      const order = event.data;
+      const orderId = String(order.id);
+      const attrs = order.attributes;
+      const customData = event.meta?.custom_data ?? {};
 
-      // Use service role to bypass RLS
+      const customerEmail = attrs.user_email as string | undefined;
+      const parentId = customData.parent_id || null;
+      const includeCribSheet = customData.include_crib_sheet === 'true';
+      const status = attrs.status as string;
+
+      // Only process paid orders
+      if (status !== 'paid') {
+        return new Response(JSON.stringify({ received: true, skipped: 'not paid' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
       const supabase = createClient(
         Deno.env.get('SUPABASE_URL')!,
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
       );
 
-      // Update payment record
-      await supabase
-        .from('payments')
-        .update({
-          status: 'completed',
-          completed_at: new Date().toISOString(),
-          stripe_payment_intent_id: session.payment_intent as string,
-          include_crib_sheet: includeCribSheet,
-          customer_email: customerEmail,
-          ...(parentId ? { parent_id: parentId } : {}),
-        })
-        .eq('stripe_checkout_session_id', session.id);
-
-      // If an authenticated user paid, mark ALL their child profiles as paid.
+      // Update or insert payment record
       if (parentId) {
+        await supabase
+          .from('payments')
+          .update({
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+            lemonsqueezy_order_id: orderId,
+            include_crib_sheet: includeCribSheet,
+            customer_email: customerEmail,
+          })
+          .eq('parent_id', parentId)
+          .eq('status', 'pending');
+
+        // Mark all child profiles as paid
         await supabase
           .from('child_profiles')
           .update({ has_paid: true })
           .eq('parent_id', parentId);
+      } else if (customerEmail) {
+        // Guest checkout — match by email
+        await supabase
+          .from('payments')
+          .update({
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+            lemonsqueezy_order_id: orderId,
+            include_crib_sheet: includeCribSheet,
+            customer_email: customerEmail,
+          })
+          .eq('customer_email', customerEmail)
+          .eq('status', 'pending');
       }
 
-      console.log(`Payment completed for session ${session.id}, parentId=${parentId ?? 'guest'}, crib_sheet=${includeCribSheet}`);
+      console.log(`Order ${orderId} completed. parentId=${parentId ?? 'guest'}, crib_sheet=${includeCribSheet}`);
 
-      // Send emails in background — don't block the response to Stripe
-      // (email API calls can be slow; fire-and-forget avoids Edge CPU timeout)
+      // Fire-and-forget emails
       if (customerEmail) {
-        // Fire-and-forget: use EdgeRuntime.waitUntil if available, otherwise just don't await
         const emailPromise = (async () => {
           try {
             await sendPaymentConfirmationEmail(customerEmail);
@@ -355,19 +352,16 @@ serve(async (req) => {
           }
         })();
 
-        // Try to keep the function alive for emails without blocking the response
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (typeof (globalThis as any).EdgeRuntime?.waitUntil === 'function') {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (globalThis as any).EdgeRuntime.waitUntil(emailPromise);
         }
-        // If waitUntil isn't available, emails are best-effort
       } else {
-        console.error('No customer email found on session — skipping emails');
+        console.error('No customer email on order — skipping emails');
       }
     }
 
-    // Return 200 immediately so Stripe knows we received it
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

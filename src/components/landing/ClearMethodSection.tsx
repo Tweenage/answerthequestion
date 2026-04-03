@@ -20,11 +20,11 @@ export function ClearMethodSection() {
           className="max-w-xl mx-auto text-center"
         >
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 mb-6 leading-tight">
-            The CLEAR Method
+            The CLEAR Method™
           </h2>
 
           <p className="text-gray-600 font-display text-base md:text-lg leading-relaxed mb-10">
-            The CLEAR Method is grounded in metacognition research &mdash; thinking about
+            The CLEAR Method™ is grounded in metacognition research &mdash; thinking about
             how you think. The Education Endowment Foundation found metacognitive strategies
             add an average of seven months of progress. Your child learns the method in
             week one. They use it automatically by week twelve.

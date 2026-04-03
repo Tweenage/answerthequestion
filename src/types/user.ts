@@ -29,3 +29,21 @@ export const AVATAR_BACKGROUNDS = [
   'bg-focus-100', 'bg-calm-100', 'bg-purple-100',
   'bg-orange-100', 'bg-pink-100', 'bg-cyan-100',
 ] as const;
+
+export const CHARACTER_EMOJIS: Record<string, string> = {
+  cat: '🐱',
+  owl: '🦉',
+  robot: '🤖',
+  unicorn: '🦄',
+  dragon: '🐉',
+  fox: '🦊',
+};
+
+export const CHARACTER_LABELS: Record<string, string> = {
+  cat: 'Cat',
+  owl: 'Owl',
+  robot: 'Robot',
+  unicorn: 'Unicorn',
+  dragon: 'Dragon',
+  fox: 'Fox',
+};

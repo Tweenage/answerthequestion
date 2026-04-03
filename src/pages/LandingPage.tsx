@@ -4,7 +4,6 @@ import { StorySection } from '../components/landing/StorySection';
 import { ForParentsSection } from '../components/landing/ForParentsSection';
 import { GapSection } from '../components/landing/GapSection';
 import { ClearMethodSection } from '../components/landing/ClearMethodSection';
-import { ScreenshotsSection } from '../components/landing/ScreenshotsSection';
 import { JourneySection } from '../components/landing/JourneySection';
 import { PricingSection } from '../components/landing/PricingSection';
 import { SocialProofSection } from '../components/landing/SocialProofSection';
@@ -21,7 +20,6 @@ export function LandingPage() {
       <ForParentsSection />
       <GapSection />
       <ClearMethodSection />
-      <ScreenshotsSection />
       <JourneySection />
       <PricingSection />
       <SocialProofSection />

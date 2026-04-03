@@ -8,15 +8,7 @@ import { Flame, Star, LogOut, Users, BarChart3, Settings } from 'lucide-react';
 import { HootInline } from '../mascot/ProfessorHoot';
 import { SoundToggle } from '../settings/SoundToggle';
 import { navItems } from '../../data/navItems';
-
-const CHARACTER_EMOJIS: Record<string, string> = {
-  cat: '🐱',
-  owl: '🦉',
-  robot: '🤖',
-  unicorn: '🦄',
-  dragon: '🐉',
-  fox: '🦊',
-};
+import { CHARACTER_EMOJIS } from '../../types/user';
 
 export function Header() {
   const currentUser = useCurrentUser();

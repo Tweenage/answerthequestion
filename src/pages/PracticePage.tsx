@@ -79,7 +79,7 @@ export function PracticePage() {
     };
 
     if (currentUser) {
-      saveSession(currentUser.id, session);
+      saveSession(currentUser.id, session, totalWeeks);
       updateStreak(currentUser.id, session.date);
 
       const totalXp = results.reduce((sum, r) =>

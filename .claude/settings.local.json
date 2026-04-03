@@ -109,7 +109,10 @@
       "WebFetch(domain:dyslexiascotland.org.uk)",
       "Bash(npm run:*)",
       "Bash(convert --version)",
-      "Bash(python3 -c \"from PIL import Image; print\\(''pillow ok''\\)\")"
+      "Bash(python3 -c \"from PIL import Image; print\\(''pillow ok''\\)\")",
+      "Bash(grep -rn \"dyslexia-text\\\\|dyslexia-option\" '/Users/rebeccaeverton/11+ Read the Question/src' --include=*.css)",
+      "Bash(grep -E \"\\\\.\\(ts|d\\\\.ts\\)$\")",
+      "Read(//Users/rebeccaeverton/**)"
     ]
   }
 }

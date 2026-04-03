@@ -34,7 +34,7 @@ Every question, every scaffold, every UI interaction must reinforce CLEAR. This 
 | Animation | Framer Motion |
 | State | Zustand with persist middleware |
 | Database | Supabase (project ID: ganlncdbebtnstgcewsd) |
-| Payments | Stripe (£19.99 one-time, £4.99 bump) |
+| Payments | LemonSqueezy (£29.99 one-time, £4.99 bump) |
 | Email | Resend |
 | Deployment | Vercel |
 | Fonts | Nunito (display), Inter (body) |
@@ -76,7 +76,7 @@ Every question, every scaffold, every UI interaction must reinforce CLEAR. This 
 
 ## Pricing and Codes
 
-- **Main product:** £19.99 one-time
+- **Main product:** £29.99 one-time
 - **Checkout bump:** £4.99 — CLEAR Method Crib Sheet (printable PDF, Professor Hoot branded)
 - **Beta code:** `BETA100` — 100% off
 - **Launch code:** `WELCOME10` — 10% off
@@ -85,7 +85,7 @@ Every question, every scaffold, every UI interaction must reinforce CLEAR. This 
 
 ## Current Status (March 2026)
 
-- ✅ Stripe payment flow live
+- ✅ LemonSqueezy payment flow live
 - ✅ Resend email confirmation live
 - ✅ Security audit: 22/22 clean
 - ✅ First beta user onboarded
@@ -146,7 +146,7 @@ Every question, every scaffold, every UI interaction must reinforce CLEAR. This 
 - **`earned_badges`**: `child_id`, `badge_id` (composite PK), `earned_at`, `seen`
 - **`payments`**: `stripe_checkout_session_id`, `stripe_payment_intent_id`, `parent_id`, `status`, `completed_at`, `include_crib_sheet`, `customer_email`
 
-**RLS**: Row Level Security is enabled. The `stripe-webhook` function uses `SUPABASE_SERVICE_ROLE_KEY` to bypass RLS. User-facing operations use the user's JWT via the anon key.
+**RLS**: Row Level Security is enabled. The `lemonsqueezy-webhook` function uses `SUPABASE_SERVICE_ROLE_KEY` to bypass RLS. User-facing operations use the user's JWT via the anon key.
 
 **CASCADE**: `delete-account` relies on `ON DELETE CASCADE` foreign keys to clean up all child data when a parent account is deleted.
 
@@ -158,8 +158,8 @@ All deployed to Supabase. All use the shared `_shared/rate-limit.ts` (in-memory 
 
 | Function | Rate Limit | Auth | Purpose |
 |---|---|---|---|
-| `create-checkout-session` | 10/min | Optional | Creates Stripe Checkout Session. Supports guest (email in body) or authenticated (JWT in header) |
-| `stripe-webhook` | 100/min | Stripe sig | Handles `checkout.session.completed`. Marks payment complete, sends emails (fire-and-forget) |
+| `create-checkout-session` | 10/min | Optional | Creates LemonSqueezy checkout. Supports guest (email in body) or authenticated (JWT in header) |
+| `lemonsqueezy-webhook` | 100/min | LS sig | Handles `order_created`. Marks payment complete, sends emails (fire-and-forget) |
 | `claim-payment` | 10/min | Required | Matches unclaimed payments by email, marks child profiles as paid |
 | `send-welcome-email` | (has limit) | Required | Sends branded HTML welcome email via Resend |
 | `delete-account` | 3/min | Required | Uses service role key to delete user from Supabase Auth + all data |
@@ -167,10 +167,10 @@ All deployed to Supabase. All use the shared `_shared/rate-limit.ts` (in-memory 
 **CORS**: All functions whitelist `answerthequestion.co.uk`, `www.answerthequestion.co.uk`, Vercel preview URLs (`*.vercel.app`), and `localhost:5173` when `ALLOW_LOCALHOST=true`.
 
 **Secrets required**:
-- `STRIPE_SECRET_KEY` (create-checkout-session, stripe-webhook)
-- `STRIPE_WEBHOOK_SECRET` (stripe-webhook)
-- `RESEND_API_KEY` (stripe-webhook, send-welcome-email)
-- `SUPABASE_SERVICE_ROLE_KEY` (delete-account, stripe-webhook — auto-available in Supabase functions)
+- `LEMONSQUEEZY_API_KEY` (create-checkout-session — already set in Supabase secrets)
+- `LEMONSQUEEZY_WEBHOOK_SECRET` (lemonsqueezy-webhook — set after creating webhook in LS dashboard)
+- `RESEND_API_KEY` (lemonsqueezy-webhook, send-welcome-email)
+- `SUPABASE_SERVICE_ROLE_KEY` (delete-account, lemonsqueezy-webhook — auto-available in Supabase functions)
 
 ---
 
@@ -275,7 +275,7 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - Tutorial elimination step is **interactive**: child taps each wrong answer themselves, Professor Hoot explains the reason for each elimination in real time; auto-advances when all eliminated
 - Tutorial has R — Review step (before celebration) demonstrating the review habit
 - 12-week progressive programme with 3 phases
-- Stripe checkout (guest + authenticated) with webhook handling
+- LemonSqueezy checkout (guest + authenticated) with webhook handling
 - Guest payment claiming on account creation
 - Supabase auth (email/password, password reset)
 - Multi-child profiles under one parent account
@@ -292,11 +292,11 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - Account deletion with CASCADE cleanup
 - Referral code system (generated per child, tracked via `referred_by`)
 - `console.log`/`console.debug`/`console.warn`/`console.error` stripped in production builds (all four in Vite esbuild `pure` array)
-- Stripe webhook with manual HMAC-SHA256 verification (Deno-compatible)
+- LemonSqueezy webhook with manual HMAC-SHA256 verification (Deno-compatible)
 - Fire-and-forget email pattern in webhook to avoid CPU timeout
 - Resend confirmation email on both Login and Signup pages
 - Guest checkout → claim-payment → paywall clearing end-to-end flow
-- Stripe promotion codes (ATQBETA100 for 100% off, ATQWELCOME10 for 10% off) configured in Stripe Dashboard
+- LemonSqueezy discount codes: BETA100 (100% off, expires end May 2026), WELCOME10 (10% off), TUTOR10 (10% off)
 - Dashboard styled with violet-fuchsia gradient colour scheme
 - Technique feedback shows amber indicators for partial scores (50-79%), not just green/red
 - Number-to-figure extraction restricted to maths questions only (prevents false positives like "odd one out")
@@ -320,7 +320,7 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 - Certificate gate uses `progress.currentWeek > totalWeeks` (was hardcoded `> 12`) so it works correctly in Fast Track
 - Exam date persisted per-child to Supabase (`child_profiles.exam_date`) and kept in sync with `useSettingsStore.examDate` via `useEffect` in HomePage on child change
 - Crib sheet download (HomePage) switched from `getPublicUrl` to `createSignedUrl(120s)` — Supabase `assets` bucket is now private
-- `stripe-webhook` Edge Function uses `createSignedUrl(60s)` when emailing the crib sheet PDF attachment
+- `lemonsqueezy-webhook` Edge Function uses `createSignedUrl(60s)` when emailing the crib sheet PDF attachment
 - Security fix: removed `localStorage.getItem('atq_has_paid_<childId>')` fallback from ChildPickerPage — `hasPaid` now sourced exclusively from `p.has_paid` (Supabase). This closes a client-side paywall bypass
 - Landing page Fast Track messaging added: JourneySection callout box (amber/orange), PricingSection feature list item (⚡), FaqSection accordion item ("What if my child's exam is only a few weeks away?")
 
@@ -345,11 +345,11 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 **Passing**:
 - Supabase Auth with default session lifetime (<7 days) + refresh token rotation
 - All API keys via env vars (`import.meta.env` / `Deno.env.get`), never hardcoded
-- Strict CSP in `vercel.json` (no `unsafe-eval`, limited `connect-src` to Supabase/Stripe)
+- Strict CSP in `vercel.json` (no `unsafe-eval`, limited `connect-src` to Supabase/LemonSqueezy)
 - HSTS with preload, X-Frame-Options DENY, X-Content-Type-Options nosniff
-- Stripe webhook signature verification (manual HMAC-SHA256 via Web Crypto API)
+- LemonSqueezy webhook signature verification (manual HMAC-SHA256 via Web Crypto API)
 - Rate limiting on all Edge Functions (sliding window per IP)
-- Service role key only used server-side (delete-account, stripe-webhook)
+- Service role key only used server-side (delete-account, lemonsqueezy-webhook)
 - Redirect URL validation in checkout (must be trusted origin)
 - `console.log`/`warn`/`debug`/`error` stripped in production builds via Vite esbuild config
 - `npm audit` runs as prebuild step; `npm audit fix` runs as postbuild step
@@ -380,7 +380,7 @@ XP: `techniquePercent × 0.8 + 20 (correct)` — technique drives 80 XP (max), c
 ### Prerequisites
 - Node.js (compatible with Vite 7)
 - Supabase project (for auth + database)
-- Stripe account (for payments)
+- LemonSqueezy account (for payments)
 
 ### Environment variables
 Create `.env.local`:
@@ -401,15 +401,15 @@ npm run lint         # ESLint
 ### Edge Functions
 ```bash
 supabase functions deploy create-checkout-session
-supabase functions deploy stripe-webhook --no-verify-jwt
+supabase functions deploy lemonsqueezy-webhook --no-verify-jwt
 supabase functions deploy claim-payment
 supabase functions deploy send-welcome-email
 supabase functions deploy delete-account
 ```
 
 Required secrets (set via `supabase secrets set`):
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
+- `LEMONSQUEEZY_API_KEY` (already set)
+- `LEMONSQUEEZY_WEBHOOK_SECRET` (set after creating webhook in LemonSqueezy dashboard)
 - `RESEND_API_KEY`
 - `ALLOW_LOCALHOST=true` (for local dev only)
 
@@ -419,7 +419,7 @@ Required secrets (set via `supabase secrets set`):
 
 - **Frontend**: Vercel (auto-deploys from Git). `vercel.json` handles SPA rewrites and security headers. Static assets get 1-year cache (`immutable`).
 - **Edge Functions**: Deployed to Supabase separately via CLI.
-- **Stripe Webhook**: Endpoint is the Supabase function URL. Must be configured in Stripe Dashboard to send `checkout.session.completed` events.
+- **LemonSqueezy Webhook**: Endpoint URL is `https://ganlncdbebtnstgcewsd.supabase.co/functions/v1/lemonsqueezy-webhook`. Must be configured in LemonSqueezy Dashboard → Settings → Webhooks, subscribing to `order_created`.
 - **Domain**: `answerthequestion.co.uk` (Vercel)
 - **Email**: `hello@answerthequestion.co.uk` via Resend
 
@@ -427,11 +427,11 @@ Required secrets (set via `supabase secrets set`):
 
 ## Key Decisions & Context
 
-1. **No free tier**: Every user must pay £19.99. The `usePaywall` hook enforces this. There's no freemium model — the 7-day refund guarantee serves as the "try before you commit" mechanism.
+1. **No free tier**: Every user must pay £29.99. The `usePaywall` hook enforces this. There's no freemium model — the 7-day refund guarantee serves as the "try before you commit" mechanism.
 
 2. **Guest checkout**: Users can pay before creating an account. The `claim-payment` function bridges the gap by matching payments to accounts by email. This reduces friction in the purchase funnel.
 
-3. **Crib sheet upsell (£4.99)**: Available only at checkout as a bump offer. It's a printable PDF of the CLEAR Method steps, emailed as an attachment via the stripe-webhook function. Stored in Supabase Storage.
+3. **Crib sheet upsell (£4.99)**: Available only at checkout as a bump offer. It's a printable PDF of the CLEAR Method steps, emailed as an attachment via the lemonsqueezy-webhook function. Stored in Supabase Storage.
 
 4. **3 subjects, merged from 4**: The original design had verbal-reasoning and non-verbal-reasoning as separate subjects. They were merged into `reasoning` for simplicity. Migration logic exists in `useProgressStore` to convert old data.
 
@@ -455,15 +455,15 @@ Required secrets (set via `supabase secrets set`):
 
 14. **Manual chunks**: Vite config splits the bundle into `react-vendor`, `framer`, and `questions` chunks for better caching.
 
-15. **Stripe SDK incompatibility in Deno**: The `stripe-webhook` Edge Function cannot use `stripe.webhooks.constructEvent()` or `constructEventAsync()` — they fail with `Deno.core.runMicrotasks` errors. Webhook signature verification is implemented manually using Web Crypto API HMAC-SHA256. Do not attempt to revert to the SDK method.
+15. **LemonSqueezy webhook signature verification**: `lemonsqueezy-webhook` verifies the `X-Signature` header using HMAC-SHA256 of the raw body (hex-encoded). Uses Web Crypto API directly — no LS SDK. The secret is `LEMONSQUEEZY_WEBHOOK_SECRET` (set after creating the webhook endpoint in the LS dashboard).
 
-16. **Fire-and-forget emails in Edge Functions**: The webhook returns 200 to Stripe immediately after DB updates, then sends emails via Resend in a non-blocking `try/catch` block. Uses `EdgeRuntime.waitUntil` if available. Resend is an HTTP API call so it's fast — no SMTP handshake overhead.
+16. **Fire-and-forget emails in Edge Functions**: The webhook returns 200 to LemonSqueezy immediately after DB updates, then sends emails via Resend in a non-blocking `try/catch` block. Uses `EdgeRuntime.waitUntil` if available. Resend is an HTTP API call so it's fast — no SMTP handshake overhead.
 
 17. **`has_paid` column**: Was missing from `child_profiles` table initially — had to be added via `ALTER TABLE`. All payment-related updates were silently failing without it. If setting up a fresh Supabase instance, ensure this column exists: `ALTER TABLE child_profiles ADD COLUMN has_paid boolean DEFAULT false;`
 
 18. **Dashboard colour scheme**: Uses a violet-fuchsia gradient palette. Stats row: `bg-gradient-to-br from-violet-500/40 to-fuchsia-500/30`. Exam countdown: fuchsia-pink gradient (`from-fuchsia-400 to-pink-600`). 12-week journey: more transparent fuchsia (`from-fuchsia-500/50 via-fuchsia-500/40 to-fuchsia-600/35`). The user specifically dislikes solid indigo/purple and plain white for dashboard cards.
 
-19. **Stripe promo codes**: `create-checkout-session` passes `allow_promotion_codes: true`. Do NOT pass `customer_email` to Stripe when promo codes are enabled — it causes a Stripe error. Instead, use `customer_creation: 'always'` or collect email via Stripe's built-in form. Billing address is required (`billing_address_collection: 'required'`) to avoid empty customer name errors.
+19. **LemonSqueezy discount codes**: `CheckoutPage` has a discount code input field. The code is passed to `create-checkout-session` as `discountCode`, which sets `checkout_data.discount_code` in the LS API call and `checkout_options.discount: false` (hides LS's own field when pre-applied). Active codes: BETA100 (100% off, expires end May 2026), WELCOME10 (10% off), TUTOR10 (10% off). These must be created in LemonSqueezy Dashboard → Discounts.
 
 20. **Paywall persistence fix**: `useAuthStore` persists `children` array (including `hasPaid` flag) to localStorage, not just `currentChildId`. This prevents a login loop where the paywall check runs before Supabase fetches child profiles.
 
@@ -499,4 +499,6 @@ Required secrets (set via `supabase secrets set`):
 
 36. **Mock exam unlock in Fast Track**: `MockExamPage` unlocks at `Math.ceil(totalWeeks / 2)`. Standard: week 6 of 12. Fast Track 3-week: week 2. Fast Track 6-week: week 3. This ensures the unlock is proportional — children aren't locked out of mock exams for their entire fast-track programme.
 
-37. **Crib sheet PDF is private — always use signed URLs**: The `assets` Supabase Storage bucket is private. Do NOT use `getPublicUrl` for the crib sheet. The stripe-webhook Edge Function fetches a 60-second signed URL (`createSignedUrl(60)`) when attaching the PDF to the confirmation email. The HomePage download button uses a 120-second signed URL (`createSignedUrl(120)`). If the `assets` bucket is ever accidentally made public, rotate the signed URL approach or restrict the bucket again immediately.
+37. **Crib sheet PDF is private — always use signed URLs**: The `assets` Supabase Storage bucket is private. Do NOT use `getPublicUrl` for the crib sheet. The `lemonsqueezy-webhook` Edge Function fetches a 60-second signed URL (`createSignedUrl(60)`) when attaching the PDF to the confirmation email. The HomePage download button uses a 120-second signed URL (`createSignedUrl(120)`). If the `assets` bucket is ever accidentally made public, rotate the signed URL approach or restrict the bucket again immediately.
+
+38. **LemonSqueezy migration (April 2026)**: Replaced Stripe with LemonSqueezy for all payments. Key changes: `create-checkout-session` now calls LemonSqueezy REST API v1 (`POST /v1/checkouts`) with `custom_price` override for crib sheet bundle; new `lemonsqueezy-webhook` handles `order_created` with HMAC-SHA256 `X-Signature` verification; `stripe-webhook` directory deleted; `PaymentSuccessPage` uses `?ls=1` guard (was `?session_id=`); `vercel.json` CSP updated (Stripe domains removed, LemonSqueezy domains added, `frame-src 'none'`); payments table has `lemonsqueezy_order_id` column. Store ID: 935614. Main variant: 1470778. The `claim-payment` function is unchanged (matches by email). Secrets: `LEMONSQUEEZY_API_KEY` (already set), `LEMONSQUEEZY_WEBHOOK_SECRET` (set after creating webhook in LS dashboard).

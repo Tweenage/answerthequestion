@@ -83,7 +83,7 @@ export function MistakeReviewPage() {
     <div className="space-y-4 py-2">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="text-white/80 hover:text-white font-display text-sm flex items-center gap-1" aria-label="Go back">
+        <button onClick={() => navigate('/home')} className="text-white/80 hover:text-white font-display text-sm flex items-center gap-1" aria-label="Go back">
           <ChevronLeft className="w-4 h-4" aria-hidden="true" /> Back
         </button>
         <span className="text-white/80 font-display text-sm font-bold">

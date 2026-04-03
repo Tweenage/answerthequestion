@@ -5,12 +5,12 @@ const FAQ_ITEMS = [
   {
     question: 'Why does my child lose marks when they know the content?',
     answer:
-      'Knowing the content and answering the question correctly are two different skills. Most 11+ prep focuses on the first one. The CLEAR Method fixes the second — training children to read carefully, think deliberately, and answer what\u2019s actually on the page.',
+      'Knowing the content and answering the question correctly are two different skills. Most 11+ prep focuses on the first one. The CLEAR Method™ fixes the second — training children to read carefully, think deliberately, and answer what\u2019s actually on the page.',
   },
   {
-    question: 'Is Answer the Question instead of Atom Learning?',
+    question: 'Is AnswerTheQuestion! instead of Atom Learning?',
     answer:
-      'No. Answer the Question is exam technique \u2014 the thing that makes content revision land under timed conditions. Atom Learning builds knowledge. This builds what you do with it when the clock is running.',
+      'No. AnswerTheQuestion! is exam technique \u2014 the thing that makes content revision land under timed conditions. Atom Learning builds knowledge. This builds what you do with it when the clock is running.',
   },
   {
     question: 'What age is it for?',
@@ -30,12 +30,12 @@ const FAQ_ITEMS = [
   {
     question: 'Only a few weeks left \u2014 is it worth starting?',
     answer:
-      'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and Answer the Question automatically adapts the programme to fit the time you have. A short time with the right method beats a long time without it.',
+      'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and AnswerTheQuestion! automatically adapts the programme to fit the time you have. A short time with the right method beats a long time without it.',
   },
   {
     question: 'We\u2019re using Bond books. Will this work alongside them?',
     answer:
-      'Yes \u2014 and it fills the gap Bond can\u2019t. Most 11+ exams are now taken on a screen, not on paper. Bond books build knowledge on paper; Answer the Question builds the exam technique on the same medium your child will actually be tested on. Many families use both: Bond for content coverage, ATQ to make sure the habit and the composure transfer to the real thing.',
+      'Yes \u2014 and it fills the gap Bond can\u2019t. Bond books build knowledge on paper; AnswerTheQuestion! builds the exam technique your child needs to use that knowledge under pressure. Many families use both: Bond for content coverage, AnswerTheQuestion! to make sure the habit and the composure transfer to the real thing.',
   },
   {
     question: 'My child is dyslexic. Will this work for them?',
@@ -45,7 +45,7 @@ const FAQ_ITEMS = [
   {
     question: 'What do I do as a parent?',
     answer:
-      "You don\u2019t need to do anything except support the habit. Each session takes around 10 minutes. Your child works through it independently. The parent dashboard shows progress so you can see how it\u2019s going without interrogating them at dinner.",
+      "You don\u2019t need to do anything except support the habit. Each session is 10 questions \u2014 around 15\u201320 minutes in the early weeks, shortening to under 10 minutes by Week 12 as the method becomes automatic. Your child works through it independently. The parent dashboard shows progress so you can see how it\u2019s going without interrogating them at dinner.",
   },
   {
     question: 'Will this reduce my child\u2019s anxiety?',

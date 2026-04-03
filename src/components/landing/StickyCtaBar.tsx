@@ -43,7 +43,7 @@ export function StickyCtaBar() {
           <div className="max-w-3xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
             <div>
               <p className="font-display font-extrabold text-base text-gray-800">
-                &pound;19.99 <span className="font-medium text-gray-400 text-sm">one time</span>
+                &pound;29.99 <span className="font-medium text-gray-400 text-sm">one time</span>
               </p>
               <p className="font-display text-xs text-gray-400">Full programme &middot; Whole family</p>
             </div>

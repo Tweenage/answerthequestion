@@ -9,10 +9,11 @@ export function CheckoutPage() {
 
   const [includeCribSheet, setIncludeCribSheet] = useState(false);
   const [guestEmail, setGuestEmail] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const basePrice = 19.99;
+  const basePrice = 29.99;
   const cribSheetPrice = 4.99;
   const total = basePrice + (includeCribSheet ? cribSheetPrice : 0);
 
@@ -33,6 +34,7 @@ export function CheckoutPage() {
         successUrl: `${window.location.origin}/payment-success`,
         cancelUrl: `${window.location.origin}/checkout`,
         includeCribSheet,
+        ...(discountCode.trim() ? { discountCode: discountCode.trim() } : {}),
       };
 
       // For guest checkout, send email in the body
@@ -173,10 +175,19 @@ export function CheckoutPage() {
               </div>
             )}
 
-            {/* Discount code note */}
-            <p className="font-display text-xs text-purple-600 mb-4">
-              🏷️ Have a discount code? You can add it at checkout.
-            </p>
+            {/* Discount code input */}
+            <div className="mb-4">
+              <label className="block text-sm font-display font-semibold text-gray-600 mb-1.5">
+                Discount code <span className="font-normal text-gray-400">(optional)</span>
+              </label>
+              <input
+                type="text"
+                value={discountCode}
+                onChange={e => setDiscountCode(e.target.value.toUpperCase())}
+                placeholder="Enter code"
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 font-display text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 placeholder:text-gray-400 tracking-widest uppercase"
+              />
+            </div>
 
             {/* Total */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200 mb-6">
@@ -219,7 +230,7 @@ export function CheckoutPage() {
             {/* Trust signals */}
             <div className="flex items-center justify-center gap-4 mt-5 text-xs text-gray-400 font-display">
               <span>🛡️ Secure checkout</span>
-              <span>💳 Powered by Stripe</span>
+              <span>🍋 Powered by LemonSqueezy</span>
             </div>
           </div>
 

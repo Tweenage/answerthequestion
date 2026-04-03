@@ -78,7 +78,7 @@ interface ProgressState {
   getProgress: (userId: string) => UserProgress;
   getBadges: (userId: string) => EarnedBadge[];
 
-  saveSession: (userId: string, session: DailySession) => void;
+  saveSession: (userId: string, session: DailySession, totalWeeks?: number) => void;
   updateStreak: (userId: string, date: string) => void;
   addXp: (userId: string, amount: number) => void;
   earnBadge: (userId: string, badgeId: string) => void;
@@ -187,7 +187,7 @@ export const useProgressStore = create<ProgressState>()(
         return get().badgesByUser[userId] ?? [];
       },
 
-      saveSession: (userId, session) => {
+      saveSession: (userId, session, totalWeeks = 12) => {
         set(state => {
           const progress = state.progressByUser[userId] ?? createEmptyProgress(userId);
 
@@ -220,9 +220,9 @@ export const useProgressStore = create<ProgressState>()(
             };
           }
 
-          // Auto-advance week: every 7 completed sessions = 1 week, capped at 12
+          // Auto-advance week: every 7 completed sessions = 1 week, capped at totalWeeks
           const completedSessions = newSessions.filter(s => s.completed).length;
-          const calculatedWeek = Math.min(Math.floor(completedSessions / 7) + 1, 12);
+          const calculatedWeek = Math.min(Math.floor(completedSessions / 7) + 1, totalWeeks);
 
           return {
             progressByUser: {
