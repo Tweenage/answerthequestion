@@ -11,7 +11,7 @@ import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const LS_STORE_ID = '935614';
+const LS_STORE_ID = '326946';
 const LS_VARIANT_ID = '1470778'; // £29.99 main product
 const LS_API_URL = 'https://api.lemonsqueezy.com/v1/checkouts';
 
