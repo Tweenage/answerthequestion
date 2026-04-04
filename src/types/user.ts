@@ -14,6 +14,7 @@ export interface User {
   hasSeenOnboarding: boolean;
   hasSeenTutorial?: boolean;
   hasPaid?: boolean;
+  hasPaidSpelling?: boolean;
   referralCode?: string;
   examDate?: string | null;
 }
