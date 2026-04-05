@@ -1,7 +1,7 @@
 # ATQ Spelling Bee — Design Specification v2
 
 **Date:** 4 April 2026
-**Status:** Draft — awaiting review
+**Status:** Approved — ready for implementation
 **Author:** Rebecca Everton + Claude
 **Supersedes:** `2026-04-03-spelling-bee-expansion-design.md`
 
@@ -749,7 +749,7 @@ Key findings informing this design:
 1. **Domain:** Subdomain of ATQ (`spellingbee.answerthequestion.co.uk`) or separate domain?
 2. **Voice for audio:** Rebecca's own voice clone, or a professional British English voice from ElevenLabs library?
 3. **Bundle implementation:** LemonSqueezy product bundle, or discount code applied at checkout?
-4. **Multi-child `has_paid_spelling`:** Per-parent or per-child? (ATQ's `has_paid` is per-child)
+4. ~~**Multi-child `has_paid_spelling`:** Per-parent or per-child?~~ **Resolved:** Per-child (column on `child_profiles` table, matching ATQ's `has_paid`)
 5. **Offline support:** PWA with cached audio? Significantly increases complexity — defer to Phase 3?
 
 ---
