@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Analytics } from '@vercel/analytics/react';
 import { useAuthStore } from './stores/useAuthStore';
 import { useProgressStore } from './stores/useProgressStore';
+import { useSpellingProgressStore } from './stores/useSpellingProgressStore';
 import { useSupabaseAuth } from './hooks/useSupabaseAuth';
 import { MotionConfig } from 'framer-motion';
 import { AppShell } from './components/layout/AppShell';
@@ -16,7 +17,7 @@ import { SignupPage } from './pages/SignupPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { ChildPickerPage } from './pages/ChildPickerPage';
 
-// Lazy loaded (after login)
+// Lazy loaded — ATQ main pages
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const PracticePage = lazy(() => import('./pages/PracticePage').then(m => ({ default: m.PracticePage })));
 const BadgesPage = lazy(() => import('./pages/BadgesPage').then(m => ({ default: m.BadgesPage })));
@@ -35,6 +36,15 @@ const CertificatePage = lazy(() => import('./pages/CertificatePage').then(m => (
 const ResearchPage = lazy(() => import('./pages/ResearchPage').then(m => ({ default: m.ResearchPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+
+// Lazy loaded — Spelling Bee pages
+const StudyPage = lazy(() => import('./pages/StudyPage').then(m => ({ default: m.StudyPage })));
+const SessionCompletePage = lazy(() => import('./pages/SessionCompletePage').then(m => ({ default: m.SessionCompletePage })));
+const ProgressPage = lazy(() => import('./pages/ProgressPage').then(m => ({ default: m.ProgressPage })));
+const TestPage = lazy(() => import('./pages/TestPage'));
+const DrillPage = lazy(() => import('./pages/DrillPage'));
+const BingoPage = lazy(() => import('./pages/BingoPage'));
+const PlacementPage = lazy(() => import('./pages/PlacementPage'));
 
 function PageLoader() {
   return (
@@ -95,13 +105,15 @@ function ProgressSync({ children }: { children: React.ReactNode }) {
   const currentChildId = useAuthStore(s => s.currentChildId);
   const fetchProgress = useProgressStore(s => s.fetchProgressFromSupabase);
   const fetchBadges = useProgressStore(s => s.fetchBadgesFromSupabase);
+  const fetchSpelling = useSpellingProgressStore(s => s.fetchFromSupabase);
 
   useEffect(() => {
     if (currentChildId) {
       fetchProgress(currentChildId);
       fetchBadges(currentChildId);
+      fetchSpelling(currentChildId);
     }
-  }, [currentChildId, fetchProgress, fetchBadges]);
+  }, [currentChildId, fetchProgress, fetchBadges, fetchSpelling]);
 
   return <>{children}</>;
 }
@@ -152,6 +164,7 @@ function App() {
                 </ParentProtectedRoute>
               }
             >
+              {/* ATQ main routes */}
               <Route path="/home" element={<HomePage />} />
               <Route path="/practice" element={<PracticePage />} />
               <Route path="/badges" element={<BadgesPage />} />
@@ -165,6 +178,15 @@ function App() {
               <Route path="/upgrade" element={<UpgradePage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/certificate" element={<CertificatePage />} />
+
+              {/* Spelling Bee routes */}
+              <Route path="/study" element={<StudyPage />} />
+              <Route path="/session-complete" element={<SessionCompletePage />} />
+              <Route path="/progress" element={<ProgressPage />} />
+              <Route path="/test" element={<TestPage />} />
+              <Route path="/drill" element={<DrillPage />} />
+              <Route path="/bingo" element={<BingoPage />} />
+              <Route path="/placement" element={<PlacementPage />} />
             </Route>
 
             {/* Fallback */}
