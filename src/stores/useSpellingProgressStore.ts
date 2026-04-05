@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { WordProgress, SpellingSessionRecord } from '../types/spelling';
 import type { SM2State } from '../utils/sm2';
 import { applyReview, createInitialSM2State, isDueForReview } from '../utils/sm2';
+import { calculateStars } from '../utils/stars';
 import { supabase } from '../lib/supabase';
 import { showSyncToast } from '../components/SyncToast';
 import { SPELLING_WORDS } from '../data/words';
@@ -43,9 +44,10 @@ interface SpellingProgressState {
   getDueWords: (childId: string, today: string) => WordProgress[];
   getNewWords: (childId: string, count: number) => string[];
 
-  recordAnswer: (childId: string, wordId: string, grade: number, today: string) => void;
+  recordAnswer: (childId: string, wordId: string, grade: number, today: string, sessionId?: string) => void;
   saveSession: (childId: string, session: SpellingSessionRecord) => void;
   updateStreak: (childId: string, date: string) => void;
+  getWordsByStars: (childId: string, stars: 0 | 1 | 2 | 3) => string[];
 
   fetchFromSupabase: (childId: string) => Promise<void>;
   syncToSupabase: (childId: string) => Promise<void>;
@@ -57,13 +59,16 @@ async function pushWordProgressToSupabase(childId: string, wp: WordProgress) {
     .upsert({
       child_id: childId,
       word_id: wp.wordId,
-      interval: wp.sm2.interval,
-      repetitions: wp.sm2.repetitions,
-      ease_factor: wp.sm2.easeFactor,
-      next_review_date: wp.sm2.nextReviewDate,
-      mastery_score: wp.sm2.masteryScore,
+      sm2_ease_factor: wp.sm2.easeFactor,
+      sm2_interval: wp.sm2.interval,
+      sm2_repetitions: wp.sm2.repetitions,
+      sm2_next_review_date: wp.sm2.nextReviewDate,
+      sm2_mastery_score: wp.sm2.masteryScore,
       times_attempted: wp.timesAttempted,
       times_correct: wp.timesCorrect,
+      stars: wp.stars,
+      correct_sessions: wp.correctSessions,
+      last_session_id: wp.lastSessionId ?? null,
       last_seen_date: wp.lastSeenDate,
       updated_at: new Date().toISOString(),
     }, { onConflict: 'child_id,word_id' });
@@ -124,20 +129,35 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
           .map(w => w.id);
       },
 
-      recordAnswer: (childId, wordId, grade, today) => {
+      recordAnswer: (childId, wordId, grade, today, sessionId?) => {
         set(state => {
           const data = state.dataByChild[childId] ?? createEmptyChildData();
           const existing = data.wordProgress[wordId];
           const currentSM2: SM2State = existing?.sm2 ?? createInitialSM2State(today);
           const newSM2 = applyReview(currentSM2, grade, today);
+
+          // Track correct sessions — only increment when session ID differs
+          const isCorrect = grade >= 3;
+          const isNewSession = sessionId ? (existing?.lastSessionId !== sessionId) : true;
+          const newCorrectSessions = isCorrect && isNewSession
+            ? (existing?.correctSessions ?? 0) + 1
+            : (existing?.correctSessions ?? 0);
+
+          const newStars = calculateStars({
+            totalAttempts: (existing?.timesAttempted ?? 0) + 1,
+            totalCorrectSessions: newCorrectSessions,
+            intervalDays: newSM2.interval,
+          });
+
           const updated: WordProgress = {
             wordId,
             sm2: newSM2,
             lastSeenDate: today,
             timesAttempted: (existing?.timesAttempted ?? 0) + 1,
-            timesCorrect: (existing?.timesCorrect ?? 0) + (grade >= 3 ? 1 : 0),
-            stars: existing?.stars ?? 0,
-            correctSessions: existing?.correctSessions ?? 0,
+            timesCorrect: (existing?.timesCorrect ?? 0) + (isCorrect ? 1 : 0),
+            stars: newStars,
+            correctSessions: newCorrectSessions,
+            lastSessionId: sessionId ?? existing?.lastSessionId,
           };
           return {
             dataByChild: {
@@ -189,6 +209,13 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
         });
       },
 
+      getWordsByStars: (childId, stars) => {
+        const data = get().getData(childId);
+        return Object.entries(data.wordProgress)
+          .filter(([_, wp]) => wp.stars === stars)
+          .map(([wordId]) => wordId);
+      },
+
       fetchFromSupabase: async (childId) => {
         try {
           // Fetch spelling_progress rows
@@ -219,17 +246,18 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
                 merged[row.word_id] = {
                   wordId: row.word_id,
                   sm2: {
-                    interval: row.interval,
-                    repetitions: row.repetitions,
-                    easeFactor: row.ease_factor,
-                    nextReviewDate: row.next_review_date,
-                    masteryScore: row.mastery_score,
+                    interval: row.sm2_interval,
+                    repetitions: row.sm2_repetitions,
+                    easeFactor: row.sm2_ease_factor,
+                    nextReviewDate: row.sm2_next_review_date,
+                    masteryScore: row.sm2_mastery_score,
                   },
                   lastSeenDate: row.last_seen_date,
                   timesAttempted: row.times_attempted,
                   timesCorrect: row.times_correct,
                   stars: (row.stars ?? 0) as 0 | 1 | 2 | 3,
                   correctSessions: row.correct_sessions ?? 0,
+                  lastSessionId: row.last_session_id ?? undefined,
                 };
               }
             }
@@ -279,13 +307,16 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
           const progressRows = Object.values(child.wordProgress).map(wp => ({
             child_id: childId,
             word_id: wp.wordId,
-            interval: wp.sm2.interval,
-            repetitions: wp.sm2.repetitions,
-            ease_factor: wp.sm2.easeFactor,
-            next_review_date: wp.sm2.nextReviewDate,
-            mastery_score: wp.sm2.masteryScore,
+            sm2_ease_factor: wp.sm2.easeFactor,
+            sm2_interval: wp.sm2.interval,
+            sm2_repetitions: wp.sm2.repetitions,
+            sm2_next_review_date: wp.sm2.nextReviewDate,
+            sm2_mastery_score: wp.sm2.masteryScore,
             times_attempted: wp.timesAttempted,
             times_correct: wp.timesCorrect,
+            stars: wp.stars,
+            correct_sessions: wp.correctSessions,
+            last_session_id: wp.lastSessionId ?? null,
             last_seen_date: wp.lastSeenDate,
             updated_at: new Date().toISOString(),
           }));
