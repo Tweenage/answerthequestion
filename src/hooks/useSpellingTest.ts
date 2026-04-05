@@ -3,6 +3,7 @@ import type { SpellingWord } from '../types/spelling';
 import { gradeAnswer } from '../utils/sm2';
 import { useSpellingProgressStore } from '../stores/useSpellingProgressStore';
 import { useCurrentUser } from './useCurrentUser';
+import { useSpellingPaywall } from './useSpellingPaywall';
 
 export type TestPhase = 'select-count' | 'ritual' | 'typing' | 'feedback' | 'complete';
 
@@ -17,6 +18,7 @@ interface TestResult {
 export function useSpellingTest(words: SpellingWord[]) {
   const user = useCurrentUser();
   const recordAnswer = useSpellingProgressStore(s => s.recordAnswer);
+  const { filterAccessibleWords } = useSpellingPaywall();
 
   const [wordCount, setWordCount] = useState(10);
   const [testWords, setTestWords] = useState<SpellingWord[]>([]);
@@ -29,13 +31,14 @@ export function useSpellingTest(words: SpellingWord[]) {
 
   const startTest = useCallback((count: number) => {
     setWordCount(count);
-    const shuffled = [...words].sort(() => Math.random() - 0.5);
+    const accessible = filterAccessibleWords(words);
+    const shuffled = [...accessible].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
     setTestWords(selected);
     setCurrentIndex(0);
     setResults([]);
     setPhase(ritualEnabled ? 'ritual' : 'typing');
-  }, [words, ritualEnabled]);
+  }, [words, ritualEnabled, filterAccessibleWords]);
 
   const onRitualComplete = useCallback(() => {
     setTypingStartTime(Date.now());

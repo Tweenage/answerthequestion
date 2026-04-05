@@ -20,6 +20,9 @@ interface ChildSpellingData {
   wordProgress: Record<string, WordProgress>;
   sessions: SpellingSessionRecord[];
   streak: StreakData;
+  settings: {
+    ritualEnabled: boolean;
+  };
 }
 
 function createEmptyChildData(): ChildSpellingData {
@@ -27,6 +30,7 @@ function createEmptyChildData(): ChildSpellingData {
     wordProgress: {},
     sessions: [],
     streak: { currentStreak: 0, longestStreak: 0, lastSessionDate: null },
+    settings: { ritualEnabled: true },
   };
 }
 
@@ -48,6 +52,9 @@ interface SpellingProgressState {
   saveSession: (childId: string, session: SpellingSessionRecord) => void;
   updateStreak: (childId: string, date: string) => void;
   getWordsByStars: (childId: string, stars: 0 | 1 | 2 | 3) => string[];
+
+  toggleRitual: (childId: string) => void;
+  getRitualEnabled: (childId: string) => boolean;
 
   fetchFromSupabase: (childId: string) => Promise<void>;
   syncToSupabase: (childId: string) => Promise<void>;
@@ -214,6 +221,25 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
         return Object.entries(data.wordProgress)
           .filter(([_, wp]) => wp.stars === stars)
           .map(([wordId]) => wordId);
+      },
+
+      toggleRitual: (childId) => {
+        set(state => {
+          const data = state.dataByChild[childId] ?? createEmptyChildData();
+          return {
+            dataByChild: {
+              ...state.dataByChild,
+              [childId]: {
+                ...data,
+                settings: { ...data.settings, ritualEnabled: !data.settings.ritualEnabled },
+              },
+            },
+          };
+        });
+      },
+
+      getRitualEnabled: (childId) => {
+        return get().getData(childId).settings?.ritualEnabled ?? true;
       },
 
       fetchFromSupabase: async (childId) => {
