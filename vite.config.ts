@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: true,
-    port: 5173,
+    port: 5174,
   },
   esbuild: {
     drop: ['debugger'],
@@ -35,6 +35,7 @@ export default defineConfig({
             './src/data/questions/batch3-english.ts',
             './src/data/questions/batch3-maths.ts',
           ],
+          'words': ['./src/data/words/index.ts'],
         },
       },
     },
