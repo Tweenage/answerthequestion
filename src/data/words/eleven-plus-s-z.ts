@@ -9,7 +9,7 @@ export const ELEVEN_PLUS_S_Z: SpellingWord[] = [
     definitions: [
       {
         definition: 'Refusing to change your mind or give in, even when others disagree with you.',
-        exampleSentence: 'Despite everyone's advice, the stubborn knight refused to retreat from the crumbling castle.',
+        exampleSentence: "Despite everyone's advice, the stubborn knight refused to retreat from the crumbling castle.",
         synonyms: ['obstinate', 'headstrong', 'determined'],
         antonyms: ['flexible', 'compliant', 'yielding'],
       },
