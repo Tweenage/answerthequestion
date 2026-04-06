@@ -21,6 +21,7 @@ const PRICE_WITH_CRIB_PENCE = 3498;  // £34.98 (£29.99 + £4.99)
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
   'https://www.answerthequestion.co.uk',
+  'https://spelling.answerthequestion.co.uk',
 ];
 
 function isTrustedOrigin(origin: string): boolean {

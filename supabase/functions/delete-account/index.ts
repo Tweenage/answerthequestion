@@ -14,6 +14,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
   'https://www.answerthequestion.co.uk',
+  'https://spelling.answerthequestion.co.uk',
 ];
 
 function isTrustedOrigin(origin: string): boolean {

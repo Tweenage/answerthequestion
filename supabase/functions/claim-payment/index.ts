@@ -12,6 +12,7 @@ import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
   'https://www.answerthequestion.co.uk',
+  'https://spelling.answerthequestion.co.uk',
 ];
 
 function isTrustedOrigin(origin: string): boolean {

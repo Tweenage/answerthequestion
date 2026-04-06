@@ -13,6 +13,7 @@ const EMAIL_FROM = 'AnswerTheQuestion! <hello@answerthequestion.co.uk>';
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
   'https://www.answerthequestion.co.uk',
+  'https://spelling.answerthequestion.co.uk',
 ];
 
 function isTrustedOrigin(origin: string): boolean {
