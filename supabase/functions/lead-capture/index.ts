@@ -12,6 +12,8 @@ const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
   'https://www.answerthequestion.co.uk',
   'https://spelling.answerthequestion.co.uk',
+  'https://spellingbees.co.uk',
+  'https://www.spellingbees.co.uk',
 ];
 
 function isTrustedOrigin(origin: string): boolean {
