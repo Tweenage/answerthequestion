@@ -103,7 +103,19 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
     (set, get) => ({
       dataByChild: {},
 
-      getData: (childId) => get().dataByChild[childId] ?? createEmptyChildData(),
+      getData: (childId) => {
+        const stored = get().dataByChild[childId];
+        if (!stored) return createEmptyChildData();
+        // Defensively merge with defaults — handles stale localStorage
+        // from before streak/settings fields were added
+        const defaults = createEmptyChildData();
+        return {
+          ...defaults,
+          ...stored,
+          streak: stored.streak ?? defaults.streak,
+          settings: stored.settings ?? defaults.settings,
+        };
+      },
 
       getWordProgress: (childId, wordId) => {
         const data = get().getData(childId);
@@ -376,6 +388,27 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
         }
       },
     }),
-    { name: 'atq-spelling-progress' }
+    {
+      name: 'atq-spelling-progress',
+      version: 1,
+      migrate: (persisted: any, version: number) => {
+        if (version === 0) {
+          // v0 → v1: ensure every child entry has streak + settings
+          const state = persisted as { dataByChild?: Record<string, any> };
+          if (state.dataByChild) {
+            for (const childId of Object.keys(state.dataByChild)) {
+              const child = state.dataByChild[childId];
+              if (!child.streak) {
+                child.streak = { currentStreak: 0, longestStreak: 0, lastSessionDate: null };
+              }
+              if (!child.settings) {
+                child.settings = { ritualEnabled: true };
+              }
+            }
+          }
+        }
+        return persisted as SpellingProgressState;
+      },
+    }
   )
 );

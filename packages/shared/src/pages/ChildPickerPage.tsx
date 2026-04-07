@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../stores/useAuthStore';
 import { AVATAR_CHARACTERS, AVATAR_COLOURS, CHARACTER_EMOJIS, CHARACTER_LABELS } from '../types/user';
 import type { AvatarConfig } from '../types/user';
-import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
+import { useAppBrand } from '../context/AppBrandContext';
 import { LogOut } from 'lucide-react';
 
 interface ChildProfile {
@@ -17,6 +17,7 @@ interface ChildProfile {
   has_seen_onboarding: boolean;
   has_seen_tutorial?: boolean;
   has_paid?: boolean;
+  has_paid_spelling?: boolean;
   referral_code?: string;
   created_at: string;
 }
@@ -32,6 +33,7 @@ function generateReferralCode(): string {
 
 export function ChildPickerPage() {
   const navigate = useNavigate();
+  const brand = useAppBrand();
   const { selectChild, setChildren, logout } = useAuthStore();
   const [children, setLocalChildren] = useState<ChildProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,9 +51,14 @@ export function ChildPickerPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    // Try to claim any guest checkout payment first (gives webhook extra time),
+    // Try to claim any guest checkout payments first (gives webhook extra time),
     // then fetch children. Non-blocking if claim fails.
-    supabase.functions.invoke('claim-payment').catch(() => {}).finally(() => {
+    // Both ATQ and Spelling claim functions are called — each is a no-op
+    // if the corresponding table doesn't exist or has no unclaimed payments.
+    Promise.all([
+      supabase.functions.invoke('claim-payment').catch(() => {}),
+      supabase.functions.invoke('claim-spelling-payment').catch(() => {}),
+    ]).finally(() => {
       fetchChildren();
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -83,6 +90,7 @@ export function ChildPickerPage() {
         hasSeenOnboarding: p.has_seen_onboarding || localStorage.getItem(`atq_onboarding_seen_${p.id}`) === 'true',
         hasSeenTutorial: (p.has_seen_tutorial ?? false) || localStorage.getItem(`atq_tutorial_seen_${p.id}`) === 'true',
         hasPaid: p.has_paid ?? false,
+        hasPaidSpelling: p.has_paid_spelling ?? false,
         referralCode: p.referral_code ?? undefined,
       })));
 
@@ -174,6 +182,7 @@ export function ChildPickerPage() {
         hasSeenOnboarding: p.has_seen_onboarding,
         hasSeenTutorial: p.has_seen_tutorial ?? false,
         hasPaid: claimedPayment || (p.has_paid ?? false),
+        hasPaidSpelling: p.has_paid_spelling ?? false,
         referralCode: p.referral_code ?? undefined,
       })), {
         id: newChild.id,
@@ -185,6 +194,7 @@ export function ChildPickerPage() {
         hasSeenOnboarding: newChild.has_seen_onboarding,
         hasSeenTutorial: newChild.has_seen_tutorial ?? false,
         hasPaid: newChild.has_paid ?? false,
+        hasPaidSpelling: newChild.has_paid_spelling ?? false,
         referralCode: newChild.referral_code ?? undefined,
       }]);
 
@@ -212,7 +222,7 @@ export function ChildPickerPage() {
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
           className="text-4xl"
         >
-          🦉
+          ✨
         </motion.div>
       </div>
     );
@@ -220,32 +230,6 @@ export function ChildPickerPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Floating background emojis */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {['🦉', '📚', '⭐', '🌟', '🎯', '✨'].map((emoji, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-3xl opacity-[0.1]"
-            style={{
-              left: `${10 + (i * 15) % 75}%`,
-              top: `${5 + (i * 17) % 80}%`,
-            }}
-            animate={{
-              y: [0, -12, 0],
-              rotate: [0, i % 2 === 0 ? 8 : -8, 0],
-            }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.3,
-            }}
-          >
-            {emoji}
-          </motion.div>
-        ))}
-      </div>
-
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <motion.div
@@ -254,7 +238,7 @@ export function ChildPickerPage() {
           className="text-center mb-6"
         >
           <div className="flex justify-center mb-3">
-            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <h1 className="font-display text-2xl font-extrabold text-white drop-shadow-lg mb-1">
             Who's practising today?
@@ -289,7 +273,7 @@ export function ChildPickerPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                   onClick={() => handleSelectChild(child.id)}
-                  className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-purple-100 hover:border-purple-400 hover:shadow-md transition-all text-left group"
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl border border-gray-200 hover:border-gray-400 hover:shadow-md transition-all text-left group"
                 >
                   <div
                     className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shadow-sm group-hover:scale-105 transition-transform"
@@ -304,7 +288,7 @@ export function ChildPickerPage() {
                   <span className="font-display font-bold text-lg flex-1 text-gray-800">
                     {child.name}
                   </span>
-                  <span className="text-purple-400 font-display text-sm font-semibold group-hover:text-purple-600">
+                  <span className={`${brand.accentColor} font-display text-sm font-semibold`}>
                     Play →
                   </span>
                 </motion.button>
@@ -313,7 +297,7 @@ export function ChildPickerPage() {
 
             <button
               onClick={() => setIsAdding(true)}
-              className="w-full py-3 rounded-button font-display font-bold text-purple-600 border-2 border-dashed border-purple-300 hover:bg-purple-50 hover:border-purple-400 transition-all"
+              className={`w-full py-3 rounded-button font-display font-bold ${brand.accentColor} border-2 border-dashed border-current hover:bg-white/50 transition-all`}
             >
               + Add New Player
             </button>
@@ -333,7 +317,7 @@ export function ChildPickerPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30"
           >
-            <h2 className="font-display text-xl font-bold text-purple-800 mb-5 text-center">
+            <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-5 text-center`}>
               Create a Player Profile
             </h2>
 
@@ -350,7 +334,7 @@ export function ChildPickerPage() {
                   onChange={e => setName(e.target.value)}
                   placeholder="Type your name here..."
                   maxLength={30}
-                  className="w-full px-4 py-3 rounded-button border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                  className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                   autoFocus
                 />
               </div>
@@ -370,7 +354,7 @@ export function ChildPickerPage() {
                       onClick={() => setSelectedCharacter(char)}
                       className={`relative flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all ${
                         selectedCharacter === char
-                          ? 'ring-3 ring-purple-400 bg-purple-50 scale-105 shadow-md'
+                          ? 'ring-3 ring-current bg-white/50 scale-105 shadow-md'
                           : 'bg-gray-50 hover:bg-gray-100 hover:shadow-sm'
                       }`}
                     >
@@ -381,7 +365,7 @@ export function ChildPickerPage() {
                       {selectedCharacter === char && (
                         <motion.div
                           layoutId="character-check"
-                          className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center"
+                          className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
                         >
                           <span className="text-white text-xs">✓</span>
                         </motion.div>
@@ -407,7 +391,7 @@ export function ChildPickerPage() {
                       aria-pressed={selectedColour === colour}
                       className={`w-11 h-11 rounded-full transition-all shadow-sm ${
                         selectedColour === colour
-                          ? 'ring-3 ring-offset-2 ring-purple-400 scale-110'
+                          ? 'ring-3 ring-offset-2 ring-current scale-110'
                           : 'hover:shadow-md'
                       }`}
                       style={{ backgroundColor: colour }}
@@ -439,15 +423,15 @@ export function ChildPickerPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddChild}
                 disabled={!name.trim() || saving}
-                className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+                className={`w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-opacity disabled:opacity-50 shadow-md`}
               >
-                {saving ? 'Creating...' : "Let's Go! 🦉"}
+                {saving ? 'Creating...' : "Let's Go!"}
               </motion.button>
 
               {children.length > 0 && (
                 <button
                   onClick={() => setIsAdding(false)}
-                  className="w-full text-center text-sm text-purple-500 hover:text-purple-700 font-display font-semibold"
+                  className={`w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display font-semibold`}
                 >
                   ← Back to player list
                 </button>

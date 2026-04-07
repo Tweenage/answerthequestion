@@ -43,9 +43,10 @@ export function useSupabaseAuth() {
         // the claim-payment call in ChildPickerPage runs before the Stripe
         // webhook has set the payment status to 'completed'.
         if (event === 'SIGNED_IN' && session) {
-          supabase.functions.invoke('claim-payment').catch(() => {
-            // Non-critical — ChildPickerPage will also try on child creation
-          });
+          // Try both ATQ and Spelling claim functions — each is a no-op
+          // if the corresponding payment table has no unclaimed payments.
+          supabase.functions.invoke('claim-payment').catch(() => {});
+          supabase.functions.invoke('claim-spelling-payment').catch(() => {});
         }
       }
     );

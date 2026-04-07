@@ -1,14 +1,22 @@
 // Supabase Edge Function: create-spelling-checkout
-// Creates a LemonSqueezy checkout for ATQ Spelling Bee.
-// Supports both authenticated users and guest checkout.
+// Creates a LemonSqueezy checkout for Spelling Bees (£19.99 one-time).
+// Supports both authenticated users and guest checkout (pay first, create account after).
 // Deploy: supabase functions deploy create-spelling-checkout
-// Required secrets: LEMONSQUEEZY_API_KEY
+// Required secrets: LEMONSQUEEZY_API_KEY, SPELLING_LS_VARIANT_ID
 //
-// TODO: Wire up LemonSqueezy API - store 326946, variant TBD
-// SECURITY: In-memory rate limiting recommended (10 req/min per IP)
+// NOTE: Before deploying, you must:
+// 1. Create the Spelling Bees product + variant in LemonSqueezy Dashboard
+// 2. Set SPELLING_LS_VARIANT_ID as a Supabase secret
+//
+// SECURITY: In-memory rate limiting (10 req/min per IP)
 
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
+import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
+import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// LemonSqueezy product config
+const LS_STORE_ID = '326946';
+const LS_API_URL = 'https://api.lemonsqueezy.com/v1/checkouts';
 
 const PROD_ORIGINS = [
   'https://answerthequestion.co.uk',
@@ -38,7 +46,6 @@ function getCorsHeaders(req: Request) {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: getCorsHeaders(req) });
   }
@@ -50,9 +57,39 @@ serve(async (req) => {
     });
   }
 
-  // TODO: Add rate limiting (10 req/min per IP)
+  // Rate limiting
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 10, 60_000);
+  if (!rateLimitResult.allowed) {
+    const retryAfterSec = Math.ceil(rateLimitResult.retryAfterMs! / 1000);
+    return new Response(JSON.stringify({ error: 'Too many requests. Please try again later.' }), {
+      status: 429,
+      headers: {
+        ...getCorsHeaders(req),
+        'Content-Type': 'application/json',
+        'Retry-After': String(retryAfterSec),
+      },
+    });
+  }
 
   try {
+    const apiKey = Deno.env.get('LEMONSQUEEZY_API_KEY');
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'Payment service not configured' }), {
+        status: 500,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+
+    const variantId = Deno.env.get('SPELLING_LS_VARIANT_ID');
+    if (!variantId) {
+      console.error('SPELLING_LS_VARIANT_ID not set — cannot create checkout');
+      return new Response(JSON.stringify({ error: 'Payment product not configured' }), {
+        status: 500,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
 
@@ -72,21 +109,113 @@ serve(async (req) => {
       }
     }
 
-    // ── Parse body ───────────────────────────────────────────────
-    const body = await req.json().catch(() => ({}));
-    const { discountCode } = body as { discountCode?: string };
+    const { successUrl, cancelUrl, email, discountCode } = await req.json();
 
-    // TODO: Create LemonSqueezy checkout via API
-    // - Store ID: 326946
-    // - Variant ID: TBD (set once product is created in LS dashboard)
-    // - Apply discountCode if provided
-    // - Record pending payment in DB
-    // - Return real checkout URL from LS response
+    // Guest checkout requires email
+    if (!userId) {
+      if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+        return new Response(JSON.stringify({ error: 'A valid email address is required for checkout' }), {
+          status: 400,
+          headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+        });
+      }
+      customerEmail = email.trim().toLowerCase();
+    }
 
-    const placeholderUrl = 'https://atqspelling.lemonsqueezy.com/checkout/buy/placeholder';
+    // Validate redirect URLs
+    const isAllowedUrl = (url: string) => {
+      try { return isTrustedOrigin(new URL(url).origin); }
+      catch { return false; }
+    };
+    if (!successUrl || !cancelUrl || !isAllowedUrl(successUrl) || !isAllowedUrl(cancelUrl)) {
+      return new Response(JSON.stringify({ error: 'Invalid redirect URL' }), {
+        status: 400,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
 
-    return new Response(JSON.stringify({ url: placeholderUrl }), {
-      status: 200,
+    // Append ls=1 so success page knows we came from a real payment
+    const redirectUrl = `${successUrl}?ls=1`;
+
+    // ── Create LemonSqueezy checkout ──────────────────────────────
+    const checkoutBody = {
+      data: {
+        type: 'checkouts',
+        attributes: {
+          product_options: {
+            redirect_url: redirectUrl,
+            receipt_button_text: 'Start Practising',
+            receipt_link_url: successUrl,
+            receipt_thank_you_note: 'Thank you! Your child now has access to all 624 spelling words.',
+          },
+          checkout_options: {
+            embed: false,
+            media: false,
+            logo: true,
+            desc: true,
+            discount: true,
+            dark: false,
+          },
+          checkout_data: {
+            ...(customerEmail ? { email: customerEmail } : {}),
+            ...(discountCode ? { discount_code: (discountCode as string).trim().toUpperCase() } : {}),
+            custom: {
+              ...(userId ? { parent_id: userId } : {}),
+              ...(customerEmail ? { customer_email: customerEmail } : {}),
+            },
+          },
+          test_mode: false,
+        },
+        relationships: {
+          store: { data: { type: 'stores', id: LS_STORE_ID } },
+          variant: { data: { type: 'variants', id: variantId } },
+        },
+      },
+    };
+
+    const lsResponse = await fetch(LS_API_URL, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(checkoutBody),
+    });
+
+    if (!lsResponse.ok) {
+      const errText = await lsResponse.text();
+      console.error(`LemonSqueezy API error ${lsResponse.status}: ${errText}`);
+      return new Response(JSON.stringify({ error: 'Failed to create checkout. Please try again.' }), {
+        status: 502,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+
+    const lsData = await lsResponse.json();
+    const checkoutUrl = lsData?.data?.attributes?.url;
+
+    if (!checkoutUrl) {
+      console.error('No checkout URL in LemonSqueezy response:', JSON.stringify(lsData));
+      return new Response(JSON.stringify({ error: 'No checkout URL returned' }), {
+        status: 502,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── Record pending payment in DB ──────────────────────────────
+    const supabaseAdmin = createClient(
+      supabaseUrl,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+    );
+
+    await supabaseAdmin.from('spelling_payments').insert({
+      ...(userId ? { parent_id: userId } : {}),
+      customer_email: customerEmail,
+      status: 'pending',
+    });
+
+    return new Response(JSON.stringify({ url: checkoutUrl }), {
       headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
     });
   } catch (err) {

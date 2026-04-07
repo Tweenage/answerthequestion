@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useRequireNoAuth } from '../hooks/useSupabaseAuth';
 import { useAuthStore } from '../stores/useAuthStore';
-import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
+import { useAppBrand } from '../context/AppBrandContext';
 
 export function LoginPage() {
   useRequireNoAuth();
+  const brand = useAppBrand();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -149,10 +150,10 @@ export function LoginPage() {
           className="w-full max-w-md"
         >
           <div className="text-center mb-6">
-            <ProfessorHoot mood="celebrating" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <div className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30 text-center">
-            <h2 className="font-display text-xl font-bold text-purple-800 mb-3">
+            <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-3`}>
               Password updated! 🎉
             </h2>
             <p className="text-gray-600 font-display mb-4">
@@ -165,9 +166,9 @@ export function LoginPage() {
                 setNewPassword('');
                 setConfirmNewPassword('');
               }}
-              className="py-3 px-6 rounded-button font-display font-bold text-white bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-all shadow-md"
+              className={`py-3 px-6 rounded-button font-display font-bold text-white bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-all shadow-md`}
             >
-              Sign In Now 🦉
+              Sign In Now
             </button>
           </div>
         </motion.div>
@@ -185,10 +186,10 @@ export function LoginPage() {
           className="w-full max-w-md"
         >
           <div className="text-center mb-6">
-            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <div className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30 text-center">
-            <h2 className="font-display text-xl font-bold text-purple-800 mb-3">
+            <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-3`}>
               Reset link sent! 📧
             </h2>
             <p className="text-gray-600 font-display mb-2">
@@ -203,7 +204,7 @@ export function LoginPage() {
                 setResetEmailSent(false);
                 setShowForgotPassword(false);
               }}
-              className="py-3 px-6 rounded-button font-display font-bold text-purple-600 border-2 border-purple-300 hover:bg-purple-50 transition-all"
+              className={`py-3 px-6 rounded-button font-display font-bold ${brand.accentColor} border-2 border-current hover:bg-white/50 transition-all`}
             >
               Back to Sign In
             </button>
@@ -220,12 +221,12 @@ export function LoginPage() {
         <div className="w-full max-w-md relative z-10">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
             <div className="flex justify-center mb-3">
-              <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+              {brand.mascot}
             </div>
             <h1 className="font-display text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg mb-2">
-              AnswerTheQuestion!
+              {brand.name}
             </h1>
-            <p className="text-white/90 font-display">11+ Exam Technique Trainer</p>
+            <p className="text-white/90 font-display">{brand.tagline}</p>
           </motion.div>
 
           <motion.div
@@ -233,7 +234,7 @@ export function LoginPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30"
           >
-            <h2 className="font-display text-xl font-bold text-purple-800 mb-2 text-center">
+            <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-2 text-center`}>
               Set New Password
             </h2>
             <p className="text-gray-500 font-display text-sm text-center mb-5">
@@ -251,7 +252,7 @@ export function LoginPage() {
                   placeholder="At least 8 characters"
                   required
                   minLength={8}
-                  className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                  className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                   autoFocus
                 />
               </div>
@@ -265,7 +266,7 @@ export function LoginPage() {
                   placeholder="Type password again"
                   required
                   minLength={8}
-                  className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                  className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                 />
               </div>
 
@@ -280,7 +281,7 @@ export function LoginPage() {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+                className={`w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-opacity disabled:opacity-50 shadow-md`}
               >
                 {loading ? 'Please wait...' : 'Update Password 🔒'}
               </motion.button>
@@ -297,12 +298,12 @@ export function LoginPage() {
       <div className="w-full max-w-md relative z-10">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg mb-2">
-            AnswerTheQuestion!
+            {brand.name}
           </h1>
-          <p className="text-white/90 font-display">11+ Exam Technique Trainer</p>
+          <p className="text-white/90 font-display">{brand.tagline}</p>
         </motion.div>
 
         <motion.div
@@ -312,7 +313,7 @@ export function LoginPage() {
         >
           {showForgotPassword ? (
             <>
-              <h2 className="font-display text-xl font-bold text-purple-800 mb-2 text-center">
+              <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-2 text-center`}>
                 Reset Password
               </h2>
               <p className="text-gray-500 font-display text-sm text-center mb-5">
@@ -329,7 +330,7 @@ export function LoginPage() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     required
-                    className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                    className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                     autoFocus
                   />
                 </div>
@@ -345,7 +346,7 @@ export function LoginPage() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+                  className={`w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-opacity disabled:opacity-50 shadow-md`}
                 >
                   {loading ? 'Please wait...' : 'Send Reset Link 📧'}
                 </motion.button>
@@ -353,7 +354,7 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => { setShowForgotPassword(false); setError(null); }}
-                  className="w-full text-center text-sm text-purple-600 hover:text-purple-800 font-display font-semibold"
+                  className={`w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display font-semibold`}
                 >
                   Back to Sign In
                 </button>
@@ -361,7 +362,7 @@ export function LoginPage() {
             </>
           ) : (
             <>
-              <h2 className="font-display text-xl font-bold text-purple-800 mb-5 text-center">
+              <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-5 text-center`}>
                 Welcome Back
               </h2>
 
@@ -375,7 +376,7 @@ export function LoginPage() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     required
-                    className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                    className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                     autoFocus
                   />
                 </div>
@@ -390,7 +391,7 @@ export function LoginPage() {
                     placeholder="At least 8 characters"
                     required
                     minLength={8}
-                    className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                    className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                   />
                 </div>
 
@@ -409,7 +410,7 @@ export function LoginPage() {
                       type="button"
                       onClick={handleResendConfirmation}
                       disabled={loading}
-                      className="text-sm font-display font-bold text-purple-600 hover:text-purple-800 underline"
+                      className={`text-sm font-display font-bold ${brand.accentColor} ${brand.accentHoverColor} underline`}
                     >
                       {loading ? 'Sending...' : 'Resend confirmation email'}
                     </button>
@@ -429,22 +430,22 @@ export function LoginPage() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+                  className={`w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-opacity disabled:opacity-50 shadow-md`}
                 >
-                  {loading ? 'Please wait...' : 'Sign In 🦉'}
+                  {loading ? 'Please wait...' : 'Sign In'}
                 </motion.button>
 
                 <button
                   type="button"
                   onClick={() => { setShowForgotPassword(true); setError(null); }}
-                  className="w-full text-center text-sm text-purple-500 hover:text-purple-700 font-display"
+                  className={`w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display`}
                 >
                   Forgot your password?
                 </button>
 
                 <Link
                   to="/"
-                  className="block w-full text-center text-sm text-purple-600 hover:text-purple-800 font-display font-semibold"
+                  className={`block w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display font-semibold`}
                 >
                   Don't have an account? Learn more
                 </Link>

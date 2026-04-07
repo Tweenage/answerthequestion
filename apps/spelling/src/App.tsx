@@ -1,13 +1,29 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Analytics } from '@vercel/analytics/react';
-import { useAuthStore, useSupabaseAuth, ErrorBoundary, SyncToast } from '@atq/shared';
+import { useAuthStore, useSupabaseAuth, ErrorBoundary, SyncToast, AppBrandProvider } from '@atq/shared';
+import { supabase } from '@atq/shared/lib/supabase';
+import type { AppBrand } from '@atq/shared';
 import { useSpellingProgressStore } from './stores/useSpellingProgressStore';
 import { MotionConfig } from 'framer-motion';
 import { AppShell } from './components/layout/AppShell';
 
 // Shared pages (eagerly loaded)
 import { LoginPage, SignupPage, ChildPickerPage } from '@atq/shared';
+import { BeeChar } from './components/mascot/BeeChar';
+
+const SPELLING_BRAND: AppBrand = {
+  name: 'Spelling Bees',
+  tagline: '11+ Spelling Practice',
+  mascot: <BeeChar mood="happy" size="xl" animate showSpeechBubble={false} />,
+  buttonGradient: 'from-amber-500 via-orange-500 to-rose-500',
+  buttonGradientHover: 'hover:from-amber-600 hover:via-orange-600 hover:to-rose-600',
+  headingColor: 'text-amber-800',
+  accentColor: 'text-amber-600',
+  accentHoverColor: 'hover:text-amber-800',
+  checkboxColor: 'border-amber-300 text-amber-600 focus:ring-amber-400 accent-amber-600',
+  focusRing: 'focus:ring-amber-300 focus:border-amber-300',
+};
 
 // Spelling pages (eagerly loaded)
 import { LandingPage } from './pages/LandingPage';
@@ -74,7 +90,11 @@ function SpellingSync({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (currentChildId) {
-      fetchFromSupabase(currentChildId);
+      // Try to claim any spelling payments first (gives webhook extra time),
+      // then fetch progress. Non-blocking if claim fails.
+      supabase.functions.invoke('claim-spelling-payment').catch(() => {}).finally(() => {
+        fetchFromSupabase(currentChildId);
+      });
     }
   }, [currentChildId, fetchFromSupabase]);
 
@@ -87,6 +107,7 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ErrorBoundary>
+        <AppBrandProvider brand={SPELLING_BRAND}>
         <BrowserRouter>
           <SyncToast />
           <Suspense fallback={<PageLoader />}>
@@ -133,6 +154,7 @@ function App() {
             </Routes>
           </Suspense>
         </BrowserRouter>
+        </AppBrandProvider>
         <Analytics />
       </ErrorBoundary>
     </MotionConfig>

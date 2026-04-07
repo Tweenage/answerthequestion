@@ -3,10 +3,11 @@ import { useNavigate, Link, useSearchParams } from 'react-router';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useRequireNoAuth } from '../hooks/useSupabaseAuth';
-import { ProfessorHoot } from '../components/mascot/ProfessorHoot';
+import { useAppBrand } from '../context/AppBrandContext';
 
 export function SignupPage() {
   useRequireNoAuth();
+  const brand = useAppBrand();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -92,10 +93,10 @@ export function SignupPage() {
           className="w-full max-w-md"
         >
           <div className="text-center mb-6">
-            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <div className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30 text-center">
-            <h2 className="font-display text-xl font-bold text-purple-800 mb-3">
+            <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-3`}>
               Check your email! 📧
             </h2>
             <p className="text-gray-600 font-display mb-2">
@@ -124,7 +125,7 @@ export function SignupPage() {
                   }
                 }}
                 disabled={resending}
-                className="text-sm font-display font-bold text-purple-600 hover:text-purple-800 underline mb-4 block"
+                className={`text-sm font-display font-bold ${brand.accentColor} ${brand.accentHoverColor} underline mb-4 block`}
               >
                 {resending ? 'Sending...' : 'Resend confirmation email'}
               </button>
@@ -132,7 +133,7 @@ export function SignupPage() {
 
             <Link
               to="/login"
-              className="inline-block py-3 px-6 rounded-button font-display font-bold text-purple-600 border-2 border-purple-300 hover:bg-purple-50 transition-all"
+              className={`inline-block py-3 px-6 rounded-button font-display font-bold ${brand.accentColor} border-2 border-current hover:bg-white/50 transition-all`}
             >
               Back to Sign In
             </Link>
@@ -148,12 +149,12 @@ export function SignupPage() {
       <div className="w-full max-w-md relative z-10">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />
+            {brand.mascot}
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg mb-2">
-            AnswerTheQuestion!
+            {brand.name}
           </h1>
-          <p className="text-white/90 font-display">11+ Exam Technique Trainer</p>
+          <p className="text-white/90 font-display">{brand.tagline}</p>
         </motion.div>
 
         <motion.div
@@ -161,7 +162,7 @@ export function SignupPage() {
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white/90 backdrop-blur-sm rounded-card p-6 shadow-lg border border-white/30"
         >
-          <h2 className="font-display text-xl font-bold text-purple-800 mb-5 text-center">
+          <h2 className={`font-display text-xl font-bold ${brand.headingColor} mb-5 text-center`}>
             Create Parent Account
           </h2>
 
@@ -175,7 +176,7 @@ export function SignupPage() {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                 autoFocus
               />
             </div>
@@ -190,7 +191,7 @@ export function SignupPage() {
                 placeholder="At least 8 characters"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
               />
             </div>
 
@@ -204,7 +205,7 @@ export function SignupPage() {
                 placeholder="Type password again"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
+                className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
               />
             </motion.div>
 
@@ -214,15 +215,15 @@ export function SignupPage() {
                   type="checkbox"
                   checked={agreedToTerms}
                   onChange={e => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 w-5 h-5 rounded border-2 border-purple-300 text-purple-600 focus:ring-purple-400 shrink-0 accent-purple-600"
+                  className={`mt-1 w-5 h-5 rounded border-2 ${brand.checkboxColor} shrink-0`}
                 />
                 <span className="text-sm text-gray-600 font-display leading-snug">
                   I agree to the{' '}
-                  <Link to="/privacy-policy" className="text-purple-600 underline font-semibold" target="_blank" rel="noopener noreferrer">
+                  <Link to="/privacy-policy" className={`${brand.accentColor} underline font-semibold`} target="_blank" rel="noopener noreferrer">
                     Privacy Policy
                   </Link>{' '}
                   and{' '}
-                  <Link to="/terms" className="text-purple-600 underline font-semibold" target="_blank" rel="noopener noreferrer">
+                  <Link to="/terms" className={`${brand.accentColor} underline font-semibold`} target="_blank" rel="noopener noreferrer">
                     Terms of Service
                   </Link>
                 </span>
@@ -233,10 +234,10 @@ export function SignupPage() {
                   type="checkbox"
                   checked={marketingOptIn}
                   onChange={e => setMarketingOptIn(e.target.checked)}
-                  className="mt-1 w-5 h-5 rounded border-2 border-purple-300 text-purple-600 focus:ring-purple-400 shrink-0 accent-purple-600"
+                  className={`mt-1 w-5 h-5 rounded border-2 ${brand.checkboxColor} shrink-0`}
                 />
                 <span className="text-sm text-gray-600 font-display leading-snug">
-                  I'd like to hear about new products and resources from AnswerTheQuestion!
+                  I'd like to hear about new products and resources from {brand.name}
                 </span>
               </label>
             </motion.div>
@@ -252,14 +253,14 @@ export function SignupPage() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 transition-opacity disabled:opacity-50 shadow-md"
+              className={`w-full py-4 rounded-button font-display font-bold text-white text-lg bg-gradient-to-r ${brand.buttonGradient} ${brand.buttonGradientHover} transition-opacity disabled:opacity-50 shadow-md`}
             >
-              {loading ? 'Please wait...' : 'Create Account 🦉'}
+              {loading ? 'Please wait...' : 'Create Account'}
             </motion.button>
 
             <Link
               to="/login"
-              className="block w-full text-center text-sm text-purple-600 hover:text-purple-800 font-display font-semibold"
+              className={`block w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display font-semibold`}
             >
               Already have an account? Sign in
             </Link>

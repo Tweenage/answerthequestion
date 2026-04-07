@@ -1,3 +1,7 @@
+// Context
+export { AppBrandProvider, useAppBrand } from './context/AppBrandContext';
+export type { AppBrand } from './context/AppBrandContext';
+
 // Lib
 export { supabase } from './lib/supabase';
 

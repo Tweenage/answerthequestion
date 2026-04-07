@@ -1,13 +1,28 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Analytics } from '@vercel/analytics/react';
-import { useAuthStore, useSupabaseAuth, ErrorBoundary, SyncToast } from '@atq/shared';
+import { useAuthStore, useSupabaseAuth, ErrorBoundary, SyncToast, AppBrandProvider } from '@atq/shared';
+import type { AppBrand } from '@atq/shared';
 import { useProgressStore } from './stores/useProgressStore';
 import { MotionConfig } from 'framer-motion';
 import { AppShell } from './components/layout/AppShell';
 
 // Shared pages (eagerly loaded)
 import { LoginPage, SignupPage, ChildPickerPage } from '@atq/shared';
+import { ProfessorHoot } from '@atq/shared/components/mascot/ProfessorHoot';
+
+const ATQ_BRAND: AppBrand = {
+  name: 'AnswerTheQuestion!',
+  tagline: '11+ Exam Technique Trainer',
+  mascot: <ProfessorHoot mood="happy" size="xl" animate showSpeechBubble={false} />,
+  buttonGradient: 'from-purple-600 to-fuchsia-600',
+  buttonGradientHover: 'hover:from-purple-700 hover:to-fuchsia-700',
+  headingColor: 'text-purple-800',
+  accentColor: 'text-purple-600',
+  accentHoverColor: 'hover:text-purple-800',
+  checkboxColor: 'border-purple-300 text-purple-600 focus:ring-purple-400 accent-purple-600',
+  focusRing: 'focus:ring-purple-300 focus:border-purple-300',
+};
 
 // ATQ pages (eagerly loaded)
 import { LandingPage } from './pages/LandingPage';
@@ -93,6 +108,7 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ErrorBoundary>
+        <AppBrandProvider brand={ATQ_BRAND}>
         <BrowserRouter>
           <SyncToast />
           <Suspense fallback={<PageLoader />}>
@@ -144,6 +160,7 @@ function App() {
             </Routes>
           </Suspense>
         </BrowserRouter>
+        </AppBrandProvider>
         <Analytics />
       </ErrorBoundary>
     </MotionConfig>

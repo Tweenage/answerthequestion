@@ -18,7 +18,7 @@ const FAQ_ITEMS = [
   {
     question: 'My child already does spellings at school. How is this different?',
     answer:
-      'School spelling tests give your child a list on Monday and test on Friday. By the following Monday, most of those words are forgotten. Spelling Bee uses spaced repetition — it brings words back at precisely the moment your child is about to forget them, which moves them into long-term memory.',
+      'School spelling tests give your child a list on Monday and test on Friday. By the following Monday, most of those words are forgotten. Spelling Bees uses spaced repetition — it brings words back at the point your child is about to forget them, which is designed to move them into long-term memory.',
   },
   {
     question: 'What age is it for?',
@@ -110,9 +110,9 @@ export function LandingPage() {
 
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-10">
               <p className="text-white font-display font-bold text-lg md:text-xl leading-relaxed">
-                Spelling Bee builds a daily spelling habit your child can do independently
-                &mdash; 5&ndash;10 minutes a day, every word they need for the 11+, and a
-                proven method that moves words into long-term memory.
+                Spelling Bees builds a daily spelling habit your child can do independently
+                &mdash; 5&ndash;10 minutes a day, 624 words covering the key vocabulary
+                for the 11+, and a method designed to move words into long-term memory.
               </p>
               <p className="text-white/80 font-display text-sm md:text-base leading-relaxed mt-3">
                 No more last-minute cramming. No more forgotten word lists. Just consistent,
@@ -122,10 +122,10 @@ export function LandingPage() {
             </div>
 
             <Link
-              to="/signup"
+              to="/checkout"
               className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get Spelling Bee &mdash; &pound;19.99
+              Get Spelling Bees &mdash; &pound;19.99
             </Link>
 
             <p className="text-white/70 font-display text-sm font-medium mt-4">
@@ -239,7 +239,7 @@ export function LandingPage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-3 leading-tight">
-              624 words. Every one your child needs.
+              624 words your child needs to know.
             </h2>
             <p className="font-display text-gray-500 text-center text-sm md:text-base mb-10 max-w-lg mx-auto leading-relaxed">
               Not a random list. Every statutory spelling word from the national curriculum,
@@ -333,54 +333,45 @@ export function LandingPage() {
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-10 leading-tight">
-              &pound;19.99. That&rsquo;s it.
-            </h2>
+            {/* Price card with everything inside */}
+            <div className="max-w-md mx-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-2xl p-8 border border-amber-200/50 mb-8">
+              <div className="text-center mb-6">
+                <p className="font-display font-extrabold text-5xl text-amber-600">
+                  &pound;19.99
+                </p>
+                <p className="font-display text-base text-gray-500 mt-1.5 font-medium">
+                  One payment &middot; Whole family &middot; No subscription
+                </p>
+              </div>
 
-            {/* Price card */}
-            <div className="max-w-md mx-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-2xl p-8 border border-amber-200/50 text-center mb-8">
-              <p className="font-display font-extrabold text-6xl text-amber-600">
-                &pound;19.99
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {[
+                  ['\uD83D\uDCDA', '624 words \u2014 statutory + 11+'],
+                  ['\uD83E\uDDE0', 'Spaced repetition scheduling'],
+                  ['\uD83D\uDCCA', 'Mastery stars + bingo grid'],
+                  ['\uD83C\uDFAF', 'Placement test'],
+                  ['\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66', 'Multi-child \u2014 whole family'],
+                  ['\uD83D\uDD25', 'Streaks + drill mode'],
+                  ['\uD83D\uDCD6', 'Dyslexia-friendly mode'],
+                  ['\uD83D\uDC1D', 'Bee mascot guide'],
+                ].map(([emoji, text], i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="flex items-start gap-2.5 text-gray-700 font-display text-sm"
+                  >
+                    <span className="shrink-0 text-base">{emoji}</span>
+                    <span>{text}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <p className="font-display text-sm text-gray-500 text-center leading-relaxed">
+                Five words a day, five days a week &mdash; all 624 covered in six months.
               </p>
-              <p className="font-display text-base text-gray-500 mt-2 font-medium">
-                One-time payment &middot; Lifetime access
-              </p>
-            </div>
-
-            {/* Value anchoring */}
-            <p className="font-display text-base text-gray-500 text-center max-w-md mx-auto mb-8 leading-relaxed">
-              624 words, spaced repetition, placement test, mastery tracking,
-              dyslexia-friendly mode, and daily sessions your child can do alone.
-              <br />
-              <span className="text-gray-700 font-medium">
-                One payment. Every child in the family. No subscription.
-              </span>
-            </p>
-
-            {/* Features */}
-            <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-8">
-              {[
-                ['\uD83D\uDCDA', '624 words \u2014 statutory + 11+'],
-                ['\uD83E\uDDE0', 'Spaced repetition scheduling'],
-                ['\uD83D\uDCCA', 'Mastery stars + bingo grid'],
-                ['\uD83C\uDFAF', 'Placement test'],
-                ['\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66', 'Multi-child \u2014 whole family'],
-                ['\uD83D\uDD25', 'Streaks + drill mode'],
-                ['\uD83D\uDCD6', 'Dyslexia-friendly mode'],
-                ['\uD83D\uDC1D', 'Bee mascot guide'],
-              ].map(([emoji, text], i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="flex items-start gap-2.5 text-gray-700 font-display text-sm"
-                >
-                  <span className="shrink-0 text-base">{emoji}</span>
-                  <span>{text}</span>
-                </motion.div>
-              ))}
             </div>
 
             {/* Guarantee */}
@@ -400,7 +391,7 @@ export function LandingPage() {
                 to="/signup"
                 className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
               >
-                Get Spelling Bee &mdash; &pound;19.99
+                Get Spelling Bees &mdash; &pound;19.99
               </Link>
 
               <div className="flex items-center justify-center gap-4 text-gray-400 text-xs font-display mt-4">
@@ -425,11 +416,12 @@ export function LandingPage() {
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg text-center max-w-lg mx-auto">
               <BeeChar size="sm" mood="happy" />
               <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 mt-3">
-                Not ready to buy? Grab the free word list.
+                Already got flashcards and apps? Try this first.
               </h2>
               <p className="text-gray-600 text-sm mt-2 leading-relaxed">
-                Download our printable list of 50 essential 11+ spelling words
-                &mdash; the ones that catch children out most often. Free, no strings.
+                Grab our free printable workbook &mdash; the 50 trickiest 11+ spelling
+                words with definitions, hints, and space to practise. See if your child
+                can spell them all.
               </p>
 
               {submitState === 'success' ? (
@@ -545,10 +537,10 @@ export function LandingPage() {
             </p>
 
             <Link
-              to="/signup"
+              to="/checkout"
               className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get Spelling Bee &mdash; &pound;19.99 &rarr;
+              Get Spelling Bees &mdash; &pound;19.99 &rarr;
             </Link>
 
             <p className="text-white/60 font-display text-xs mt-4">
