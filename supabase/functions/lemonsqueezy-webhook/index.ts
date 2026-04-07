@@ -339,23 +339,17 @@ serve(async (req) => {
 
       console.log(`Order ${orderId} completed. parentId=${parentId ?? 'guest'}, crib_sheet=${includeCribSheet}`);
 
-      // Fire-and-forget emails
+      // Send emails before returning — awaited to prevent runtime shutdown before completion
       if (customerEmail) {
-        const emailPromise = (async () => {
-          try {
-            await sendPaymentConfirmationEmail(customerEmail);
-            if (includeCribSheet) {
-              await sendCribSheetEmail(customerEmail, supabase);
-            }
-          } catch (emailErr) {
-            console.error('Email sending failed (non-critical):', emailErr);
+        try {
+          await sendPaymentConfirmationEmail(customerEmail);
+          console.log(`Payment confirmation email sent to ${customerEmail}`);
+          if (includeCribSheet) {
+            await sendCribSheetEmail(customerEmail, supabase);
+            console.log(`Crib sheet email sent to ${customerEmail}`);
           }
-        })();
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (typeof (globalThis as any).EdgeRuntime?.waitUntil === 'function') {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (globalThis as any).EdgeRuntime.waitUntil(emailPromise);
+        } catch (emailErr) {
+          console.error('Email sending failed (non-critical):', emailErr);
         }
       } else {
         console.error('No customer email on order — skipping emails');

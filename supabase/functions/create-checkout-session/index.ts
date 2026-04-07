@@ -115,7 +115,8 @@ serve(async (req) => {
       });
     }
 
-    const customPrice = includeCribSheet ? PRICE_WITH_CRIB_PENCE : PRICE_MAIN_PENCE;
+    // Only override price when crib sheet is included; otherwise use variant's own price (£29.99)
+    const customPrice = includeCribSheet ? PRICE_WITH_CRIB_PENCE : null;
 
     // Append ls=1 so success page knows we came from a real payment
     const redirectUrl = `${successUrl}?ls=1${includeCribSheet ? '&crib_sheet=1' : ''}`;
@@ -125,7 +126,7 @@ serve(async (req) => {
       data: {
         type: 'checkouts',
         attributes: {
-          custom_price: customPrice,
+          ...(customPrice ? { custom_price: customPrice } : {}),
           product_options: {
             redirect_url: redirectUrl,
             receipt_button_text: 'Start Practising',
@@ -137,16 +138,16 @@ serve(async (req) => {
             media: false,
             logo: true,
             desc: true,
-            discount: !discountCode,
+            discount: true,
             dark: false,
           },
           checkout_data: {
             ...(customerEmail ? { email: customerEmail } : {}),
             ...(discountCode ? { discount_code: (discountCode as string).trim().toUpperCase() } : {}),
             custom: {
-              parent_id: userId ?? '',
+              ...(userId ? { parent_id: userId } : {}),
               include_crib_sheet: includeCribSheet ? 'true' : 'false',
-              customer_email: customerEmail ?? '',
+              ...(customerEmail ? { customer_email: customerEmail } : {}),
             },
           },
           test_mode: false,
