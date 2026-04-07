@@ -244,6 +244,32 @@ These match ATQ exactly:
 
 ---
 
+## Database Naming Convention (Non-Negotiable)
+
+All Tweenage products share a single Supabase project. To prevent data becoming a mess, every table and Edge Function MUST be prefixed by app:
+
+| App | Table Prefix | Edge Function Prefix | Example Tables |
+|---|---|---|---|
+| **ATQ** (Answer The Question) | *(none — legacy, already live)* | *(none — legacy)* | `payments`, `user_progress`, `daily_sessions`, `question_results`, `earned_badges` |
+| **Spelling Bees** | `spelling_` | `spelling-` or `create-spelling-` | `spelling_progress`, `spelling_sessions` |
+| **Appeal Ready** | `appeal_` | `appeal-` | `appeal_orders`, `appeal_cases`, `appeal_documents` |
+| **Tweenage / Parent Hub** | `hub_` | `hub-` | `hub_subscriptions`, `hub_preferences` |
+| **SATs Boost** | `sats_` | `sats-` | `sats_progress`, `sats_sessions` |
+
+**Shared tables** (used by all apps): `child_profiles`, `email_leads`
+
+**Rules:**
+1. NEVER create a generic table name like `orders` for a new app — always prefix it
+2. ATQ tables are unprefixed because they existed first — do NOT rename them
+3. Payment tables: ATQ uses `payments`. New apps use `spelling_payments`, `appeal_payments`, etc.
+4. When creating a new app's tables, include the prefix in the migration filename too (e.g. `006_appeal_tables.sql`)
+5. Edge Functions follow the same pattern: `create-spelling-checkout`, `appeal-webhook`, etc.
+6. RLS policies should reference the app name: `"Spelling: parent can read own progress"`
+
+This convention ensures any developer (or AI) can look at a table name and instantly know which app owns it.
+
+---
+
 ## Phase Roadmap
 
 | Phase | Scope |

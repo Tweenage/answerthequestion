@@ -1,0 +1,13 @@
+/* Spelling Bee app-specific overrides — imports shared base, then customises */
+@import '@atq/shared/styles/index.css';
+
+/* Amber/honey gradient — distinct from ATQ's purple/pink */
+body {
+  background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 30%, #fb923c 65%, #ef4444 100%);
+  background-attachment: fixed;
+}
+
+/* Override skip-link colour to amber */
+.skip-link {
+  background: #d97706;
+}

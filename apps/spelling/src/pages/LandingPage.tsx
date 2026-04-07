@@ -3,54 +3,55 @@ import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { BeeChar } from '../components/mascot/BeeChar';
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
-};
-
-const features = [
+/* ── FAQ data ── */
+const FAQ_ITEMS = [
   {
-    icon: '🧠',
-    title: 'Smart spaced repetition',
-    desc: 'SM-2 algorithm brings back words you struggle with at exactly the right time.',
+    question: 'What words are included?',
+    answer:
+      'Every word from the Department for Education statutory spelling lists for Year 3/4 (109 words) and Year 5/6 (100 words), plus 365 words that appear regularly in 11+ entrance exams. 624 words in total — the complete set your child needs.',
   },
   {
-    icon: '🐝',
-    title: 'Spelling Bee ritual',
-    desc: 'See it, say it, cover it, write it — the proven SOS method brought to life.',
+    question: 'How long does each session take?',
+    answer:
+      'A daily session is 8 words — typically 5 to 10 minutes. Short enough to fit before school, after dinner, or in the car. The point is consistency, not marathon sessions.',
   },
   {
-    icon: '⭐',
-    title: '0-3 star mastery',
-    desc: 'Every word earns stars as your child masters it. Clear, motivating progress.',
+    question: 'My child already does spellings at school. How is this different?',
+    answer:
+      'School spelling tests give your child a list on Monday and test on Friday. By the following Monday, most of those words are forgotten. Spelling Bee uses spaced repetition — it brings words back at precisely the moment your child is about to forget them, which moves them into long-term memory.',
   },
   {
-    icon: '🎯',
-    title: 'Bingo grid progress',
-    desc: 'Visual grid fills up as words are mastered. Children love completing the board.',
+    question: 'What age is it for?',
+    answer:
+      'Years 3 to 6, ages 7–11. The placement test works out the right starting level so your child isn\u2019t bored by easy words or overwhelmed by hard ones.',
   },
   {
-    icon: '🔥',
-    title: 'Drill mode',
-    desc: 'Targeted practice on weak words. No wasted time on words already known.',
+    question: 'Do I need to sit with my child?',
+    answer:
+      'No. Once they\u2019ve done the placement test, your child can work through daily sessions independently. You can check their progress any time — but you don\u2019t need to be there running through the list.',
   },
   {
-    icon: '📝',
-    title: 'Placement test',
-    desc: 'Starts with a quick assessment so your child works at the right level from day one.',
+    question: 'I already have a Tweenage account. Do I need a new one?',
+    answer:
+      'No — if you use AnswerTheQuestion!, you can sign in with the same account. Your child profiles carry over. One family account across all Tweenage apps.',
   },
-];
-
-const wordSources = [
-  { label: 'DfE Year 3/4', count: '~100 words', colour: 'from-amber-400 to-yellow-400' },
-  { label: 'DfE Year 5/6', count: '~100 words', colour: 'from-orange-400 to-amber-400' },
-  { label: '11+ vocabulary', count: '300+ words', colour: 'from-rose-400 to-pink-400' },
+  {
+    question: 'Is there a subscription?',
+    answer:
+      'No. One payment of \u00A319.99, yours to keep forever. No monthly fees, no renewal traps.',
+  },
+  {
+    question: 'My child is dyslexic. Will this work for them?',
+    answer:
+      'Yes. Spelling Bee has a built-in dyslexia-friendly mode with the Lexend font, a cr\u00E8me background, and wider letter and word spacing — all based on peer-reviewed research. Toggle it on in Settings.',
+  },
 ];
 
 export function LandingPage() {
   const [email, setEmail] = useState('');
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -75,241 +76,501 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-10 sm:px-6">
-      <div className="max-w-3xl mx-auto w-full">
+    <div className="min-h-screen flex flex-col">
 
-        {/* ── Hero ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-          className="flex flex-col items-center text-center"
-        >
-          <BeeChar size="lg" mood="celebrating" animate />
-          <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-white drop-shadow mt-4">
-            ATQ Spelling Bee
-          </h1>
-          <p className="text-white/90 text-lg sm:text-xl mt-2 max-w-md">
-            Master every spelling word for the 11+ — with a method that actually sticks.
-          </p>
+      {/* ═══════════ HERO ═══════════ */}
+      <section className="relative overflow-hidden">
+        {/* Nav */}
+        <div className="max-w-3xl mx-auto px-5 pt-5 pb-2 flex items-center justify-between">
+          <span className="font-display font-extrabold text-base text-white tracking-tight">
+            Spelling Bee
+          </span>
+          <Link
+            to="/login"
+            className="text-sm text-white/70 font-display font-semibold hover:text-white transition-colors"
+          >
+            Sign in
+          </Link>
+        </div>
 
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+        <div className="max-w-3xl mx-auto px-5 pt-10 pb-14 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex justify-center mb-4">
+              <BeeChar size="lg" mood="celebrating" animate />
+            </div>
+
+            <h1 className="font-display font-extrabold text-[2rem] leading-[1.15] md:text-5xl md:leading-[1.15] text-white drop-shadow-lg mb-5 max-w-2xl mx-auto">
+              Another week gone.{' '}
+              <span className="text-yellow-200">Spellings still not done.</span>
+            </h1>
+
+            <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-10">
+              <p className="text-white font-display font-bold text-lg md:text-xl leading-relaxed">
+                Spelling Bee builds a daily spelling habit your child can do independently
+                &mdash; 5&ndash;10 minutes a day, every word they need for the 11+, and a
+                proven method that moves words into long-term memory.
+              </p>
+              <p className="text-white/80 font-display text-sm md:text-base leading-relaxed mt-3">
+                No more last-minute cramming. No more forgotten word lists. Just consistent,
+                manageable practice &mdash; and a child who can actually spell the words when
+                it matters.
+              </p>
+            </div>
+
             <Link
               to="/signup"
-              className="bg-white text-amber-600 font-bold rounded-xl py-3 px-8 shadow-lg hover:shadow-xl transition-shadow font-display text-base"
+              className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Start for free
+              Get Spelling Bee &mdash; &pound;19.99
             </Link>
-            <Link
-              to="/login"
-              className="text-white/90 underline text-sm font-display self-center"
-            >
-              Already have an account? Sign in
-            </Link>
-          </div>
-        </motion.div>
 
-        {/* ── Features grid ── */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mt-16"
-        >
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white text-center drop-shadow">
-            Everything your child needs to spell with confidence
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-            {features.map((f) => (
-              <div
-                key={f.title}
-                className="bg-white/95 backdrop-blur rounded-2xl p-5 shadow-lg"
-              >
-                <span className="text-2xl">{f.icon}</span>
-                <h3 className="font-display font-bold text-gray-900 mt-2">{f.title}</h3>
-                <p className="text-gray-600 text-sm mt-1">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
+            <p className="text-white/70 font-display text-sm font-medium mt-4">
+              One-time payment &middot; Whole family &middot; 7-day money-back guarantee
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* ── Word sources ── */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="mt-16 text-center"
-        >
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow">
-            500+ words from the right sources
-          </h2>
-          <p className="text-white/80 mt-2 max-w-lg mx-auto text-sm sm:text-base">
-            Every statutory spelling list, plus the vocabulary that comes up again and again in 11+ exams.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            {wordSources.map((ws) => (
-              <div
-                key={ws.label}
-                className="bg-white/95 backdrop-blur rounded-2xl p-5 shadow-lg flex-1 max-w-xs mx-auto sm:mx-0"
-              >
-                <div
-                  className={`inline-block bg-gradient-to-r ${ws.colour} text-white text-xs font-bold px-3 py-1 rounded-full`}
-                >
-                  {ws.count}
-                </div>
-                <h3 className="font-display font-bold text-gray-900 mt-3 text-lg">{ws.label}</h3>
-              </div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* ── Pricing ── */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="mt-16"
-        >
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white text-center drop-shadow">
-            Simple pricing. No subscription.
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 max-w-2xl mx-auto">
-            {/* Free tier */}
-            <div className="bg-white/95 backdrop-blur rounded-2xl p-6 shadow-lg flex flex-col">
-              <div className="font-display text-sm font-bold text-amber-600 uppercase tracking-wide">
-                Free
-              </div>
-              <div className="font-display text-4xl font-extrabold text-gray-900 mt-2">
-                £0
-              </div>
-              <ul className="mt-4 space-y-2 text-gray-700 text-sm flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>~50 sample words</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>All features included</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>Spaced repetition + mastery tracking</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>Placement test</span>
-                </li>
-              </ul>
-              <Link
-                to="/signup"
-                className="mt-6 block text-center bg-amber-100 text-amber-700 font-bold rounded-xl py-3 px-6 font-display text-sm hover:bg-amber-200 transition-colors"
-              >
-                Get started free
-              </Link>
-            </div>
-
-            {/* Full access */}
-            <div className="bg-white backdrop-blur rounded-2xl p-6 shadow-xl flex flex-col ring-2 ring-amber-400">
-              <div className="font-display text-sm font-bold text-amber-600 uppercase tracking-wide">
-                Full Access
-              </div>
-              <div className="font-display text-4xl font-extrabold text-gray-900 mt-2">
-                £19.99
-              </div>
-              <p className="text-gray-500 text-xs mt-1">One-time payment. Yours to keep.</p>
-              <ul className="mt-4 space-y-2 text-gray-700 text-sm flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>500+ words — statutory + 11+ vocabulary</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>All features included</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>Bingo grid, drill mode, streaks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">✓</span>
-                  <span>Lifetime access — no recurring fees</span>
-                </li>
-              </ul>
-              <Link
-                to="/signup"
-                className="mt-6 block text-center bg-amber-500 text-white font-bold rounded-xl py-3 px-6 font-display text-sm hover:bg-amber-600 transition-colors shadow-md"
-              >
-                Unlock full word bank
-              </Link>
-            </div>
-          </div>
-          <p className="text-center text-white/70 text-xs mt-4 font-display">
-            No subscription. One-time payment. Works on any device.
-          </p>
-        </motion.section>
-
-        {/* ── Email capture ── */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="mt-16"
-        >
-          <div className="bg-white/95 backdrop-blur rounded-2xl p-8 shadow-lg text-center max-w-lg mx-auto">
-            <BeeChar size="sm" mood="happy" />
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 mt-3">
-              Want to hear when we launch?
+      {/* ═══════════ PROBLEM ═══════════ */}
+      <section className="bg-white/95 backdrop-blur-sm">
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+            className="max-w-xl mx-auto"
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-8 leading-tight">
+              If this sounds familiar&hellip;
             </h2>
-            <p className="text-gray-600 text-sm mt-1">
-              Drop your email and we'll let you know — plus early-bird pricing.
+
+            <ul className="space-y-4 mb-8">
+              {[
+                'You meant to do spellings this week. Again. But life got in the way.',
+                'Your child learns the list for Friday\u2019s test \u2014 and forgets it all by Monday.',
+                'You\u2019ve tried flashcards, apps, writing them out three times. Nothing sticks long-term.',
+                'The 11+ is getting closer and you\u2019re not sure which words they actually need to know.',
+                'You want them to practise independently, but they need you there to test them.',
+              ].map((text, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -15 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="flex items-start gap-3 text-gray-700 font-display text-base leading-relaxed"
+                >
+                  <span className="shrink-0 mt-1 w-2 h-2 rounded-full bg-amber-400" />
+                  {text}
+                </motion.li>
+              ))}
+            </ul>
+
+            <p className="font-display font-bold text-base md:text-lg text-gray-800 text-center leading-relaxed">
+              Spelling isn&rsquo;t the problem. Consistency is.
+              <br />
+              And consistency is exactly what Spelling Bee builds.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ HOW IT WORKS ═══════════ */}
+      <section>
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white text-center mb-3 leading-tight drop-shadow-lg">
+              How it works
+            </h2>
+            <p className="font-display text-white/80 text-center text-sm md:text-base mb-10 max-w-lg mx-auto">
+              Each session uses <strong className="text-yellow-200">Cover-Copy-Compare</strong>
+              &mdash; the method used by educational psychologists to build spelling recall.
             </p>
 
-            {submitState === 'success' ? (
-              <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-4">
-                <p className="text-green-700 font-display font-bold text-sm">
-                  You're on the list! We'll let you know when we launch.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleEmailSubmit} className="mt-6 flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  required
-                  placeholder="parent@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 rounded-xl border border-gray-300 px-4 py-3 text-sm font-display focus:outline-none focus:ring-2 focus:ring-amber-400"
-                />
-                <button
-                  type="submit"
-                  disabled={submitState === 'loading'}
-                  className="bg-amber-500 text-white font-bold rounded-xl py-3 px-6 font-display text-sm hover:bg-amber-600 transition-colors disabled:opacity-60 shadow-md whitespace-nowrap"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
+              {[
+                { step: '1', title: 'See the word', desc: 'Read it, see the definition, spot the tricky bit highlighted in amber.' },
+                { step: '2', title: 'Cover it', desc: 'The word disappears. Hold it in your mind.' },
+                { step: '3', title: 'Type it', desc: 'Spell it from memory. No peeking.' },
+                { step: '4', title: 'Compare', desc: 'See your attempt letter-by-letter \u2014 green for correct, red for wrong. Learn from the mistake immediately.' },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-lg"
                 >
-                  {submitState === 'loading' ? 'Sending...' : 'Get started'}
-                </button>
-              </form>
-            )}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-display font-extrabold text-sm mb-3">
+                    {item.step}
+                  </div>
+                  <h3 className="font-display font-bold text-gray-900 text-base">{item.title}</h3>
+                  <p className="text-gray-600 text-sm mt-1 leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
 
-            {submitState === 'error' && (
-              <p className="text-red-600 text-xs mt-2 font-display">{errorMsg}</p>
-            )}
-          </div>
-        </motion.section>
+            <p className="font-display text-white/80 text-center text-sm mt-8 max-w-md mx-auto leading-relaxed">
+              Words your child gets wrong come back sooner. Words they know well space out
+              further. The app remembers so you don&rsquo;t have to.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* ── Footer ── */}
-        <footer className="mt-16 mb-6 text-center space-y-1">
-          <p className="text-white/60 text-xs font-display">
-            Used alongside ATQ 11+ Exam Technique. Same login.
-          </p>
-          <p className="text-white/40 text-xs font-display">
-            Built by Tweenage
-          </p>
-        </footer>
-      </div>
+      {/* ═══════════ WORD BANK ═══════════ */}
+      <section className="bg-white/95 backdrop-blur-sm">
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-3 leading-tight">
+              624 words. Every one your child needs.
+            </h2>
+            <p className="font-display text-gray-500 text-center text-sm md:text-base mb-10 max-w-lg mx-auto leading-relaxed">
+              Not a random list. Every statutory spelling word from the national curriculum,
+              plus the vocabulary that comes up again and again in 11+ exams.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+              <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200/50 text-center">
+                <p className="font-display font-extrabold text-3xl text-amber-600">109</p>
+                <p className="font-display font-bold text-gray-800 text-sm mt-1">DfE Year 3/4</p>
+                <p className="text-gray-500 text-xs mt-1">Statutory spelling list</p>
+              </div>
+              <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-200/50 text-center">
+                <p className="font-display font-extrabold text-3xl text-orange-600">100</p>
+                <p className="font-display font-bold text-gray-800 text-sm mt-1">DfE Year 5/6</p>
+                <p className="text-gray-500 text-xs mt-1">Statutory spelling list</p>
+              </div>
+              <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200/50 text-center">
+                <p className="font-display font-extrabold text-3xl text-rose-600">415</p>
+                <p className="font-display font-bold text-gray-800 text-sm mt-1">11+ vocabulary</p>
+                <p className="text-gray-500 text-xs mt-1">Words that come up in entrance exams</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ WHAT MAKES IT DIFFERENT ═══════════ */}
+      <section>
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+            className="max-w-xl mx-auto"
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white text-center mb-8 leading-tight drop-shadow-lg">
+              Built for independence
+            </h2>
+
+            <div className="space-y-4">
+              {[
+                {
+                  emoji: '\u23F0',
+                  title: '5\u201310 minutes a day',
+                  desc: 'Short enough to fit before school, after dinner, or in the car. Daily sessions of 8 words \u2014 no marathon study sessions.',
+                },
+                {
+                  emoji: '\uD83E\uDDE0',
+                  title: 'Spaced repetition that adapts',
+                  desc: 'The app tracks which words your child finds hard and brings them back at the right time. Words they know well space out automatically.',
+                },
+                {
+                  emoji: '\uD83D\uDCCA',
+                  title: 'Progress you can see',
+                  desc: 'Every word earns mastery stars. The bingo grid fills up as words are mastered. Your child sees the progress \u2014 and it motivates them to keep going.',
+                },
+                {
+                  emoji: '\uD83C\uDFAF',
+                  title: 'Starts at the right level',
+                  desc: 'A quick placement test works out where your child should begin, so they\u2019re not bored by words they know or overwhelmed by words they don\u2019t.',
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -15 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-lg flex items-start gap-4"
+                >
+                  <span className="text-2xl shrink-0">{item.emoji}</span>
+                  <div>
+                    <h3 className="font-display font-bold text-gray-900 text-base">{item.title}</h3>
+                    <p className="text-gray-600 text-sm mt-1 leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ PRICING ═══════════ */}
+      <section className="bg-white/95 backdrop-blur-sm" id="pricing">
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-10 leading-tight">
+              &pound;19.99. That&rsquo;s it.
+            </h2>
+
+            {/* Price card */}
+            <div className="max-w-md mx-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-2xl p-8 border border-amber-200/50 text-center mb-8">
+              <p className="font-display font-extrabold text-6xl text-amber-600">
+                &pound;19.99
+              </p>
+              <p className="font-display text-base text-gray-500 mt-2 font-medium">
+                One-time payment &middot; Lifetime access
+              </p>
+            </div>
+
+            {/* Value anchoring */}
+            <p className="font-display text-base text-gray-500 text-center max-w-md mx-auto mb-8 leading-relaxed">
+              624 words, spaced repetition, placement test, mastery tracking,
+              dyslexia-friendly mode, and daily sessions your child can do alone.
+              <br />
+              <span className="text-gray-700 font-medium">
+                One payment. Every child in the family. No subscription.
+              </span>
+            </p>
+
+            {/* Features */}
+            <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-8">
+              {[
+                ['\uD83D\uDCDA', '624 words \u2014 statutory + 11+'],
+                ['\uD83E\uDDE0', 'Spaced repetition scheduling'],
+                ['\uD83D\uDCCA', 'Mastery stars + bingo grid'],
+                ['\uD83C\uDFAF', 'Placement test'],
+                ['\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66', 'Multi-child \u2014 whole family'],
+                ['\uD83D\uDD25', 'Streaks + drill mode'],
+                ['\uD83D\uDCD6', 'Dyslexia-friendly mode'],
+                ['\uD83D\uDC1D', 'Bee mascot guide'],
+              ].map(([emoji, text], i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="flex items-start gap-2.5 text-gray-700 font-display text-sm"
+                >
+                  <span className="shrink-0 text-base">{emoji}</span>
+                  <span>{text}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Guarantee */}
+            <div className="bg-green-50 rounded-2xl p-5 md:p-6 border border-green-200/50 text-center max-w-md mx-auto mb-8">
+              <p className="font-display font-extrabold text-base text-green-800 mb-1.5">
+                7-day money-back guarantee
+              </p>
+              <p className="font-display text-sm text-green-700 leading-relaxed">
+                Try it for 7 days. If it&rsquo;s not right for your child, just email us
+                and we&rsquo;ll refund you in full. No forms. No questions.
+              </p>
+            </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <Link
+                to="/signup"
+                className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Get Spelling Bee &mdash; &pound;19.99
+              </Link>
+
+              <div className="flex items-center justify-center gap-4 text-gray-400 text-xs font-display mt-4">
+                <span>Secure checkout</span>
+                <span>&middot;</span>
+                <span>7-day guarantee</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ FREE WORD LIST ═══════════ */}
+      <section>
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg text-center max-w-lg mx-auto">
+              <BeeChar size="sm" mood="happy" />
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 mt-3">
+                Not ready to buy? Grab the free word list.
+              </h2>
+              <p className="text-gray-600 text-sm mt-2 leading-relaxed">
+                Download our printable list of 50 essential 11+ spelling words
+                &mdash; the ones that catch children out most often. Free, no strings.
+              </p>
+
+              {submitState === 'success' ? (
+                <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-4">
+                  <p className="text-green-700 font-display font-bold text-sm">
+                    Check your inbox! The word list is on its way.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleEmailSubmit} className="mt-6 flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 rounded-xl border border-gray-300 px-4 py-3 text-sm font-display focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  />
+                  <button
+                    type="submit"
+                    disabled={submitState === 'loading'}
+                    className="bg-amber-500 text-white font-bold rounded-xl py-3 px-6 font-display text-sm hover:bg-amber-600 transition-colors disabled:opacity-60 shadow-md whitespace-nowrap"
+                  >
+                    {submitState === 'loading' ? 'Sending...' : 'Send me the list'}
+                  </button>
+                </form>
+              )}
+
+              {submitState === 'error' && (
+                <p className="text-red-600 text-xs mt-2 font-display">{errorMsg}</p>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ FAQ ═══════════ */}
+      <section className="bg-white/95 backdrop-blur-sm">
+        <div className="max-w-3xl mx-auto px-5 py-14">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-8 leading-tight">
+              Parents ask&hellip;
+            </h2>
+
+            <div className="space-y-2.5 max-w-xl mx-auto">
+              {FAQ_ITEMS.map((item, i) => {
+                const isOpen = openFaq === i;
+                return (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-gray-200/80 bg-white overflow-hidden"
+                  >
+                    <button
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-panel-${i}`}
+                      id={`faq-button-${i}`}
+                      className="w-full flex items-center justify-between p-4 md:p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                    >
+                      <span className="font-display font-bold text-sm md:text-base text-gray-800 pr-4">
+                        {item.question}
+                      </span>
+                      <span
+                        className={`text-amber-400 shrink-0 transition-transform duration-200 text-sm ${
+                          isOpen ? 'rotate-180' : ''
+                        }`}
+                      >
+                        &#9660;
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div
+                        id={`faq-panel-${i}`}
+                        role="region"
+                        aria-labelledby={`faq-button-${i}`}
+                        className="px-4 md:px-5 pb-4 md:pb-5"
+                      >
+                        <p className="font-display text-sm md:text-base text-gray-500 leading-relaxed">
+                          {item.answer}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ FINAL CTA ═══════════ */}
+      <section>
+        <div className="max-w-3xl mx-auto px-5 py-14 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-lg mb-4 leading-tight max-w-lg mx-auto">
+              Your child can learn every spelling they need for the 11+.
+              <br />
+              <span className="text-yellow-200">They just need a system that fits your week.</span>
+            </h2>
+
+            <p className="font-display text-white/80 text-sm md:text-base mb-8 max-w-md mx-auto leading-relaxed">
+              5 minutes a day. 624 words. A habit that builds itself.
+            </p>
+
+            <Link
+              to="/signup"
+              className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Get Spelling Bee &mdash; &pound;19.99 &rarr;
+            </Link>
+
+            <p className="text-white/60 font-display text-xs mt-4">
+              One-time payment &middot; Whole family &middot; 7-day money-back guarantee
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════ FOOTER ═══════════ */}
+      <footer className="pb-8 pt-4 text-center space-y-3">
+        <div className="flex items-center justify-center gap-4 text-white/50 text-xs font-display">
+          <Link to="/privacy-policy" className="hover:text-white/80 transition-colors">Privacy Policy</Link>
+          <span>&middot;</span>
+          <Link to="/terms" className="hover:text-white/80 transition-colors">Terms</Link>
+          <span>&middot;</span>
+          <Link to="/refunds" className="hover:text-white/80 transition-colors">Refund Policy</Link>
+        </div>
+        <p className="text-white/40 text-xs font-display">
+          Same account as AnswerTheQuestion! &middot; Built by Tweenage
+        </p>
+      </footer>
     </div>
   );
 }
