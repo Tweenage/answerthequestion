@@ -81,8 +81,6 @@ export function SignupPage() {
     }
   };
 
-  // Floating background emojis
-  const floatingEmojis = ['🦉', '📚', '✏️', '🌟', '🎯', '🧠', '💡', '🏆'];
 
   // --- Confirmation Sent ---
   if (confirmationSent) {
@@ -147,20 +145,6 @@ export function SignupPage() {
   // --- Main Signup Form ---
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {floatingEmojis.map((emoji, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-3xl opacity-[0.1]"
-            style={{ left: `${10 + (i * 12) % 80}%`, top: `${5 + (i * 17) % 85}%` }}
-            animate={{ y: [0, -15, 0], rotate: [0, i % 2 === 0 ? 10 : -10, 0] }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-          >
-            {emoji}
-          </motion.div>
-        ))}
-      </div>
-
       <div className="w-full max-w-md relative z-10">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
           <div className="flex justify-center mb-3">
@@ -191,7 +175,7 @@ export function SignupPage() {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-button border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
                 autoFocus
               />
             </div>
@@ -206,7 +190,7 @@ export function SignupPage() {
                 placeholder="At least 8 characters"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-button border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
               />
             </div>
 
@@ -220,7 +204,7 @@ export function SignupPage() {
                 placeholder="Type password again"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-button border-2 border-purple-200 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                className="w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
               />
             </motion.div>
 
