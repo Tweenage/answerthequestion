@@ -5,6 +5,7 @@ import type { DailySession, QuestionResult, StreakData, SubjectProgress, UserPro
 import type { EarnedBadge } from '../types/badge';
 import { supabase } from '@atq/shared/lib/supabase';
 import { showSyncToast } from '@atq/shared';
+import { badgeDefinitions } from '../data/badges';
 
 const syncError = () => showSyncToast('Progress saved locally — cloud sync failed', 'error');
 
@@ -240,9 +241,64 @@ export const useProgressStore = create<ProgressState>()(
           };
         });
 
-        // Background sync to Supabase
+        // Evaluate and award badges after progress is updated
         const updatedProgress = get().progressByUser[userId];
         if (updatedProgress) {
+          const allSessions = updatedProgress.sessions;
+          const allQuestions = allSessions.flatMap(s => s.questions);
+          const earnedIds = new Set((get().badgesByUser[userId] ?? []).map(b => b.badgeId));
+
+          for (const badge of badgeDefinitions) {
+            if (earnedIds.has(badge.id)) continue;
+            const { type, threshold, subject } = badge.condition as { type: string; threshold: number; subject?: Subject };
+            let shouldEarn = false;
+
+            switch (type) {
+              case 'questions_answered':
+                shouldEarn = updatedProgress.totalQuestionsAnswered >= threshold;
+                break;
+              case 'streak':
+                shouldEarn = updatedProgress.streak.currentStreak >= threshold;
+                break;
+              case 'subject_mastery':
+                shouldEarn = subject
+                  ? (updatedProgress.subjectScores[subject]?.questionsCorrect ?? 0) >= threshold
+                  : false;
+                break;
+              case 'week_completed':
+                shouldEarn = updatedProgress.currentWeek > threshold;
+                break;
+              case 'perfect_session':
+                shouldEarn = allSessions.some(s => s.averageTechniqueScore >= 100);
+                break;
+              case 'technique_score': {
+                // Read twice on N questions in a row — check from most recent backwards
+                const reversed = [...allQuestions].reverse();
+                let streak = 0;
+                for (const q of reversed) {
+                  if (q.techniqueScore.readTwice) streak++;
+                  else break;
+                }
+                shouldEarn = streak >= threshold;
+                break;
+              }
+              case 'keyword_accuracy': {
+                const count = allQuestions.filter(q =>
+                  q.techniqueScore.keyWordsTotal === 0 || q.techniqueScore.keyWordAccuracy >= 1,
+                ).length;
+                shouldEarn = count >= threshold;
+                break;
+              }
+              case 'elimination_count': {
+                const total = allQuestions.reduce((sum, q) => sum + q.eliminatedOptionIndices.length, 0);
+                shouldEarn = total >= threshold;
+                break;
+              }
+            }
+
+            if (shouldEarn) get().earnBadge(userId, badge.id);
+          }
+
           pushProgressToSupabase(updatedProgress).catch(syncError);
           pushSessionToSupabase(userId, session).catch(syncError);
         }

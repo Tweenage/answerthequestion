@@ -21,7 +21,7 @@ export function SubjectTechniquesTabs({ mode }: SubjectTechniquesTabsProps) {
     <div className="space-y-3">
       <div className="text-center">
         <h3 className="font-display font-bold text-white text-base">
-          {mode === 'child' ? '📚 Tips By Subject' : 'Subject-Specific Approaches'}
+          {mode === 'child' ? '📚 Tips by Subject' : 'Subject-Specific Approaches'}
         </h3>
       </div>
 

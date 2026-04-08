@@ -27,7 +27,7 @@ const STEP_CONFIGS: Record<string, StepConfig> = {
   READING_SECOND: {
     step: 2,
     label: 'READ IT AGAIN!',
-    instruction: 'What is it REALLY asking? Say it in your head!',
+    instruction: 'Read again. What is the question asking you to find?',
     bgColour: 'bg-orange-100',
     borderColour: 'border-orange-400',
     textColour: 'text-orange-900',
@@ -172,26 +172,6 @@ export function StepBanner({ flowState, sessionsCompleted = 0 }: StepBannerProps
           </div>
         </div>
 
-        {/* Bouncing arrows pointing down — only in first 3 sessions */}
-        {config.showDownArrows && showAnimations && (
-          <div className="flex justify-center gap-4 mt-3">
-            {[0, 1, 2].map((i) => (
-              <motion.span
-                key={i}
-                className="text-2xl"
-                animate={{ y: [0, 8, 0] }}
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  delay: i * 0.15,
-                  ease: 'easeInOut',
-                }}
-              >
-                👇
-              </motion.span>
-            ))}
-          </div>
-        )}
       </div>
     </motion.div>
   );

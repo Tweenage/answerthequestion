@@ -214,7 +214,7 @@ export const mathsQuestions: Question[] = [
     options: [
       { text: '£7.25', isEliminatable: true, eliminationReason: '£7.25 is £10 minus ONE notebook (£2.75). But Ruby bought 3 notebooks, not 1.' },
       { text: '£1.75', isEliminatable: false },
-      { text: '£2.75', isEliminatable: true, eliminationReason: '£2.75 is the price of one notebook. A rusher grabs the number from the question without calculating.' },
+      { text: '£2.75', isEliminatable: true, eliminationReason: '£2.75 is the price of one notebook. Take care — grabs the number from the question without calculating.' },
       { text: '£1.25', isEliminatable: true, eliminationReason: 'This comes from subtracting £8.75 incorrectly. 3 × £2.75 = £8.25, and £10 − £8.25 = £1.75.' },
       { text: '£8.25', isEliminatable: true, eliminationReason: '£8.25 is the total cost (3 × £2.75). The question asks for the change, not the total spent.' },
     ],
@@ -231,7 +231,7 @@ export const mathsQuestions: Question[] = [
     keyWordIndices: [12, 17, 18, 20, 21, 22],
     trickType: 'irrelevant-info',
     options: [
-      { text: '350 ml', isEliminatable: true, eliminationReason: '350 ml is how much the recipe needs, not how much Tom has. A rusher grabs the wrong number from the question.' },
+      { text: '350 ml', isEliminatable: true, eliminationReason: '350 ml is how much the recipe needs, not how much Tom has. Take care — grabs the wrong number from the question.' },
       { text: '300 ml', isEliminatable: false },
       { text: '250 ml', isEliminatable: true, eliminationReason: '250 is half of 500 (one half), not three fifths. 3/5 of 500 = 300.' },
       { text: '200 ml', isEliminatable: true, eliminationReason: '200 is two fifths of 500. The bottle is three fifths full, not two fifths.' },
@@ -250,9 +250,9 @@ export const mathsQuestions: Question[] = [
     keyWordIndices: [4, 8, 9, 10, 11],
     options: [
       { text: '95 minutes', isEliminatable: false },
-      { text: '75 minutes', isEliminatable: true, eliminationReason: 'A rusher might subtract 45 from 120 (getting 75) but that confuses hours and minutes. From 09:45 to 11:20 is 1 hour 35 minutes = 95 minutes.' },
+      { text: '75 minutes', isEliminatable: true, eliminationReason: 'It\'s easy to subtract 45 from 120 (getting 75) but that confuses hours and minutes. From 09:45 to 11:20 is 1 hour 35 minutes = 95 minutes.' },
       { text: '135 minutes', isEliminatable: true, eliminationReason: '135 minutes is 2 hours 15 minutes, which is far too long. The journey is only from 09:45 to 11:20.' },
-      { text: '85 minutes', isEliminatable: true, eliminationReason: 'A rusher might calculate 11:20 − 9:45 as 1 hour 25 min (forgetting that 60 min − 45 min is only 15 min to the next hour).' },
+      { text: '85 minutes', isEliminatable: true, eliminationReason: 'It\'s easy to calculate 11:20 − 9:45 as 1 hour 25 min (forgetting that 60 min − 45 min is only 15 min to the next hour).' },
       { text: '55 minutes', isEliminatable: true, eliminationReason: '55 minutes only counts from 09:45 to 10:40. The journey ends at 11:20, which is much later.' },
     ],
     correctOptionIndex: 0,
@@ -773,7 +773,7 @@ export const mathsQuestions: Question[] = [
       { text: '230', isEliminatable: true, eliminationReason: '230 treats the times as simple numbers (1145 − 915 = 230). You must work with hours and minutes separately.' },
       { text: '120', isEliminatable: true, eliminationReason: '120 minutes is 2 hours, but the journey is 2 hours and 30 minutes, not just 2 hours.' },
       { text: '20', isEliminatable: true, eliminationReason: '20 is the number of passengers per carriage (240 ÷ 12), which is irrelevant. The question asks about the journey time.' },
-      { text: '240', isEliminatable: true, eliminationReason: '240 is the number of passengers, not the time. A rusher grabs a prominent number without matching it to the question.' },
+      { text: '240', isEliminatable: true, eliminationReason: '240 is the number of passengers, not the time. Take care — grabs a prominent number without matching it to the question.' },
     ],
     correctOptionIndex: 0,
     explanation: 'The passengers and carriages are irrelevant. From 9:15 to 11:15 is 2 hours, plus another 30 minutes to 11:45. Total: 2 hours 30 minutes = 150 minutes.',

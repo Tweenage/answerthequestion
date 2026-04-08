@@ -23,12 +23,12 @@ export function RefundPolicyPage() {
         <Section title="7-Day Money-Back Guarantee">
           <p>
             We want you to feel confident in your purchase. If you are not satisfied with
-            Answer The Question for any reason, you may request a full refund within{' '}
+            AnswerTheQuestion! for any reason, you may request a full refund within{' '}
             <strong>7 days</strong> of your purchase date — no questions asked.
           </p>
         </Section>
 
-        <Section title="After 7 Days">
+        <Section title="After 7 days">
           <p>
             After 7 days from the date of purchase, we are unable to offer a refund as the
             programme content will have been accessed. The 7-day window gives you ample opportunity
@@ -36,7 +36,7 @@ export function RefundPolicyPage() {
           </p>
         </Section>
 
-        <Section title="How to Request a Refund">
+        <Section title="How to request a refund">
           <p>
             To request a refund, simply email us at{' '}
             <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
@@ -47,7 +47,7 @@ export function RefundPolicyPage() {
           </p>
         </Section>
 
-        <Section title="Processing Time">
+        <Section title="Processing time">
           <p>
             Refunds are processed to your original payment method. Please allow 5–10 business
             days for the refund to appear in your account, depending on your bank or card provider.

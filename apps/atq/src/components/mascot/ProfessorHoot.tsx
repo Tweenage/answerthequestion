@@ -38,7 +38,7 @@ export function ProfessorHoot({
   className = '',
 }: ProfessorHootProps) {
   const config = SIZE_CONFIG[size];
-  const accessory = MOOD_ACCESSORIES[mood];
+  void MOOD_ACCESSORIES[mood];
 
   const owlAnimation = animate ? {
     happy: { y: [0, -3, 0], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' as const } },
@@ -69,15 +69,6 @@ export function ProfessorHoot({
           🎓
         </span>
 
-        {/* Mood accessory */}
-        <motion.span
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          key={mood}
-          className={`absolute ${config.accessoryOffset} ${config.accessory}`}
-        >
-          {accessory}
-        </motion.span>
       </motion.div>
 
       {/* Speech bubble */}

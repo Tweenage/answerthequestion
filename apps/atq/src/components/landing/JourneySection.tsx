@@ -6,7 +6,7 @@ const PHASES = [
     name: 'Foundation',
     emoji: '🌱',
     weeks: '1–4',
-    description: 'Build the habit from scratch. Slow down. Breathe. Read every word. The five CLEAR steps, repeated every session — until they start to feel natural.',
+    description: 'Build the habit from scratch. Questions start easier — scaffolded so your child gains confidence before the pace increases. Slow down. Breathe. Visualise. The five CLEAR steps, repeated every session — until they start to feel natural.',
     bg: 'bg-red-500',
     tint: 'bg-red-50 border-red-200/60',
   },
@@ -29,9 +29,8 @@ const PHASES = [
 ];
 
 const FEATURES = [
-  { emoji: '🧘', title: 'Calm tools', desc: 'Breathing exercises before every session' },
-  { emoji: '👨‍👩‍👧‍👦', title: 'Multi-child', desc: 'One purchase, the whole family' },
-  { emoji: '🏆', title: 'Certificate', desc: 'Personalised on completion' },
+  { emoji: '🧘', title: 'Calm tools', desc: 'Breathing exercises and visualisations to build exam-day calm' },
+  { emoji: '🏆', title: 'Certificate', desc: 'Personalised completion certificate' },
   { emoji: '🦉', title: 'Professor Hoot', desc: 'Your child\u2019s study companion' },
 ];
 
@@ -45,11 +44,11 @@ export function JourneySection() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-3 leading-tight">
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 text-center mb-3 leading-tight">
             The 12-Week Journey
           </h2>
           <p className="text-gray-500 font-display text-base md:text-lg text-center max-w-xl mx-auto mb-10">
-            Twelve weeks from hesitant to automatic. Not just technique &mdash; the calm,
+            Twelve weeks to an embedded habit. Not just technique &mdash; the calm,
             deliberate thinking that holds up when it actually matters.
           </p>
 
@@ -69,7 +68,7 @@ export function JourneySection() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-display font-extrabold text-base text-gray-800">
+                    <span className="font-display font-extrabold text-base text-purple-800">
                       {phase.name}
                     </span>
                     <span className="text-xs font-display font-bold text-gray-400">
@@ -105,7 +104,7 @@ export function JourneySection() {
                 <p className="font-display text-sm text-amber-800 leading-relaxed">
                   No problem. Just enter your child&rsquo;s exam date and the app automatically switches
                   to <strong>Fast Track mode</strong> &mdash; a compressed programme that accelerates from
-                  gentle start to exam pace in the time you have left. The same CLEAR Method™, the same
+                  gentle start to exam pace in the time you have left. The same CLEAR Method, the same
                   proven technique, just adapted to your timeline.
                 </p>
               </div>
@@ -136,7 +135,7 @@ export function JourneySection() {
               to="/checkout"
               className="inline-block w-full max-w-md py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Start AnswerTheQuestion! &mdash; &pound;29.99 &rarr;
+              Start AnswerTheQuestion! &rarr;
             </Link>
           </div>
         </motion.div>

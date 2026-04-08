@@ -2,9 +2,9 @@ import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 
 const INCLUDES = [
-  ['📚', '12-week CLEAR Method™ programme'],
+  ['📚', '12-week CLEAR Method programme'],
   ['⚡', 'Fast Track mode — any timeline'],
-  ['👨‍👩‍👧‍👦', 'Multi-child — whole family'],
+  ['📱', 'Works on any device'],
   ['🧘', 'Breathing & calm exercises'],
   ['📊', 'Parent progress dashboard'],
   ['🦉', 'Professor Hoot companion'],
@@ -22,7 +22,7 @@ export function PricingSection() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 text-center mb-10 leading-tight">
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 text-center mb-10 leading-tight">
             &pound;29.99. That&rsquo;s it.
           </h2>
 
@@ -32,7 +32,7 @@ export function PricingSection() {
               &pound;29.99
             </p>
             <p className="font-display text-base text-gray-500 mt-2 font-medium">
-              One-time payment &middot; Lifetime access
+              One-time payment
             </p>
           </div>
 
@@ -40,10 +40,9 @@ export function PricingSection() {
           <p className="font-display text-base text-gray-500 text-center max-w-md mx-auto mb-8 leading-relaxed">
             One payment. Full 12-week programme. No subscription.
             <br />
-            <span className="text-gray-700 font-medium">Atom Learning costs up to &pound;69.99 a month.</span>
+            <span className="text-gray-700 font-medium">Far less than a single tutoring session.</span>
             <br />
-            AnswerTheQuestion! is &pound;29.99 once &mdash; and it teaches the skill
-            that makes every practice paper count.
+            And it teaches the skill that makes every practice paper count.
           </p>
 
           {/* Features */}
@@ -90,7 +89,7 @@ export function PricingSection() {
               to="/checkout"
               className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
             >
-              Start AnswerTheQuestion! &mdash; &pound;29.99 &rarr;
+              Start AnswerTheQuestion! &rarr;
             </Link>
 
             <div className="flex items-center justify-center gap-4 text-gray-400 text-xs font-display mt-4">

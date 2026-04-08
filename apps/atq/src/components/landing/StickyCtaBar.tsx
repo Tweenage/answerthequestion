@@ -45,7 +45,7 @@ export function StickyCtaBar() {
               <p className="font-display font-extrabold text-base text-gray-800">
                 &pound;29.99 <span className="font-medium text-gray-400 text-sm">one time</span>
               </p>
-              <p className="font-display text-xs text-gray-400">Full programme &middot; Whole family</p>
+              <p className="font-display text-xs text-gray-400">Full programme &middot; One-time payment</p>
             </div>
             <Link
               to="/checkout"

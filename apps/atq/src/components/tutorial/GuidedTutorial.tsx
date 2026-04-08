@@ -63,20 +63,29 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
 
   return (
     <div className="space-y-4 py-2">
-      {/* Progress dots */}
-      <div className="flex justify-center gap-1.5">
-        {TUTORIAL_STEPS.map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 rounded-full transition-all ${
-              i === stepIndex
-                ? 'w-6 bg-white'
-                : i < stepIndex
-                ? 'w-1.5 bg-white/60'
-                : 'w-1.5 bg-white/20'
-            }`}
-          />
-        ))}
+      {/* Tutorial badge */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/30">
+          <span className="text-sm">🎓</span>
+          <span className="font-display font-bold text-white text-sm tracking-wide">Tutorial</span>
+          <span className="text-white/50 text-xs font-display">· one quick practice question</span>
+        </div>
+
+        {/* Progress dots */}
+        <div className="flex justify-center gap-1.5">
+          {TUTORIAL_STEPS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${
+                i === stepIndex
+                  ? 'w-6 bg-white'
+                  : i < stepIndex
+                  ? 'w-1.5 bg-white/60'
+                  : 'w-1.5 bg-white/20'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Professor Hoot */}
@@ -289,9 +298,9 @@ export function GuidedTutorial({ onComplete }: GuidedTutorialProps) {
       {!isLast && (
         <button
           onClick={onComplete}
-          className="block mx-auto text-white/75 text-xs font-display hover:text-white/70 transition-colors"
+          className="block mx-auto text-white/50 text-xs font-display hover:text-white/70 transition-colors"
         >
-          Skip tutorial
+          Already know how it works? Skip
         </button>
       )}
     </div>

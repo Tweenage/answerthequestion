@@ -166,25 +166,6 @@ export function HomePage() {
 
   return (
     <div className="space-y-2.5">
-      {/* Floating background decorations — CSS-only for performance */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-        {['🦉', '📚', '⭐', '✨', '🎯', '🌟'].map((emoji, i) => (
-          <div
-            key={i}
-            className="absolute text-2xl opacity-[0.12] animate-float"
-            style={{
-              left: `${10 + (i * 18) % 75}%`,
-              top: `${8 + (i * 20) % 80}%`,
-              animationDuration: `${4 + i * 0.8}s`,
-              animationDelay: `${i * 0.5}s`,
-              willChange: 'transform',
-            }}
-          >
-            {emoji}
-          </div>
-        ))}
-      </div>
-
       {/* Professor Hoot greeting + Title — compact header */}
       <div className="relative z-10 flex items-center gap-3 pt-1">
         <div className="shrink-0">

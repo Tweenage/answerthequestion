@@ -35,12 +35,12 @@ export const newVerbalReasoningQuestions: Question[] = [
     options: [
       { text: 'Cat', isEliminatable: true, eliminationReason: 'Cat is an animal, like dog and fish.' },
       { text: 'Dog', isEliminatable: true, eliminationReason: 'Dog is an animal, like cat and fish.' },
-      { text: 'Fish', isEliminatable: true, eliminationReason: 'Fish is an animal, like cat and dog. A rusher picks fish because it lives in water, but the odd one out is table.' },
+      { text: 'Fish', isEliminatable: true, eliminationReason: 'Fish is an animal, like cat and dog. It\'s tempting to pick fish because it lives in water, but the odd one out is table.' },
       { text: 'Table', isEliminatable: false },
       { text: 'Chair', isEliminatable: true, eliminationReason: 'Chair is furniture like table, so it would fit the same group as table. The odd one out is table because it is not an animal.' },
     ],
     correctOptionIndex: 3,
-    explanation: 'Cat, dog, and fish are all animals. Table is a piece of furniture — it is the odd one out. A rusher might pick fish because it seems different from the mammals.',
+    explanation: 'Cat, dog, and fish are all animals. Table is a piece of furniture — it is the odd one out. It\'s easy to pick fish because it seems different from the mammals.',
     category: 'comprehension-what',
   },
   {
@@ -58,7 +58,7 @@ export const newVerbalReasoningQuestions: Question[] = [
       { text: 'never', isEliminatable: true, eliminationReason: '"Never" would mean he could never keep his eyes open at all, which is too extreme. "Barely" is the right fit.' },
     ],
     correctOptionIndex: 1,
-    explanation: '"Barely" means "almost not" — he was so tired that he could barely keep his eyes open. A rusher might pick "easily" without thinking about what "tired" means.',
+    explanation: '"Barely" means "almost not" — he was so tired that he could barely keep his eyes open. It\'s easy to pick "easily" without thinking about what "tired" means.',
     category: 'comprehension-what',
   },
   {
@@ -223,7 +223,7 @@ export const newVerbalReasoningQuestions: Question[] = [
       { text: 'A', isEliminatable: true, eliminationReason: 'Moving A gives "blnd" and "aoon" — neither is a word.' },
     ],
     correctOptionIndex: 0,
-    explanation: 'Move B from "bland" to get "land" + "boon." Both are valid English words. A rusher might try N (giving "noon") but forget that "blad" is not a word.',
+    explanation: 'Move B from "bland" to get "land" + "boon." Both are valid English words. It\'s easy to try N (giving "noon") but forget that "blad" is not a word.',
     category: 'comprehension-what',
   },
 

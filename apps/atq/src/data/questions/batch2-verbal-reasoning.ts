@@ -24,7 +24,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
       { text: 'Worn', isEliminatable: true, eliminationReason: '"Worn" means used or damaged over time, which is associated with age, not the opposite of "ancient."' },
     ],
     correctOptionIndex: 1,
-    explanation: '"Modern" is the opposite of "ancient." A rusher might pick "old" without noticing the question asks for the opposite.',
+    explanation: '"Modern" is the opposite of "ancient." It\'s easy to pick "old" without noticing the question asks for the opposite.',
     category: 'comprehension-what',
   },
   {
@@ -55,7 +55,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
     options: [
       { text: 'Square', isEliminatable: true, eliminationReason: 'A square is a flat 2D shape, like a triangle and a circle.' },
       { text: 'Triangle', isEliminatable: true, eliminationReason: 'A triangle is a flat 2D shape, like a square and a circle.' },
-      { text: 'Circle', isEliminatable: true, eliminationReason: 'A circle is a flat 2D shape. A rusher might pick circle because it has no corners, but the real difference is 2D vs 3D.' },
+      { text: 'Circle', isEliminatable: true, eliminationReason: 'A circle is a flat 2D shape. It\'s easy to pick circle because it has no corners, but the real difference is 2D vs 3D.' },
       { text: 'Cube', isEliminatable: false },
       { text: 'Rectangle', isEliminatable: true, eliminationReason: 'A rectangle is also a flat 2D shape like the others. The odd one out is the cube because it is 3D.' },
     ],
@@ -94,7 +94,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
     options: [
       { text: '1', isEliminatable: true, eliminationReason: '1 is the value of A, not C. The first letter of "cat" is C.' },
       { text: '3', isEliminatable: false },
-      { text: '20', isEliminatable: true, eliminationReason: '20 is the value of T (the last letter of "cat"). A rusher picks the last letter instead of the first.' },
+      { text: '20', isEliminatable: true, eliminationReason: '20 is the value of T (the last letter of "cat"). It\'s tempting to pick the last letter instead of the first.' },
       { text: '24', isEliminatable: true, eliminationReason: '24 is the total of all three letters (3+1+20). The question asks for just the first letter.' },
       { text: '6', isEliminatable: true, eliminationReason: '6 would be the value of F. The first letter of "cat" is C, which equals 3.' },
     ],
@@ -135,7 +135,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
       { text: 'Monday', isEliminatable: true, eliminationReason: 'Monday is the start of the sequence. The pattern skips one day each time, so after Friday comes Sunday.' },
     ],
     correctOptionIndex: 1,
-    explanation: 'The pattern skips every other day: Monday (+2) Wednesday (+2) Friday (+2) Sunday. A rusher picks Saturday (the next day) instead of following the pattern.',
+    explanation: 'The pattern skips every other day: Monday (+2) Wednesday (+2) Friday (+2) Sunday. It\'s tempting to pick Saturday (the next day) instead of following the pattern.',
     category: 'comprehension-what',
   },
   {
@@ -147,7 +147,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
     keyWordIndices: [0, 3, 5, 8],
     options: [
       { text: 'Shoe', isEliminatable: true, eliminationReason: 'A shoe covers a foot, but the pattern links a body part to the animal it belongs to.' },
-      { text: 'Dog', isEliminatable: true, eliminationReason: 'Dogs have paws, not hooves. A rusher thinks "animal" and picks another pet.' },
+      { text: 'Dog', isEliminatable: true, eliminationReason: 'Dogs have paws, not hooves. Take care — thinks "animal" and picks another pet.' },
       { text: 'Horse', isEliminatable: false },
       { text: 'Claw', isEliminatable: true, eliminationReason: 'A claw is a body part, not an animal. The pattern goes: body part → animal.' },
       { text: 'Cow', isEliminatable: true, eliminationReason: 'Cows do have hooves, but the most well-known hooved animal is a horse. "Horse" is the best parallel to "cat."' },
@@ -282,7 +282,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
       { text: 'Shiny', isEliminatable: true, eliminationReason: '"Shiny" describes surface reflection, not whether you can see through something.' },
     ],
     correctOptionIndex: 1,
-    explanation: '"Opaque" means you cannot see through it — the opposite of "transparent." A rusher might pick "clear" without noticing the word "opposite."',
+    explanation: '"Opaque" means you cannot see through it — the opposite of "transparent." It\'s easy to pick "clear" without noticing the word "opposite."',
     category: 'comprehension-what',
   },
   {
@@ -365,7 +365,7 @@ export const batch2VerbalReasoningQuestions: Question[] = [
     questionTokens: ['Read', 'the', 'sentence:', '"The', 'knight\'s', 'valour', 'in', 'battle', 'was', 'legendary."', 'What', 'does', '"valour"', 'mean?'],
     keyWordIndices: [5, 10, 11, 12],
     options: [
-      { text: 'Armour', isEliminatable: true, eliminationReason: '"Armour" is protective clothing. A rusher links knights with armour instead of reading the question.' },
+      { text: 'Armour', isEliminatable: true, eliminationReason: '"Armour" is protective clothing. Take care — links knights with armour instead of reading the question.' },
       { text: 'Bravery', isEliminatable: false },
       { text: 'Speed', isEliminatable: true, eliminationReason: 'Speed is not what "valour" means. It refers to courage, not quickness.' },
       { text: 'Anger', isEliminatable: true, eliminationReason: '"Anger" is a feeling, but valour describes courage and bravery, not rage.' },

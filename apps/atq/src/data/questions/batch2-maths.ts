@@ -16,7 +16,7 @@ export const batch2MathsQuestions: Question[] = [
     questionTokens: ['A', 'teacher', 'has', '36', 'pencils', 'to', 'share', 'equally', 'among', '4', 'tables.', 'She', 'also', 'has', '12', 'rubbers.', 'How', 'many', 'pencils', 'does', 'each', 'table', 'get?'],
     keyWordIndices: [3, 4, 6, 7, 9, 16, 17, 18, 20],
     options: [
-      { text: '12', isEliminatable: true, eliminationReason: '12 is the number of rubbers, not pencils per table. A rusher grabs a number without checking what it refers to.' },
+      { text: '12', isEliminatable: true, eliminationReason: '12 is the number of rubbers, not pencils per table. Take care — grabs a number without checking what it refers to.' },
       { text: '9', isEliminatable: false },
       { text: '48', isEliminatable: true, eliminationReason: '48 is 36 + 12 — but the question asks about dividing pencils, not adding everything together.' },
       { text: '4', isEliminatable: true, eliminationReason: '4 is the number of tables, not the pencils per table.' },
@@ -35,7 +35,7 @@ export const batch2MathsQuestions: Question[] = [
     questionTokens: ['Maya', 'leaves', 'home', 'at', '8:30', 'am', 'and', 'walks', 'to', 'school.', 'The', 'walk', 'takes', '20', 'minutes.', 'Her', 'lessons', 'start', 'at', '9:00', 'am.', 'What', 'time', 'does', 'Maya', 'arrive', 'at', 'school?'],
     keyWordIndices: [4, 12, 13, 14, 21, 22, 25],
     options: [
-      { text: '9:00 am', isEliminatable: true, eliminationReason: '9:00 is when lessons start, not when Maya arrives. A rusher picks the other time in the passage.' },
+      { text: '9:00 am', isEliminatable: true, eliminationReason: '9:00 is when lessons start, not when Maya arrives. It\'s tempting to pick the other time in the passage.' },
       { text: '8:50 am', isEliminatable: false },
       { text: '20 minutes', isEliminatable: true, eliminationReason: '20 minutes is how long the walk takes, not her arrival time.' },
       { text: '8:30 am', isEliminatable: true, eliminationReason: '8:30 is when she leaves, not when she arrives.' },
@@ -95,7 +95,7 @@ export const batch2MathsQuestions: Question[] = [
     questionTokens: ['Liam', 'scores', '72,', '85', 'and', '63', 'in', 'three', 'maths', 'tests.', 'His', 'sister', 'scores', '90', 'in', 'her', 'test.', 'What', 'is', 'Liam\'s', 'total', 'score', 'across', 'all', 'three', 'tests?'],
     keyWordIndices: [2, 3, 5, 17, 19, 20, 21],
     options: [
-      { text: '90', isEliminatable: true, eliminationReason: '90 is his sister\'s score, not Liam\'s total. A rusher grabs the most recent number.' },
+      { text: '90', isEliminatable: true, eliminationReason: '90 is his sister\'s score, not Liam\'s total. Take care — grabs the most recent number.' },
       { text: '310', isEliminatable: true, eliminationReason: '310 adds in the sister\'s 90 (72+85+63+90). The question only asks about Liam.' },
       { text: '220', isEliminatable: false },
       { text: '73', isEliminatable: true, eliminationReason: '73 is a rough average, not the total. The question asks for the sum.' },
@@ -124,7 +124,7 @@ export const batch2MathsQuestions: Question[] = [
       { text: '20 litres', isEliminatable: true, eliminationReason: '20 is half of 40. But the ratio is 3:5, not 1:1, so blue is not half.' },
     ],
     correctOptionIndex: 1,
-    explanation: 'Total parts = 3 + 5 = 8. Blue = 5/8 of 40 = 25 litres. The trap is 15 (the red amount) — a rusher who confuses red with blue picks 15.',
+    explanation: 'Total parts = 3 + 5 = 8. Blue = 5/8 of 40 = 25 litres. The trap is 15 (the red amount) — someone who confuses red with blue picks 15.',
     category: 'ratio',
     trickType: 'operation-masking',
   },

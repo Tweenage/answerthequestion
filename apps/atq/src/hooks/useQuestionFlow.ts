@@ -88,12 +88,15 @@ export function useQuestionFlow(question: Question | null, weekConfig: WeekConfi
           : [];
         const shouldExtractNumbers = numberWordIdxs.length > 0 && weekConfig.scaffoldingLevel !== 'light';
 
+        // If question has no defined key words, show answers button immediately without forcing highlights
+        const noKeyWords = !question?.keyWordIndices?.length;
         return {
           ...prev,
           state: shouldExtractNumbers ? 'NUMBER_EXTRACTION' : 'HIGHLIGHTING',
           readCount: 2,
           readingTimeMs: totalReadingTime,
           numberWordIndices: numberWordIdxs,
+          canAdvance: !shouldExtractNumbers && noKeyWords,
         };
       }
       return prev;

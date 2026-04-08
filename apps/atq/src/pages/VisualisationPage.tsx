@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, ChevronLeft, Wind } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, ChevronLeft, Wind } from 'lucide-react';
 import { visualisationScripts, boxBreathingConfig } from '../data/visualisation-scripts';
 import type { VisualisationScript, VisualisationSection, BoxBreathingConfig } from '../data/visualisation-scripts';
 
@@ -168,9 +168,8 @@ export function VisualisationPage() {
   const [mode, setMode] = useState<Mode>(null);
   const [selectedScript, setSelectedScript] = useState<VisualisationScript | null>(null);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  const [audioEnabled, setAudioEnabled] = useState(true);
   const { speak, stop: stopSpeech } = useSpeech();
-  const { play: playAudio, stop: stopAudio, isPlaying: isAudioPlaying } = useAudioPlayer();
+  const { play: playAudio, stop: stopAudio } = useAudioPlayer();
 
   useEffect(() => {
     if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
@@ -181,23 +180,21 @@ export function VisualisationPage() {
     stopAudio();
   }, [stopSpeech, stopAudio]);
 
-  // Does this script have a single full audio file?
   const hasFullAudio = selectedScript?.audioSrc != null;
 
   const speakSection = useCallback((section: VisualisationSection, onEnd?: () => void) => {
-    if (!audioEnabled || hasFullAudio) return; // skip per-section TTS if full audio exists
+    if (hasFullAudio) return;
     stopAllAudio();
     if (section.audioSrc) { playAudio(section.audioSrc); return; }
     if (section.type === 'text' && section.content) speak(section.content, onEnd);
     else if (section.type === 'pause' && onEnd) {
-      // For pause sections, wait the displayDuration then advance
       setTimeout(onEnd, section.displayDurationMs);
     }
-  }, [audioEnabled, hasFullAudio, speak, playAudio, stopAllAudio]);
+  }, [hasFullAudio, speak, playAudio, stopAllAudio]);
 
-  // Per-section TTS with auto-advance when speech ends (only when no full audio)
+  // Per-section TTS with auto-advance (only when no full audio file)
   useEffect(() => {
-    if (mode !== 'script' || !selectedScript || !audioEnabled || hasFullAudio) return;
+    if (mode !== 'script' || !selectedScript || hasFullAudio) return;
     const section = selectedScript.sections[currentSectionIndex];
     const isLast = currentSectionIndex === selectedScript.sections.length - 1;
     const advanceNext = isLast ? undefined : () => {
@@ -205,15 +202,14 @@ export function VisualisationPage() {
     };
     speakSection(section, advanceNext);
     return () => { stopAllAudio(); };
-  }, [mode, currentSectionIndex, selectedScript, audioEnabled, hasFullAudio, speakSection, stopAllAudio]);
+  }, [mode, currentSectionIndex, selectedScript, hasFullAudio, speakSection, stopAllAudio]);
 
-  // Start full audio when script mode begins
+  // Auto-play full audio when script mode begins
   useEffect(() => {
-    if (mode === 'script' && selectedScript?.audioSrc && audioEnabled) {
+    if (mode === 'script' && selectedScript?.audioSrc) {
       playAudio(selectedScript.audioSrc);
     }
     return () => { if (hasFullAudio) stopAudio(); };
-    // Only run when entering/leaving script mode
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
@@ -246,26 +242,32 @@ export function VisualisationPage() {
         <div className="text-center">
           <h2 className="font-display text-2xl font-bold text-purple-700">Calm &amp; Focus</h2>
           <p className="text-purple-400 mt-1 font-display">
-            Close your eyes and listen — we&rsquo;ll guide you through it
+            Choose an exercise to settle your mind before you begin
           </p>
         </div>
 
-        {/* Audio toggle */}
-        <div className="flex justify-center">
-          <button
-            onClick={() => setAudioEnabled(!audioEnabled)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full font-display font-semibold text-sm transition-all ${
-              audioEnabled
-                ? 'bg-purple-100 text-purple-600 border-2 border-purple-300'
-                : 'bg-gray-100 text-gray-400 border-2 border-gray-200'
-            }`}
-          >
-            {audioEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            {audioEnabled ? 'Read aloud: ON' : 'Read aloud: OFF'}
-          </button>
-        </div>
-
         <div className="space-y-3">
+          {/* Box breathing — listed first */}
+          <button
+            onClick={() => setMode('breathing-intro')}
+            className="w-full bg-white rounded-card p-5 shadow-sm border-2 border-purple-100 hover:border-purple-300 transition-colors text-left"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-100 to-indigo-100 flex items-center justify-center">
+                <Wind className="w-7 h-7 text-violet-500" />
+              </div>
+              <div className="flex-1">
+                <p className="font-display font-bold text-lg text-gray-800">Box Breathing</p>
+                <p className="text-sm text-gray-600">
+                  A one-minute breathing technique to calm your body and sharpen your focus.
+                </p>
+                <p className="text-xs text-purple-400 mt-1">
+                  ~1 minute &middot; 4 cycles &middot; in, hold, out, hold
+                </p>
+              </div>
+            </div>
+          </button>
+
           {/* Guided visualisation */}
           <button
             onClick={() => {
@@ -283,28 +285,7 @@ export function VisualisationPage() {
                 <p className="font-display font-bold text-lg text-gray-800">{script.title}</p>
                 <p className="text-sm text-gray-600">{script.description}</p>
                 <p className="text-xs text-purple-400 mt-1">
-                  {script.durationMinutes} minutes {audioEnabled ? '· with audio' : ''}
-                </p>
-              </div>
-            </div>
-          </button>
-
-          {/* Box breathing */}
-          <button
-            onClick={() => setMode('breathing-intro')}
-            className="w-full bg-white rounded-card p-5 shadow-sm border-2 border-purple-100 hover:border-purple-300 transition-colors text-left"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-100 to-indigo-100 flex items-center justify-center">
-                <Wind className="w-7 h-7 text-violet-500" />
-              </div>
-              <div className="flex-1">
-                <p className="font-display font-bold text-lg text-gray-800">Box Breathing</p>
-                <p className="text-sm text-gray-600">
-                  A simple breathing exercise to calm your body and focus your mind.
-                </p>
-                <p className="text-xs text-purple-400 mt-1">
-                  Breathe in · Hold · Breathe out · Hold — press Back when you&rsquo;re done
+                  {script.durationMinutes} minutes &middot; with audio
                 </p>
               </div>
             </div>
@@ -335,12 +316,20 @@ export function VisualisationPage() {
           </div>
 
           <h2 className="font-display text-xl font-bold text-purple-700 mb-1">
-            Guided Visualisation
+            {script.title}
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-5">
-            {script.durationMinutes} min &middot; Close your eyes and listen
+          <p className="text-purple-400 font-display text-sm mb-4">
+            {script.durationMinutes} min &middot; guided visualisation &middot; with audio
           </p>
+
+          <div className="bg-purple-50 rounded-2xl p-4 w-full text-left shadow-sm mb-4 border border-purple-100">
+            <p className="text-sm text-gray-600 font-display leading-relaxed">
+              A guided visualisation is a mental rehearsal. You&rsquo;ll be talked through your exam day &mdash; arriving calm, sitting down, reading the questions carefully. Research shows that mentally
+              rehearsing a situation improves how you actually perform in it. The more times you listen,
+              the more familiar exam day will feel.
+            </p>
+          </div>
 
           <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
             <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
@@ -348,7 +337,7 @@ export function VisualisationPage() {
               <li className="flex items-start gap-2"><span>🪑</span> Sit somewhere comfortable and quiet</li>
               <li className="flex items-start gap-2"><span>🎧</span> Headphones are ideal but not essential</li>
               <li className="flex items-start gap-2"><span>😌</span> Close your eyes when the audio begins</li>
-              <li className="flex items-start gap-2"><span>✨</span> Try 2–3 times a week — and every day the week before your exam</li>
+              <li className="flex items-start gap-2"><span>✨</span> Try 2–3 times a week &mdash; and every day in the week before your exam</li>
             </ul>
           </div>
 
@@ -357,7 +346,7 @@ export function VisualisationPage() {
             className="w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Play className="w-5 h-5" />
-            I&rsquo;m ready &mdash; play
+            I&rsquo;m ready &mdash; let&rsquo;s visualise
           </button>
         </div>
       </div>
@@ -387,17 +376,25 @@ export function VisualisationPage() {
             Box Breathing
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-5">
-            Breathe in · Hold · Breathe out · Hold — go for as long as you like
+          <p className="text-purple-400 font-display text-sm mb-4">
+            4 cycles &middot; about 1 minute &middot; in &ndash; hold &ndash; out &ndash; hold
           </p>
+
+          <div className="bg-purple-50 rounded-2xl p-4 w-full text-left shadow-sm mb-4 border border-purple-100">
+            <p className="text-sm text-gray-600 font-display leading-relaxed">
+              Box breathing is used by surgeons, athletes, and soldiers to stay calm under pressure.
+              Slowing your breath signals to your brain that you&rsquo;re safe &mdash; and research shows
+              even a short session reduces stress and sharpens focus. Four cycles takes about one minute.
+            </p>
+          </div>
 
           <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
             <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
             <ul className="space-y-1.5 text-sm text-gray-700 font-display">
               <li className="flex items-start gap-2"><span>🪑</span> Sit comfortably, both feet on the floor</li>
               <li className="flex items-start gap-2"><span>🙌</span> Rest your hands in your lap</li>
-              <li className="flex items-start gap-2"><span>😌</span> Close your eyes or soften your gaze</li>
-              <li className="flex items-start gap-2"><span>🔵</span> Follow the circle — it will guide you</li>
+              <li className="flex items-start gap-2"><span>😌</span> Close your eyes if it helps you relax</li>
+              <li className="flex items-start gap-2"><span>🔵</span> If you lose your place, open your eyes and follow the circle on screen</li>
             </ul>
           </div>
 
@@ -406,7 +403,7 @@ export function VisualisationPage() {
             className="w-full py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-violet-500 via-purple-600 to-indigo-600 hover:from-violet-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Play className="w-5 h-5" />
-            I&rsquo;m ready &mdash; let&rsquo;s breathe
+            I&rsquo;m ready &mdash; let&rsquo;s get in the zone
           </button>
         </div>
       </div>
@@ -423,24 +420,36 @@ export function VisualisationPage() {
         {/* Background orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
-            className="absolute -top-28 -left-28 w-80 h-80 rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.35) 0%, transparent 70%)' }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }}
+            className="absolute -top-28 -left-28 w-96 h-96 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(217,70,239,0.45) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.25, 1], opacity: [0.5, 0.95, 0.5] }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute -bottom-36 -right-24 w-96 h-96 rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%)' }}
-            animate={{ scale: [1, 1.25, 1], opacity: [0.4, 0.8, 0.4] }}
+            className="absolute -bottom-36 -right-24 w-[28rem] h-[28rem] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.4) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.85, 0.4] }}
             transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
           />
-          {[...Array(6)].map((_, i) => (
+          <motion.div
+            className="absolute top-1/3 -right-20 w-80 h-80 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(244,114,182,0.35) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          />
+          <motion.div
+            className="absolute -top-10 right-1/4 w-64 h-64 rounded-full blur-2xl"
+            style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.4) 0%, transparent 70%)' }}
+            animate={{ scale: [1, 1.35, 1] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 3.5 }}
+          />
+          {[...Array(10)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-1.5 h-1.5 rounded-full bg-white"
-              style={{ left: `${15 + i * 14}%`, top: `${20 + (i % 3) * 25}%` }}
+              style={{ left: `${8 + i * 9}%`, top: `${15 + (i % 4) * 20}%` }}
               animate={{ opacity: [0, 0.7, 0], scale: [0.5, 1.5, 0.5] }}
-              transition={{ duration: 2.5 + i * 0.6, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
+              transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}
             />
           ))}
         </div>
@@ -456,13 +465,13 @@ export function VisualisationPage() {
 
           <div className="text-center mt-4 mb-6">
             <h2 className="font-display text-xl font-bold text-white">Box Breathing</h2>
-            <p className="text-white/60 text-sm font-display mt-1">
-              Follow the circle. Breathe when it tells you.
+            <p className="text-white/50 text-sm font-display mt-1">
+              Follow the circle &mdash; breathe when it tells you
             </p>
           </div>
 
           <div className="flex-1 flex items-center justify-center">
-            <BoxBreathingExercise config={boxBreathingConfig} />
+            <BoxBreathingExercise config={boxBreathingConfig} onComplete={handleBack} />
           </div>
         </div>
       </div>
@@ -478,16 +487,6 @@ export function VisualisationPage() {
     <VisualisationPlayer
       script={selectedScript}
       totalDurationMs={totalDurationMs}
-      audioEnabled={audioEnabled}
-      isAudioPlaying={isAudioPlaying}
-      onToggleAudio={() => {
-        if (audioEnabled) stopAllAudio();
-        setAudioEnabled(!audioEnabled);
-      }}
-      onPlayPause={() => {
-        if (isAudioPlaying) stopAudio();
-        else if (selectedScript.audioSrc) playAudio(selectedScript.audioSrc);
-      }}
       onBack={handleBack}
       breathingConfig={boxBreathingConfig}
     />
@@ -501,19 +500,11 @@ export function VisualisationPage() {
 function VisualisationPlayer({
   script,
   totalDurationMs,
-  audioEnabled,
-  isAudioPlaying,
-  onToggleAudio,
-  onPlayPause,
   onBack,
   breathingConfig,
 }: {
   script: VisualisationScript;
   totalDurationMs: number;
-  audioEnabled: boolean;
-  isAudioPlaying: boolean;
-  onToggleAudio: () => void;
-  onPlayPause: () => void;
   onBack: () => void;
   breathingConfig: BoxBreathingConfig;
 }) {
@@ -565,10 +556,10 @@ function VisualisationPlayer({
 
   useEffect(() => () => { sound.stopAll(); }, [sound]);
 
-  const circleScale = (breathPhase === 'inhale' || breathPhase === 'hold-in') ? 1.3 : 0.8;
+  const circleScale = (breathPhase === 'inhale' || breathPhase === 'hold-in') ? 2.0 : 0.5;
   const phaseDuration =
     breathPhase === 'inhale' ? breathingConfig.inhaleSeconds :
-    breathPhase === 'exhale' ? breathingConfig.exhaleSeconds : 0.3;
+    breathPhase === 'exhale' ? breathingConfig.exhaleSeconds : 0.4;
 
   const breathLabel =
     breathPhase === 'inhale' ? 'Breathe in\u2026' :
@@ -617,8 +608,8 @@ function VisualisationPlayer({
 
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col h-full px-5 py-6 safe-area-inset">
-        {/* Top bar: back + audio controls */}
-        <div className="flex items-center justify-between mb-4">
+        {/* Top bar */}
+        <div className="flex items-center mb-4">
           <button
             onClick={onBack}
             className="text-sm text-white/70 font-display font-semibold flex items-center gap-1 hover:text-white transition-colors"
@@ -626,27 +617,6 @@ function VisualisationPlayer({
             <ChevronLeft className="w-4 h-4" />
             Back
           </button>
-
-          <div className="flex items-center gap-2">
-            {script.audioSrc && (
-              <button
-                onClick={onPlayPause}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 font-display font-semibold text-xs transition-all hover:bg-white/20"
-              >
-                {isAudioPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                {isAudioPlaying ? 'Pause' : 'Play'}
-              </button>
-            )}
-            <button
-              onClick={onToggleAudio}
-              className={`p-2 rounded-full transition-all ${
-                audioEnabled ? 'bg-white/10 text-white/80' : 'bg-white/5 text-white/30'
-              }`}
-              aria-label={audioEnabled ? 'Mute audio' : 'Enable audio'}
-            >
-              {audioEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
-          </div>
         </div>
 
         {/* Title */}
@@ -690,7 +660,7 @@ function VisualisationPlayer({
             </motion.div>
           ) : (
             <>
-              {/* Breathing circle — hue-rotate cycles blue → indigo → fuchsia → pink → blue */}
+              {/* Breathing circle */}
               <motion.div
                 animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
                 transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
@@ -698,38 +668,36 @@ function VisualisationPlayer({
                 <motion.div
                   animate={{ scale: circleScale }}
                   transition={{
-                    duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
+                    duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.4 : phaseDuration,
                     ease: 'easeInOut',
                   }}
                   className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
+                  style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
                 >
                   <motion.div
-                    animate={{ scale: circleScale * 0.55 }}
+                    animate={{ scale: circleScale * 0.5 }}
                     transition={{
-                      duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.3 : phaseDuration,
+                      duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.4 : phaseDuration,
                       ease: 'easeInOut',
                     }}
-                    className="w-24 h-24 rounded-full bg-blue-400/30 flex items-center justify-center"
-                  >
-                    <span className="text-2xl text-white/60">😌</span>
-                  </motion.div>
+                    className="w-24 h-24 rounded-full bg-blue-400/40"
+                  />
                 </motion.div>
               </motion.div>
 
-              {/* Breathing phase label */}
-              <motion.p
-                key={breathPhase}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-xl font-display font-bold text-white"
-              >
-                {breathLabel}
-              </motion.p>
-
-              {/* Gentle instruction */}
-              <p className="text-white/70 text-sm font-display text-center max-w-xs">
-                Close your eyes and listen. Follow the breathing if it helps.
-              </p>
+              {/* Phase label */}
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={breathPhase}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-2xl font-display font-bold text-white"
+                >
+                  {breathLabel}
+                </motion.p>
+              </AnimatePresence>
             </>
           )}
         </div>
@@ -744,18 +712,20 @@ function VisualisationPlayer({
 
 type BreathPhase = 'inhale' | 'hold-in' | 'exhale' | 'hold-out';
 
-// Hue-rotate wrapper cycles circle colour: blue → indigo → fuchsia → pink → blue
 const PHASE_LABELS: Record<BreathPhase, string> = {
-  'inhale':   'Breathe in…',
-  'hold-in':  'Hold…',
-  'exhale':   'Breathe out…',
-  'hold-out': 'Hold…',
+  'inhale':   'Breathe in\u2026',
+  'hold-in':  'Hold\u2026',
+  'exhale':   'Breathe out\u2026',
+  'hold-out': 'Hold\u2026',
 };
 
-function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
+const BREATHING_CYCLES = 4;
+
+function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConfig; onComplete: () => void }) {
   const [phase, setPhase] = useState<BreathPhase>('inhale');
   const [countdown, setCountdown] = useState(config.inhaleSeconds);
   const [cycles, setCycles] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
   const sound = useBreathingSound();
 
   useEffect(() => {
@@ -769,11 +739,10 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
     let cancelled = false;
     let stepIdx = 0;
     let secondsLeft = order[0].dur;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    let cycleCount = 0;
     setPhase(order[0].phase);
     setCountdown(order[0].dur);
-
-    // Trigger initial sound
+    setIsComplete(false);
     sound.inhale(config.inhaleSeconds);
 
     const interval = setInterval(() => {
@@ -781,16 +750,24 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
       secondsLeft -= 1;
 
       if (secondsLeft <= 0) {
-        // Move to next phase
         stepIdx = (stepIdx + 1) % order.length;
-        if (stepIdx === 0) setCycles(c => c + 1);
+        if (stepIdx === 0) {
+          cycleCount += 1;
+          setCycles(cycleCount);
+          if (cycleCount >= BREATHING_CYCLES) {
+            cancelled = true;
+            clearInterval(interval);
+            sound.stopAll();
+            setIsComplete(true);
+            return;
+          }
+        }
 
         const next = order[stepIdx];
         secondsLeft = next.dur;
         setPhase(next.phase);
         setCountdown(next.dur);
 
-        // Trigger sound for new phase
         if (next.phase === 'inhale') sound.inhale(next.dur);
         else if (next.phase === 'exhale') sound.exhale(next.dur);
         else if (next.phase === 'hold-in') sound.hold();
@@ -805,18 +782,43 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
       clearInterval(interval);
       sound.stopAll();
     };
-  }, [config, sound]);
+  }, [config, sound]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const circleScale = (phase === 'inhale' || phase === 'hold-in') ? 1.3 : 0.8;
-
-  // Duration of the current phase for the animation
+  const circleScale = (phase === 'inhale' || phase === 'hold-in') ? 2.0 : 0.5;
   const phaseDuration =
     phase === 'inhale' ? config.inhaleSeconds :
     phase === 'exhale' ? config.exhaleSeconds : 0.3;
 
+  if (isComplete) {
+    return (
+      <motion.div
+        className="flex flex-col items-center gap-6 text-center"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <p className="text-6xl">🌟</p>
+        <div>
+          <p className="font-display text-2xl font-bold text-white">You&rsquo;re calm and ready.</p>
+          <p className="font-display text-white/60 text-base mt-2">Four cycles complete.</p>
+        </div>
+        <button
+          onClick={onComplete}
+          className="mt-2 px-10 py-4 rounded-2xl font-display font-extrabold text-lg text-white shadow-2xl transition-all hover:scale-105 active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%)',
+            boxShadow: '0 0 40px rgba(168,85,247,0.5), 0 10px 40px rgba(0,0,0,0.3)',
+          }}
+        >
+          Done ✓
+        </button>
+      </motion.div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
-      {/* Hue-rotate wrapper — cycles blue → indigo → fuchsia → pink → blue */}
+    <div className="flex flex-col items-center justify-center gap-8 w-full">
+      {/* Breathing circle — hue-rotate cycles blue → indigo → fuchsia → pink */}
       <motion.div
         animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
@@ -824,21 +826,21 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
         <motion.div
           animate={{ scale: circleScale }}
           transition={{
-            duration: phase === 'hold-in' || phase === 'hold-out' ? 0.3 : phaseDuration,
+            duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
             ease: 'easeInOut',
           }}
-          className="w-36 h-36 rounded-full bg-blue-400/25 flex items-center justify-center"
-          style={{ boxShadow: '0 0 40px rgba(59,130,246,0.4)' }}
+          className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
+          style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
         >
           <motion.div
-            animate={{ scale: circleScale * 0.55 }}
+            animate={{ scale: circleScale * 0.5 }}
             transition={{
-              duration: phase === 'hold-in' || phase === 'hold-out' ? 0.3 : phaseDuration,
+              duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
               ease: 'easeInOut',
             }}
-            className="w-20 h-20 rounded-full bg-blue-400/40 flex items-center justify-center"
+            className="w-24 h-24 rounded-full bg-blue-400/40 flex items-center justify-center"
           >
-            <span className="font-display font-black text-3xl text-white">
+            <span className="font-display font-black text-3xl text-white/25">
               {(phase === 'inhale' ? config.inhaleSeconds :
                 phase === 'hold-in' ? config.holdInSeconds :
                 phase === 'exhale' ? config.exhaleSeconds :
@@ -849,28 +851,34 @@ function BoxBreathingExercise({ config }: { config: BoxBreathingConfig }) {
       </motion.div>
 
       {/* Phase label */}
-      <motion.p
-        key={phase}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-display font-bold text-white"
-      >
-        {PHASE_LABELS[phase]}
-      </motion.p>
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={phase}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          className="text-2xl font-display font-bold text-white"
+        >
+          {PHASE_LABELS[phase]}
+        </motion.p>
+      </AnimatePresence>
 
-      {/* Cycle counter */}
-      <p className="text-sm text-white/60 font-display">
-        {cycles === 0 ? 'Starting\u2026' : `${cycles} cycle${cycles === 1 ? '' : 's'} completed`}
-      </p>
-
-      {/* 4-step visual indicator */}
-      <div className="flex gap-3">
-        {(['inhale', 'hold-in', 'exhale', 'hold-out'] as BreathPhase[]).map(p => (
-          <div
-            key={p}
-            className={`rounded-full transition-all duration-300 ${
-              p === phase ? 'bg-white/60 scale-125 w-3 h-3' : 'bg-white/20 w-3 h-3'
-            }`}
+      {/* Cycle progress pills */}
+      <div className="flex gap-2 items-center">
+        {Array.from({ length: BREATHING_CYCLES }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="rounded-full transition-all duration-500"
+            style={{
+              width: i === cycles ? 28 : 8,
+              height: 8,
+              background: i < cycles
+                ? 'rgba(255,255,255,0.85)'
+                : i === cycles
+                ? 'rgba(255,255,255,0.45)'
+                : 'rgba(255,255,255,0.15)',
+            }}
           />
         ))}
       </div>

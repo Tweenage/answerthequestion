@@ -395,7 +395,7 @@ export const batch3MathsQuestions: Question[] = [
     questionTokens: ['Which', 'of', 'these', 'numbers', 'is', 'the', 'largest:', 'three', 'thousand', 'and', 'forty-five,', 'three', 'thousand', 'four', 'hundred', 'and', 'five,', 'three', 'thousand', 'five', 'hundred', 'and', 'four,', 'three', 'thousand', 'and', 'fifty-four,', 'three', 'thousand', 'and', 'four?'],
     keyWordIndices: [0, 4, 5, 6],
     options: [
-      { text: '3,045', isEliminatable: true, eliminationReason: 'A rusher sees forty-five and thinks it must be big, but this is only 3,045 — no hundreds digit.' },
+      { text: '3,045', isEliminatable: true, eliminationReason: 'Take care — sees forty-five and thinks it must be big, but this is only 3,045 — no hundreds digit.' },
       { text: '3,405', isEliminatable: true, eliminationReason: 'This has four hundred, but 3,504 has five hundred which is larger.' },
       { text: '3,504', isEliminatable: false },
       { text: '3,054', isEliminatable: true, eliminationReason: 'Fifty-four looks large but the number is only 3,054. Compare the hundreds digit first.' },
@@ -452,11 +452,11 @@ export const batch3MathsQuestions: Question[] = [
     questionTokens: ['Put', 'these', 'decimals', 'in', 'order', 'from', 'smallest', 'to', 'largest:', 'nought', 'point', 'two,', 'nought', 'point', 'one', 'nine,', 'nought', 'point', 'two', 'one,', 'nought', 'point', 'zero', 'nine.', 'Which', 'decimal', 'comes', 'second?'],
     keyWordIndices: [0, 4, 5, 6, 8, 24, 25, 26, 27],
     options: [
-      { text: '0.21', isEliminatable: true, eliminationReason: 'This is the largest value. A rusher may pick it thinking second means second largest. The question asks for smallest to largest.' },
+      { text: '0.21', isEliminatable: true, eliminationReason: 'This is the largest value. Take care — may pick it thinking second means second largest. The question asks for smallest to largest.' },
       { text: '0.19', isEliminatable: false },
       { text: '0.2', isEliminatable: true, eliminationReason: 'Nought point two (0.20) is the third value when ordered. It comes after 0.19, not before it.' },
       { text: '0.09', isEliminatable: true, eliminationReason: 'This is the smallest value and comes first, not second.' },
-      { text: '0.9', isEliminatable: true, eliminationReason: 'Nought point nine is not in the list. A rusher may misread 0.09 as 0.9. They are very different values.' },
+      { text: '0.9', isEliminatable: true, eliminationReason: 'Nought point nine is not in the list. Take care — may misread 0.09 as 0.9. They are very different values.' },
     ],
     correctOptionIndex: 1,
     explanation: 'Ordering from smallest to largest: 0.09, 0.19, 0.2 (same as 0.20), 0.21. The second value is 0.19.',

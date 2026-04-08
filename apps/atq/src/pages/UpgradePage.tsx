@@ -87,7 +87,7 @@ export function UpgradePage() {
           Ready to master exam technique? 🦉
         </h2>
         <p className="text-white/80 font-display mt-2 max-w-sm mx-auto">
-          {currentUser?.name}, unlock the full 12-week CLEAR Method™ programme and
+          {currentUser?.name}, unlock the full 12-week CLEAR Method programme and
           turn &ldquo;nearly right&rdquo; into confident, accurate answers.
         </p>
       </div>

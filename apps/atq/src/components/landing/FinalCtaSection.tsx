@@ -11,9 +11,9 @@ export function FinalCtaSection() {
       className="max-w-3xl mx-auto px-5 py-16 text-center"
     >
       <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-md mb-4 leading-tight max-w-xl mx-auto">
-        All that prep.
+        All that study.
         <br />
-        Make sure it counts.
+        Make sure it counts in the exam.
       </h2>
 
       <p className="text-white/80 font-display text-base md:text-lg max-w-lg mx-auto leading-relaxed mb-8">
@@ -24,7 +24,7 @@ export function FinalCtaSection() {
         to="/checkout"
         className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
       >
-        Start AnswerTheQuestion! &mdash; &pound;29.99 &rarr;
+        Start AnswerTheQuestion! &rarr;
       </Link>
 
       <p className="text-white/60 font-display text-xs mt-4">

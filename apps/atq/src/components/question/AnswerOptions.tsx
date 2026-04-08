@@ -36,10 +36,12 @@ export function AnswerOptions({
 
   if (!showAnswers) {
     return (
-      <div className="mt-6 p-6 rounded-card bg-amber-50/50 border-2 border-dashed border-celebrate-amber/30">
-        <p className="text-center text-gray-500 font-display">
-          {scaffoldingLevel === 'heavy'
-            ? "🦉 Professor Hoot says: Read the question first! I'm hiding the answers until you're ready..."
+      <div className="mt-6 p-4 rounded-card bg-amber-50/50 border-2 border-dashed border-celebrate-amber/30">
+        <p className="text-center text-gray-500 font-display text-sm">
+          {flowState === 'HIGHLIGHTING'
+            ? 'Answers will appear once you\'ve highlighted'
+            : scaffoldingLevel === 'heavy'
+            ? "🦉 Professor Hoot says: I'm hiding the answers until you've read the question..."
             : 'Answers will appear soon...'}
         </p>
       </div>

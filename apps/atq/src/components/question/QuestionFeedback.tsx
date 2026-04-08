@@ -5,7 +5,6 @@ import type { TechniqueScore } from '../../types/technique';
 import type { Question } from '../../types/question';
 import { ConfettiExplosion, XpPopup, useSoundEffects } from '@atq/shared';
 import { calculateXpFromResult } from '../../utils/scoring';
-import { ProfessorHoot } from '../mascot/ProfessorHoot';
 import { getLearningCard } from '../../data/learningCards';
 import { LearningCard } from '../session/LearningCard';
 
@@ -74,7 +73,7 @@ const TRICK_TYPE_LABELS: Record<string, { label: string; tip: string }> = {
   },
   'irrelevant-info': {
     label: '🗑️ Extra Information Trick!',
-    tip: "This question had extra details you didn't need. Always ask: do I need this number?",
+    tip: "This question had extra details you didn't need. Always ask: does this detail actually answer what the question is asking?",
   },
   'operation-masking': {
     label: "🔀 Hidden Operation Trick!",
@@ -151,14 +150,6 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
   };
   const stars = getStars();
 
-  const getHootMessage = () => {
-    if (isCorrect && techniqueScore.overallTechniquePercent >= 90) return "Owl-standing work! Perfect technique AND the right answer — you absolutely smashed it!";
-    if (isCorrect && techniqueScore.overallTechniquePercent >= 60) return "Brilliant! You nailed it! Keep using the CLEAR Method like that and you'll be unstoppable!";
-    if (isCorrect) return "Yes! You got it! Now imagine using your full technique too — you'd be on fire!";
-    if (techniqueScore.overallTechniquePercent >= 70) return "So close! Your technique was really impressive though — that's what matters most. The right answers will follow!";
-    return "Not to worry — every question is a chance to learn! Let's see what happened and you'll nail the next one.";
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -194,21 +185,6 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
         show={true}
       />
 
-      {/* Professor Hoot feedback */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <ProfessorHoot
-          mood={isCorrect ? 'celebrating' : 'encouraging'}
-          size="md"
-          message={getHootMessage()}
-          showSpeechBubble={true}
-          animate={true}
-        />
-      </motion.div>
-
       {/* Correct/Wrong banner */}
       <div className={`rounded-card p-4 flex items-start gap-3 ${
         isCorrect ? 'bg-calm-50 border-2 border-calm-300' : 'bg-red-50 border-2 border-red-200'
@@ -240,7 +216,7 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-card p-4 bg-celebrate-orange/10 border-2 border-celebrate-orange/30"
+          className="rounded-card p-4 bg-white border-2 border-celebrate-orange/40"
         >
           <div className="flex items-start gap-2 mb-2">
             <span className="text-lg">🦉</span>
@@ -286,7 +262,7 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-card p-4 bg-rainbow-indigo/10 border-2 border-rainbow-indigo/30"
+          className="rounded-card p-4 bg-white border-2 border-rainbow-indigo/40"
         >
           <p className="font-display font-bold text-sm text-rainbow-indigo mb-1">
             {TRICK_TYPE_LABELS[question.trickType].label}

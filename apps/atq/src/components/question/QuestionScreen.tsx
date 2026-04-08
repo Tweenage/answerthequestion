@@ -371,33 +371,27 @@ export function QuestionScreen({
           </motion.button>
         )}
 
-        {/* R — Review: check your answer before confirming */}
+        {/* R — Review: quick confirmation */}
         {data.state === 'REVIEWING' && data.selectedAnswer !== null && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 space-y-3"
           >
-            <div className="bg-teal-50 border-2 border-teal-300 rounded-xl p-4">
-              <p className="font-display font-bold text-xs text-teal-600 uppercase tracking-wide mb-1.5">Your answer:</p>
-              <p className="font-display font-bold text-base text-gray-800">
-                {String.fromCharCode(65 + data.selectedAnswer)}. {question.options[data.selectedAnswer]?.text}
-              </p>
-              <p className="font-display text-xs text-teal-700 mt-2">
-                Read the question one more time — does this answer make sense?
-              </p>
+            <div className="bg-teal-50 border-2 border-teal-300 rounded-xl p-4 flex items-center justify-between gap-3">
+              <div>
+                <p className="font-display font-bold text-xs text-teal-600 uppercase tracking-wide mb-0.5">Your answer</p>
+                <p className="font-display font-bold text-base text-gray-800">
+                  {String.fromCharCode(65 + data.selectedAnswer)}. {question.options[data.selectedAnswer]?.text}
+                </p>
+              </div>
+              <p className="font-display font-semibold text-sm text-teal-700 shrink-0">Are you sure?</p>
             </div>
             <button
               onClick={() => flow.confirmAnswer()}
               className="w-full py-3 rounded-button font-display font-bold text-white rainbow-gradient hover:opacity-90 transition-opacity"
             >
-              Yes, that's my final answer! ✅
-            </button>
-            <button
-              onClick={flow.cancelReview}
-              className="w-full py-2.5 rounded-button font-display font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors text-sm"
-            >
-              🔄 Actually, let me change that
+              Yes, lock it in ✅
             </button>
           </motion.div>
         )}

@@ -1,63 +1,65 @@
 import type { Question } from '../types/question';
 
 /**
- * A tutorial English comprehension question used in the guided first-session tutorial.
- * Designed to clearly demonstrate every technique step:
- * - Requires inference (the answer is not stated directly)
- * - Has obvious key words ("normally", "always")
- * - Has clearly eliminatable wrong answers with reasons
- * - Tests careful reading and deduction
+ * Tutorial English comprehension question — designed to demonstrate the CLEAR Method.
+ *
+ * Design principles:
+ * - Multiple named characters all mentioned in the passage (plausible traps)
+ * - A busy week creates distraction — the unusual week obscures the usual routine
+ * - Key danger word "usually" appears in both the passage AND the question
+ * - Only one wild card answer (older sister — not mentioned at all)
+ * - Requires genuine inference, not surface-level reading
  */
 export const TUTORIAL_QUESTION: Question = {
   id: 'tutorial-demo',
   subject: 'english',
-  difficulty: 1,
+  difficulty: 2,
   questionText:
-    'Lily always walks to school with her best friend. On Monday, her best friend was ill, so Lily\'s mum drove her instead. Lily felt sad because she had nobody to talk to on the way. Who does Lily normally walk to school with?',
+    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. Who does Amir usually walk to school with?",
   questionTokens: [
-    'Lily', ' ', 'always', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
-    'with', ' ', 'her', ' ', 'best', ' ', 'friend.', ' ',
-    'On', ' ', 'Monday,', ' ', 'her', ' ', 'best', ' ', 'friend', ' ',
-    'was', ' ', 'ill,', ' ', 'so', ' ', "Lily's", ' ', 'mum', ' ',
-    'drove', ' ', 'her', ' ', 'instead.', ' ',
-    'Lily', ' ', 'felt', ' ', 'sad', ' ', 'because', ' ', 'she', ' ',
-    'had', ' ', 'nobody', ' ', 'to', ' ', 'talk', ' ', 'to', ' ',
-    'on', ' ', 'the', ' ', 'way.', ' ',
-    'Who', ' ', 'does', ' ', 'Lily', ' ', 'normally', ' ', 'walk', ' ',
+    'Amir', ' ', 'usually', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
+    'with', ' ', 'his', ' ', 'best', ' ', 'friend', ' ', 'Jake.', ' ',
+    'This', ' ', 'week', ' ', 'was', ' ', 'different.', ' ',
+    'On', ' ', 'Monday,', ' ', 'Jake', ' ', 'was', ' ', 'away,', ' ',
+    'so', ' ', 'Amir', ' ', 'walked', ' ', 'with', ' ', 'his', ' ',
+    'neighbour', ' ', 'Priya', ' ', 'instead.', ' ',
+    'On', ' ', 'Tuesday,', ' ', "Amir's", ' ', 'mum', ' ', 'drove', ' ',
+    'him', ' ', 'because', ' ', 'of', ' ', 'the', ' ', 'rain.', ' ',
+    'On', ' ', 'Wednesday', ' ', 'and', ' ', 'Thursday,', ' ',
+    'Priya', ' ', 'and', ' ', 'Amir', ' ', 'walked', ' ', 'together.', ' ',
+    'On', ' ', 'Friday,', ' ', 'Jake', ' ', 'came', ' ', 'back', ' ',
+    'and', ' ', 'walked', ' ', 'with', ' ', 'Amir.', ' ',
+    'Who', ' ', 'does', ' ', 'Amir', ' ', 'usually', ' ', 'walk', ' ',
     'to', ' ', 'school', ' ', 'with?',
   ],
-  keyWordIndices: [2, 76], // "always" (index 2) and "normally" (index 76)
+  // "usually" at index 2 (passage) and index 116 (question)
+  keyWordIndices: [2, 116],
   options: [
     {
-      text: 'Her mum',
+      text: 'Priya',
       isEliminatable: true,
-      eliminationReason: 'Her mum only drove her on Monday because her friend was ill — that was not the normal routine.',
+      eliminationReason: 'Priya walked with Amir this week — but the passage says this week was different. Look back at the very first sentence.',
     },
     {
-      text: 'Her teacher',
+      text: "Amir's mum",
       isEliminatable: true,
-      eliminationReason: 'A teacher is never mentioned in the passage at all.',
+      eliminationReason: "Amir's mum drove him on Tuesday because of the rain — that was an exception, not his usual routine.",
     },
     {
-      text: 'Her best friend',
+      text: 'Jake',
       isEliminatable: false,
     },
     {
-      text: 'Nobody',
+      text: 'His older sister',
       isEliminatable: true,
-      eliminationReason: 'She had "nobody to talk to" only on Monday — that is a trap! The question asks about her normal routine.',
-    },
-    {
-      text: 'Her older sister',
-      isEliminatable: true,
-      eliminationReason: 'A sister is never mentioned in the passage. A rusher might guess a family member, but the passage says she walks with her best friend.',
+      eliminationReason: 'No sister is ever mentioned in the passage. Never choose someone the passage has not told you about.',
     },
   ],
   correctOptionIndex: 2,
   explanation:
-    'The passage says Lily "always walks to school with her best friend." The key word "normally" in the question matches "always" in the passage. Her mum only drove her on Monday — that was the exception, not the rule!',
+    'The passage says Amir "usually walks to school with his best friend Jake." The danger word "usually" appears in both the passage and the question — that\'s the connection. Priya only walked with him because this week was different. His mum drove him once. Jake is the usual answer.',
   category: 'comprehension-inference',
-  trickType: 'negation-trap',
+  trickType: 'exception-as-rule',
 };
 
 /** Tutorial step messages from Professor Hoot */
@@ -66,70 +68,70 @@ export const TUTORIAL_STEPS = [
     id: 'welcome',
     hootMood: 'teaching' as const,
     title: "Let's Learn Together!",
-    message: "Before you start practising, let me show you how this works. We'll do one question together — I'll guide you through every step!",
+    message: "Quick demo before you start — one practice question, all five CLEAR steps. It's deliberately simple so you can see how the method works. Real questions are harder.",
     showQuestion: false,
     showAnswers: false,
   },
   {
     id: 'read-first',
     hootMood: 'teaching' as const,
-    title: 'C — Calm (Read It Once)',
-    message: "Take one slow breath, then read the question below. Do not look at the answers yet — I've hidden them for you.",
+    title: 'C — Calm',
+    message: "Breath in. Read the question — just the question, not the answers yet.",
     showQuestion: true,
     showAnswers: false,
   },
   {
     id: 'read-again',
     hootMood: 'thinking' as const,
-    title: 'C — Calm (Read It Again)',
-    message: 'Good. Now read it one more time. What is the question really asking? Say it in your head before looking at any answers.',
+    title: 'L — Look',
+    message: "Read it again. Say in your head what you're looking for before you look at any answers.",
     showQuestion: true,
     showAnswers: false,
   },
   {
     id: 'key-words',
     hootMood: 'teaching' as const,
-    title: 'L — Look for Key Words',
-    message: 'See "normally"? That is a key word — it tells you the question asks about the usual routine, not Monday\'s exception. The rule: highlight the FEWEST words that tell you what to find. Always highlight danger words like "normally", "always", "never", "not", "except". In the app, tap to highlight. In your real exam, underline with your pencil!',
+    title: 'L — Key Words',
+    message: '"Usually" — danger word. It appears in the passage AND the question. That\'s what connects them. In your exam, underline it. In the app, tap to highlight.',
     showQuestion: true,
     showAnswers: false,
     highlightKeyWords: true,
   },
   {
     id: 'show-answers',
-    hootMood: 'warning' as const,
+    hootMood: 'teaching' as const,
     title: 'E — Eliminate!',
-    message: "Tap each wrong answer to cross it out! I'll tell you why as you go. You cannot choose the right answer until all the wrong ones are gone — that is the rule!",
+    message: "Tap the wrong answers to cross them out. You can't choose the right answer until all the wrong ones are gone.",
     showQuestion: true,
     showAnswers: true,
-    eliminateIndices: [0, 1, 3, 4],
+    eliminateIndices: [0, 1, 3],
     interactive: true,
   },
   {
     id: 'lock-in',
     hootMood: 'celebrating' as const,
-    title: 'A — Answer!',
-    message: "Only \"Her best friend\" is left — and the passage says she always walks with her best friend. That is your answer! In the app, you'll hit the Lock In button.",
+    title: 'A — Answer',
+    message: 'One answer left. That\'s your pick. In the app, hit Lock In.',
     showQuestion: true,
     showAnswers: true,
-    eliminateIndices: [0, 1, 3, 4],
+    eliminateIndices: [0, 1, 3],
     correctIndex: 2,
   },
   {
     id: 'review',
     hootMood: 'thinking' as const,
-    title: 'R — Review!',
-    message: "Before you confirm, look back at the question one more time. It says \"normally\" — and \"Her best friend\" matches \"always walks with her best friend\" in the passage. It still makes sense! The app will always show you your chosen answer and give you a chance to change it before you lock in. Only change your answer if you spot a real reason to!",
+    title: 'R — Review',
+    message: 'Check: does your answer actually answer the question that was asked? Read the question again — not the passage, just the question. If it still fits, lock it in.',
     showQuestion: true,
     showAnswers: true,
-    eliminateIndices: [0, 1, 3, 4],
+    eliminateIndices: [0, 1, 3],
     correctIndex: 2,
   },
   {
     id: 'complete',
     hootMood: 'celebrating' as const,
-    title: 'Hoo-ray! You Did It! 🎉',
-    message: "You just used the full CLEAR Method! Calm → Look for key words → Eliminate → Answer → Review. Did you notice the traps? Now you try it yourself — practise the CLEAR steps every day and they will become automatic!",
+    title: 'Done! 🎉',
+    message: "C → L → E → A → R. Every question, every time. The real questions are harder — but the method is the same. Practise it until it's automatic.",
     showQuestion: false,
     showAnswers: false,
   },

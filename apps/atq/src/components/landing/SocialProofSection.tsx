@@ -18,7 +18,7 @@ export function SocialProofSection() {
           {/* Pull quote */}
           <div className="bg-purple-50 rounded-xl p-5 md:p-6 border border-purple-200/50 text-center mb-6">
             <p className="font-display text-lg md:text-xl text-purple-800 italic font-bold leading-relaxed mb-2">
-              &ldquo;She knew the answer. She hadn&rsquo;t read the question.&rdquo;
+              &ldquo;She knew the answer. She got it wrong. She hadn&rsquo;t read the question.&rdquo;
             </p>
             <p className="font-display text-sm text-purple-600">
               &mdash; Every 11+ parent, at some point
@@ -30,7 +30,7 @@ export function SocialProofSection() {
             science of thinking about thinking. The EEF Teaching and Learning
             Toolkit identifies metacognitive strategies as one of the most
             effective and cost-efficient ways to improve learning outcomes.
-            That&rsquo;s exactly what the CLEAR Method™ trains your child to do.
+            That&rsquo;s exactly what the CLEAR Method trains your child to do.
           </p>
 
           {/* Three confidence pillars */}
@@ -39,12 +39,12 @@ export function SocialProofSection() {
               {
                 icon: BookOpen,
                 title: '668 exam-style questions',
-                body: 'Covering Maths, English &amp; Reasoning — with new questions added regularly.',
+                body: 'Covering Maths, English & Reasoning — with new questions added regularly.',
               },
               {
                 icon: Brain,
                 title: 'Research-backed method',
-                body: 'The CLEAR Method™ teaches the metacognitive skills that turn careless mistakes into confident answers.',
+                body: 'The CLEAR Method teaches the metacognitive skills that turn careless mistakes into confident answers.',
               },
               {
                 icon: Shield,

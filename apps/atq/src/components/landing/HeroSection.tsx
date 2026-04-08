@@ -31,7 +31,7 @@ export function HeroSection() {
           <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-10">
             <p className="text-white font-display font-bold text-lg md:text-xl leading-relaxed">
               AnswerTheQuestion! trains children to use the{' '}
-              <strong className="text-fuchsia-200">CLEAR Method™</strong> — a five-step exam
+              <strong className="text-fuchsia-200">CLEAR Method</strong> — a five-step exam
               technique that turns careless mistakes into confident, correct answers. Built
               for 11+, independent school entrance, and every exam beyond.
             </p>
@@ -54,7 +54,7 @@ export function HeroSection() {
           </Link>
 
           <p className="text-white/70 font-display text-sm font-medium mt-4">
-            One-time payment &middot; Whole family &middot; 7-day money-back guarantee
+            One-time payment &middot; 7-day money-back guarantee
           </p>
         </motion.div>
       </div>

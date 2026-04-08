@@ -173,6 +173,15 @@ export function PracticePage() {
             <p className="font-display text-xs opacity-80">for all 10 questions</p>
           </div>
 
+          {/* Foundation note */}
+          {weekConfig.phase === 'foundation' && (
+            <div className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3">
+              <p className="font-display text-sm text-green-800 font-semibold">
+                The questions this week are a little easier — that's intentional. Take your time and focus on getting the method right.
+              </p>
+            </div>
+          )}
+
           {/* Goals */}
           <div className="space-y-2">
             {goals.map((goal, i) => (

@@ -9,40 +9,31 @@ interface PreSessionBreathingProps {
 const TOTAL_CYCLES = 4;
 
 const affirmations = [
-  "I am calm, focused, and ready to do my best.",
+  "I am calm, focused, and ready.",
   "I read carefully and think before I answer.",
-  "Mistakes help me learn and grow stronger.",
-  "I take my time because I know that's how I succeed.",
-  "I am smart enough to solve any question.",
-  "I trust my brain — it knows more than I think.",
+  "Mistakes help me learn.",
+  "I take my time — that is how I succeed.",
+  "I trust my brain.",
   "Every question is a chance to show what I can do.",
-  "I breathe, I focus, I succeed.",
+  "I breathe. I focus. I succeed.",
   "I don't rush — I use my CLEAR Method.",
   "I am getting better every single day.",
-  "I believe in myself and my abilities.",
   "I stay calm even when questions are tricky.",
-  "I am prepared and I am ready.",
   "My best is always good enough.",
   "I can do hard things.",
-  "I am brave, I am strong, I am capable.",
   "I learn something new every time I practise.",
-  "I read the question twice because I'm smart like that.",
-  "I don't need to be perfect — I just need to try my best.",
+  "I read the question twice — every time.",
   "I am proud of how hard I've worked.",
   "Tricky questions don't scare me — they challenge me.",
-  "I take a breath and give my brain time to think.",
-  "I trust the process and enjoy the journey.",
+  "A slow breath gives my brain time to think.",
   "I notice the key words because I read with purpose.",
-  "Every practice session makes me stronger.",
-  "I am focused and nothing can distract me.",
-  "I choose my answers carefully and with confidence.",
+  "Every session makes me stronger.",
+  "I am focused.",
+  "I choose my answers carefully.",
   "I've got this — one question at a time.",
-  "My mind is sharp and ready to work.",
-  "I eliminate wrong answers like a detective.",
-  "I am a brilliant thinker and problem solver.",
-  "When I slow down, I speed up my success.",
-  "I have the skills to tackle any question.",
-  "I feel calm, I feel confident, I feel ready.",
+  "I eliminate the wrong answers first.",
+  "When I slow down, I get more right.",
+  "I feel calm, focused, and ready.",
   "Today I will show what I can do.",
 ];
 
@@ -184,15 +175,19 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
         Skip
       </button>
 
-      {/* Affirmation */}
+      {/* Header + Affirmation */}
       <motion.div
-        className="relative z-10 text-center px-8 mb-10 max-w-md"
+        className="relative z-10 text-center px-8 mb-10 max-w-md space-y-3"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
+        <p className="text-white/50 text-sm font-display font-semibold tracking-wide uppercase">
+          Before every session
+        </p>
+        <p className="text-white/60 text-lg mb-1">✨</p>
         <p className="text-white/90 text-xl sm:text-2xl font-display font-bold leading-relaxed">
-          ✨ <em>"{affirmation}"</em>
+          <em>"{affirmation}"</em>
         </p>
       </motion.div>
 

@@ -19,17 +19,17 @@ export function ChildTechniquesView() {
         <ProfessorHoot
           mood="teaching"
           size="md"
-          message="The CLEAR Method™ is your secret weapon! Learn these 5 steps and you will ace any question!"
+          message="The CLEAR Method is your secret weapon! Learn these 5 steps and you will ace any question!"
           showSpeechBubble={true}
           animate={true}
         />
       </div>
 
-      {/* ───── The CLEAR Method™ ───── */}
+      {/* ───── The CLEAR Method ───── */}
       <div className="space-y-3">
         <div className="text-center">
           <h3 className="font-display font-extrabold text-white text-lg drop-shadow-md">
-            The CLEAR Method™
+            The CLEAR Method
           </h3>
           <p className="text-white/70 text-xs font-display mt-0.5">
             5 steps — in order — every single question

@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const STEPS = [
-  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath. A settled mind reads more carefully than a rushing one.' },
-  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question before looking at any answers. Every word.' },
-  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out wrong answers first. The right one is easier to spot.' },
-  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'What is the question actually asking? Not what you expect — what it says.' },
-  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question. One last check.' },
+  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath before you start. A calm brain thinks more clearly.' },
+  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question. Then read it again. What is it actually asking?' },
+  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out answers that are obviously wrong. Fewer choices = better thinking.' },
+  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'Now pick your answer — with confidence, not panic.' },
+  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question. Does it match what was asked?' },
 ];
 
 export function ClearMethodSection() {
@@ -19,12 +19,12 @@ export function ClearMethodSection() {
           transition={{ duration: 0.6 }}
           className="max-w-xl mx-auto text-center"
         >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 mb-6 leading-tight">
-            The CLEAR Method™
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 mb-6 leading-tight">
+            The CLEAR Method
           </h2>
 
           <p className="text-gray-600 font-display text-base md:text-lg leading-relaxed mb-10">
-            The CLEAR Method™ is grounded in metacognition research &mdash; thinking about
+            The CLEAR Method is grounded in metacognition research &mdash; thinking about
             how you think. The Education Endowment Foundation found metacognitive strategies
             add an average of seven months of progress. Your child learns the method in
             week one. They use it automatically by week twelve.

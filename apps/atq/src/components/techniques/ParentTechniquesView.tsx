@@ -62,7 +62,7 @@ export function ParentTechniquesView() {
           The 5 Habits We Build
         </h3>
         <p className="text-white/70 text-xs text-center font-display max-w-sm mx-auto">
-          Every feature in this app is designed to build these five research-backed habits — the skills that separate children who know the answers from children who get the marks.
+          Every feature in this app is designed to build five research-backed habits — the skills that separate children who know the answers from those who get the marks.
         </p>
 
         <div className="space-y-2">
@@ -131,7 +131,7 @@ export function ParentTechniquesView() {
           How Questions Are Designed
         </h3>
         <p className="text-white/70 text-xs text-center font-display max-w-sm mx-auto">
-          Every question targets a specific trap pattern. Children learn to recognise these patterns through repeated exposure and labelled feedback.
+          Every question targets a specific trap pattern. Children learn to recognise these through repeated exposure and feedback.
         </p>
 
         <div className="space-y-2">
@@ -155,7 +155,7 @@ export function ParentTechniquesView() {
           The 12-Week Programme
         </h3>
         <p className="text-white/70 text-xs text-center font-display max-w-sm mx-auto">
-          Scaffolding is systematically reduced so children internalise the technique and can apply it independently under exam conditions.
+          Scaffolding is gradually reduced so children internalise the technique and apply it independently under exam conditions.
         </p>
 
         <div className="space-y-2">
@@ -190,7 +190,7 @@ export function ParentTechniquesView() {
           How Technique Scoring Works
         </h3>
         <p className="text-white/70 text-xs text-center font-display max-w-sm mx-auto">
-          We measure process, not just correctness. This incentivises children to build proper habits even when they already know the answer.
+          We measure process, not just correctness. This encourages children to build strong habits — even when they already know the answer.
         </p>
 
         <div className="bg-white/95 backdrop-blur-sm rounded-card p-4 border border-white/30 space-y-2.5">
@@ -252,11 +252,11 @@ export function ParentTechniquesView() {
 
         <div className="bg-white/95 backdrop-blur-sm rounded-card p-4 border border-white/30 space-y-3">
           {[
-            { emoji: '🎯', title: 'Focus on technique, not answers', desc: 'Praise "I saw you read it twice!" rather than "You got it right!" The habit is what matters.' },
-            { emoji: '📅', title: 'Little and often beats cramming', desc: '7 minutes daily is far more effective than an hour at the weekend. Consistency builds automaticity.' },
-            { emoji: '🚫', title: "Don't help with the answers", desc: 'If they get it wrong, the app explains why. Mistakes are learning opportunities, not failures.' },
-            { emoji: '🌟', title: 'Celebrate streaks, not scores', desc: 'The streak counter builds the habit. Five days in a row matters more than five correct answers.' },
-            { emoji: '🧘', title: 'Try the Calm & Focus exercise', desc: 'The guided visualisation helps with exam anxiety. Try it together — it works for adults too!' },
+            { emoji: '🎯', title: 'Focus on technique, not answers', desc: 'Praise "You read it twice!" rather than "You got it right." The habit is what matters.' },
+            { emoji: '📅', title: 'Little and often beats cramming', desc: '7 minutes daily is more effective than an hour at the weekend. Consistency builds automaticity.' },
+            { emoji: '🚫', title: "Don't help with the answers", desc: 'If they get it wrong, the app explains why. Mistakes are part of learning.' },
+            { emoji: '🌟', title: 'Celebrate streaks, not scores', desc: 'Consistency builds habits. Streaks matter more than individual results.' },
+            { emoji: '🧘', title: 'Use the Calm & Focus exercise', desc: 'Try it together — it works for adults too.' },
           ].map(tip => (
             <div key={tip.emoji} className="flex items-start gap-2.5">
               <span className="text-lg shrink-0">{tip.emoji}</span>

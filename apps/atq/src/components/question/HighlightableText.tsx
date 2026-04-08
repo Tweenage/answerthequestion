@@ -7,18 +7,6 @@ import { isNumberWord, toDigit } from '../../utils/numberWords';
 // Restricted to words that, if missed, would lead directly to the wrong answer.
 // Removed over-broad words ('at', 'each', 'more', 'less', 'before', 'after', 'between', 'until')
 // that appear too frequently to provide a useful teaching signal in Foundation phase.
-const DANGER_WORDS = new Set([
-  'not', 'never', 'except', 'without', 'unless',    // negatives — reverse the meaning entirely
-  'only', 'always', 'every', 'exactly',              // strong qualifiers — easy to rush past
-  'least', 'most', 'fewer',                          // superlatives/comparatives that flip the answer
-  'altogether', 'remaining', 'total',                // hidden maths operations
-  'however', 'although', 'despite', 'but', 'instead', // contrast/reversal connectives
-]);
-
-function isDangerWord(token: string): boolean {
-  const cleaned = token.toLowerCase().replace(/[.,!?;:"'()]/g, '');
-  return DANGER_WORDS.has(cleaned);
-}
 
 interface HighlightableTextProps {
   tokens: string[];
@@ -107,10 +95,6 @@ export function HighlightableText({
     }
   };
 
-  // Show danger word styling only in heavy scaffolding (weeks 1-4) — teaching phase only.
-  // In medium/light scaffolding children must identify danger words independently.
-  const showDangerWords = !disabled && !showFeedback && !numberExtractionMode && scaffoldingLevel === 'heavy';
-
   // Get the display text for a token (converted digit or original)
   const getDisplayText = (token: string, index: number) => {
     if (numberExtractionMode && convertedNumberIndices.includes(index)) {
@@ -122,7 +106,6 @@ export function HighlightableText({
   return (
     <div className={`leading-[2.0] text-[1.3rem] font-display ${dyslexiaMode ? 'dyslexia-text' : ''}`}>
       {tokens.map((token, index) => {
-        const danger = showDangerWords && isDangerWord(token) && !highlightedIndices.includes(index);
         const isClickable = numberExtractionMode
           ? (isNumberWord(token) && !convertedNumberIndices.includes(index))
           : !disabled;
@@ -141,7 +124,6 @@ export function HighlightableText({
               ${isClickable ? 'cursor-pointer hover:bg-focus-100 active:bg-focus-200' : ''}
               ${getTokenStyle(index)}
               ${getNumberExtractionStyle(index)}
-              ${danger ? 'border-b-2 border-dotted border-rainbow-red/50' : ''}
             `}
             style={{ touchAction: 'manipulation', minHeight: '44px', lineHeight: 'inherit' }}
           >
@@ -171,30 +153,9 @@ export function HighlightableText({
         </p>
       )}
 
-      {!numberExtractionMode && !disabled && scaffoldingLevel === 'heavy' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-4 text-sm text-focus-600 font-display bg-focus-50 rounded-xl p-3 border border-focus-200 space-y-2"
-        >
-          <p className="font-bold text-base">👆 Tap the FEWEST words that tell you what to find!</p>
-          <div className={`flex flex-wrap gap-2 ${dyslexiaMode ? 'text-sm' : 'text-xs'}`}>
-            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Key facts</span>
-            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Numbers</span>
-            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Times</span>
-            <span className="bg-white px-2 py-1 rounded-full border border-focus-200">Question focus</span>
-          </div>
-          <p className={`${dyslexiaMode ? 'text-sm text-gray-700' : 'text-xs text-gray-500'}`}>
-            Only highlight names if there are <span className="font-bold">two or more people</span> — then you need to match each person to the right detail
-          </p>
-          <p className={`${dyslexiaMode ? 'text-sm' : 'text-xs'} text-rainbow-red font-semibold`}>
-            Always highlight <span className="border-b-2 border-dotted border-rainbow-red/50 px-0.5">danger words</span>: NOT, never, except, only, although, however!
-          </p>
-        </motion.div>
-      )}
-      {!numberExtractionMode && !disabled && scaffoldingLevel === 'medium' && (
-        <p className={`mt-3 ${dyslexiaMode ? 'text-base text-gray-700' : 'text-sm text-gray-500'} font-display`}>
-          Tap only the key words you really need — the fewest that tell you what the question is asking. Watch for danger words like NOT, except, least!
+      {!numberExtractionMode && !disabled && (scaffoldingLevel === 'heavy' || scaffoldingLevel === 'medium') && (
+        <p className={`mt-3 ${dyslexiaMode ? 'text-sm text-gray-700' : 'text-xs text-gray-500'} font-display`}>
+          Are there any danger words? not, never, except, only, although, however
         </p>
       )}
     </div>

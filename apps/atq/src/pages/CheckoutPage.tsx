@@ -108,7 +108,7 @@ export function CheckoutPage() {
                   AnswerTheQuestion! Programme
                 </h2>
                 <p className="font-display text-sm text-gray-500 mt-1 leading-relaxed">
-                  12-week CLEAR Method&trade; training &middot; Whole family access &middot; Lifetime
+                  12-week CLEAR Method training &middot; One-time payment
                 </p>
               </div>
               <p className="font-display font-extrabold text-xl text-gray-900 shrink-0 ml-4">
@@ -137,14 +137,14 @@ export function CheckoutPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
                     <p className="font-display font-extrabold text-base text-gray-900">
-                      📋 Add the CLEAR Method&trade; Crib Sheet
+                      📋 Add the CLEAR Method Crib Sheet
                     </p>
                     <p className="font-display font-extrabold text-base text-fuchsia-600 shrink-0">
                       &pound;{cribSheetPrice.toFixed(2)}
                     </p>
                   </div>
                   <p className="font-display text-sm text-gray-700 mt-2 leading-relaxed">
-                    A printable one-page PDF of the 5 CLEAR Method&trade; steps &mdash; designed to live
+                    A printable one-page PDF of the 5 CLEAR Method steps &mdash; designed to live
                     on the fridge, inside a pencil case, or beside practice papers.
                     <strong className="text-purple-700"> When the screens are off and the pen is in hand,
                     the technique stays close.</strong>
