@@ -121,6 +121,10 @@ function App() {
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/refunds" element={<RefundPolicyPage />} />
 
+              {/* Public checkout — guest checkout allowed (pay before account) */}
+              <Route path="/checkout" element={<Suspense fallback={<PageLoader />}><CheckoutPage /></Suspense>} />
+              <Route path="/payment-success" element={<Suspense fallback={<PageLoader />}><PaymentSuccessPage /></Suspense>} />
+
               {/* Parent-only */}
               <Route path="/select-child" element={<ParentProtectedRoute><ChildPickerPage /></ParentProtectedRoute>} />
 
@@ -145,8 +149,6 @@ function App() {
                 <Route path="/progress" element={<ProgressPage />} />
                 <Route path="/session-complete" element={<SessionCompletePage />} />
                 <Route path="/upgrade" element={<UpgradePage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/payment-success" element={<PaymentSuccessPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
 

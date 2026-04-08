@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { BeeChar } from '../components/mascot/BeeChar';
 import { supabase } from '@atq/shared/lib/supabase';
@@ -6,10 +6,24 @@ import { supabase } from '@atq/shared/lib/supabase';
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const [discountCode, setDiscountCode] = useState('');
+  const [email, setEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+  }, []);
+
   const handleCheckout = async () => {
+    // Guest checkout requires email
+    if (!isLoggedIn && (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -26,7 +40,10 @@ export default function CheckoutPage() {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: JSON.stringify({
+            successUrl: `${window.location.origin}/payment-success`,
+            cancelUrl: `${window.location.origin}/checkout`,
             discountCode: discountCode.trim() || undefined,
+            ...(!token && email.trim() ? { email: email.trim() } : {}),
           }),
         }
       );
@@ -74,6 +91,21 @@ export default function CheckoutPage() {
               <li>✅ Lifetime access — no subscription</li>
             </ul>
           </div>
+
+          {!isLoggedIn && (
+            <div>
+              <label className="text-sm text-slate-600 block mb-1">Email address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="w-full py-2 px-3 rounded-xl border border-slate-300 text-sm bg-white/90 focus:border-amber-500 focus:outline-none"
+              />
+              <p className="text-xs text-slate-400 mt-1">You'll create your account after payment</p>
+            </div>
+          )}
 
           <div>
             <label className="text-sm text-slate-600 block mb-1">Discount code</label>

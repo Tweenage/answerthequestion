@@ -444,10 +444,10 @@ export function LoginPage() {
                 </button>
 
                 <Link
-                  to="/"
+                  to="/signup"
                   className={`block w-full text-center text-sm ${brand.accentColor} ${brand.accentHoverColor} font-display font-semibold`}
                 >
-                  Don't have an account? Learn more
+                  Don't have an account? Sign up
                 </Link>
               </form>
             </>
