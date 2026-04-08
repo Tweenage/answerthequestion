@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /practice
+Disallow: /progress
+Disallow: /settings
+Disallow: /badges
+Disallow: /checkout
+Disallow: /payment-success
+
+Sitemap: https://answerthequestion.co.uk/sitemap.xml

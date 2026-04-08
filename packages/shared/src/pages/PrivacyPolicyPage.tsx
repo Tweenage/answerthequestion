@@ -17,7 +17,7 @@ export function PrivacyPolicyPage() {
       <div className="bg-white/95 backdrop-blur-sm rounded-card p-6 shadow-sm border border-white/30 space-y-6">
         <div>
           <h1 className="font-display text-2xl font-bold text-gray-800">Privacy Policy</h1>
-          <p className="text-sm text-gray-500 font-display mt-1">Last updated: 10 March 2026</p>
+          <p className="text-sm text-gray-500 font-display mt-1">Last updated: 8 April 2026</p>
         </div>
 
         <Section title="1. Who We Are">
@@ -42,20 +42,27 @@ export function PrivacyPolicyPage() {
         </Section>
 
         <Section title="3. Why We Collect It (Legal Basis)">
-          <p>Under the UK GDPR, we rely on:</p>
+          <p>Under the Data Use and Access Act 2025 (DUAA) and UK GDPR, we rely on:</p>
           <ul className="list-disc list-inside space-y-1 mt-2 text-gray-600">
-            <li><strong>Consent:</strong> you actively agree to this policy and our Terms of Service when creating an account</li>
-            <li><strong>Legitimate interest:</strong> to deliver the service, improve the App, and prevent misuse</li>
-            <li><strong>Contract:</strong> to fulfil the service you have purchased or are trialling</li>
+            <li><strong>Contract:</strong> to fulfil the service you have purchased — this is our primary basis for processing your data</li>
+            <li><strong>Legitimate interest:</strong> to improve the App, provide customer support, and send relevant product updates</li>
           </ul>
+          <p className="mt-2">
+            We do not rely on consent as a lawful basis for core service delivery. Where we send
+            marketing communications, you can opt out at any time.
+          </p>
         </Section>
 
         <Section title="4. Children's Data">
           <p>
-            The App is designed for children aged 9–11 preparing for the 11+ exam. A parent or
-            guardian must create the account. We collect only the child's first name and practice
-            session data. We do not collect email addresses, dates of birth, or any other personal
-            data from children. All data is managed under the parent's account and parental consent.
+            The App is designed for children aged 9–11 preparing for the 11+ exam. The account
+            holder is always a parent or guardian — children do not create accounts or provide
+            any personal data directly. We store only a first name and practice session data
+            (question responses, technique scores, timestamps) under the parent's account.
+            We do not collect children's email addresses, dates of birth, schools, or any
+            other identifying information. Because no child data is collected or processed
+            independently of the parent account, the Children's Code (Age Appropriate Design
+            Code) does not apply.
           </p>
         </Section>
 
@@ -72,15 +79,23 @@ export function PrivacyPolicyPage() {
           <ul className="list-disc list-inside space-y-1 mt-2 text-gray-600">
             <li><strong>Supabase:</strong> our data processor, for hosting and authentication</li>
             <li><strong>LemonSqueezy:</strong> for payment processing (they have their own privacy policy)</li>
+            <li><strong>Google Analytics:</strong> for anonymous, aggregated usage statistics only</li>
+            <li><strong>Vercel:</strong> for hosting and anonymous performance analytics</li>
           </ul>
-          <p className="mt-2">No data is transferred outside the EU/UK unless required by these processors under appropriate safeguards.</p>
+          <p className="mt-2">No data is transferred outside the EU/UK unless required by these processors under appropriate safeguards (Standard Contractual Clauses or UK adequacy decisions).</p>
         </Section>
 
-        <Section title="7. Cookies & Tracking">
-          <p>
-            We use only essential cookies required for authentication (Supabase session token).
-            We do not use any analytics, advertising, or tracking cookies. We do not use
-            Google Analytics or any third-party tracking tools.
+        <Section title="7. Cookies & Analytics">
+          <p>We use the following cookies and analytics tools:</p>
+          <ul className="list-disc list-inside space-y-1 mt-2 text-gray-600">
+            <li><strong>Essential cookies:</strong> Supabase session token, required for authentication — these cannot be disabled</li>
+            <li><strong>Analytics:</strong> Google Analytics 4 (GA4) and Vercel Analytics, used for statistical purposes only — to understand how the App is used and to improve it</li>
+          </ul>
+          <p className="mt-2">
+            Under the Data Use and Access Act 2025, analytics cookies used purely for statistical
+            purposes are exempt from the consent requirement. We do not use any advertising,
+            retargeting, or cross-site tracking cookies. You can block analytics cookies in your
+            browser settings at any time without affecting the App's functionality.
           </p>
         </Section>
 
@@ -113,8 +128,16 @@ export function PrivacyPolicyPage() {
 
         <Section title="10. Complaints">
           <p>
-            If you are not satisfied with how we handle your data, you have the right to lodge a
-            complaint with the Information Commissioner's Office (ICO):{' '}
+            If you are not satisfied with how we handle your data, you can submit a complaint
+            using our{' '}
+            <a href="/data-complaint" className="text-purple-600 underline">
+              data protection complaints form
+            </a>.
+            We will acknowledge your complaint within 30 days and work to resolve it.
+          </p>
+          <p className="mt-2">
+            You also have the right to lodge a complaint with the Information Commissioner's
+            Office (ICO):{' '}
             <a href="https://ico.org.uk" className="text-purple-600 underline" target="_blank" rel="noopener noreferrer">
               ico.org.uk
             </a>.

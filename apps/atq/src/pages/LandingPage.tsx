@@ -9,6 +9,7 @@ import { PricingSection } from '../components/landing/PricingSection';
 import { SocialProofSection } from '../components/landing/SocialProofSection';
 import { FaqSection } from '../components/landing/FaqSection';
 import { FinalCtaSection } from '../components/landing/FinalCtaSection';
+import { EmailCaptureSection } from '../components/landing/EmailCaptureSection';
 import { LandingFooter } from '../components/landing/LandingFooter';
 
 export function LandingPage() {
@@ -25,6 +26,7 @@ export function LandingPage() {
       <SocialProofSection />
       <FaqSection />
       <FinalCtaSection />
+      <EmailCaptureSection />
       <LandingFooter />
     </div>
   );

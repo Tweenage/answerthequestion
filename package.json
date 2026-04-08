@@ -15,5 +15,14 @@
     "test:spelling": "npm -w spelling-app run test",
     "test": "npm run test:atq && npm run test:spelling",
     "lint": "npm -w atq-app run lint && npm -w spelling-app run lint"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/lexend": "^5.2.11",
+    "@fontsource/nunito": "^5.2.7"
+  },
+  "devDependencies": {
+    "@prerenderer/renderer-puppeteer": "^1.2.4",
+    "@prerenderer/rollup-plugin": "^0.3.12"
   }
 }
