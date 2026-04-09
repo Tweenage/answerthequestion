@@ -151,7 +151,7 @@ export const CLEAR_STEPS: ClearStep[] = [
     gradient: 'from-blue-500 to-indigo-600',
     textColour: 'text-indigo-700',
     childDescription:
-      'Before every practice session and exam, take a moment to breathe. Breathe in for 4 counts, hold for 4, breathe out for 4, and hold for 4. This tells your brain: "Time to focus!" A calm brain answers questions better than a worried brain.',
+      'Before every practice session and exam, take a moment to breathe. Breathe in for 4 counts, hold for 4, breathe out for 4, and hold for 4. This tells your brain: "Time to focus!" You can also practise visualising the exam room — the desk, the chair, the sounds around you — so that when exam day comes, it feels familiar. A calm brain answers questions better than a worried brain.',
     hootSecret:
       "I always breathe before I start. Even wise owls get nervous — breathing is how I tell my brain to be brilliant! You can feel the difference straight away.",
     inYourExam: [
@@ -161,7 +161,7 @@ export const CLEAR_STEPS: ClearStep[] = [
       'Tell yourself: "I am calm. I am ready. I know my CLEAR Method."',
     ],
     inTheApp:
-      'Every session starts with a box breathing exercise. Do not skip it — it trains your brain to start every exam feeling calm and ready!',
+      'The app includes a box breathing exercise and a visualisation you can use before any session — especially when you feel nervous. It trains your brain to start every exam feeling calm and ready!',
     linkToBreathing: true,
   },
   {
@@ -237,6 +237,7 @@ export const CLEAR_STEPS: ClearStep[] = [
     inYourExam: [
       'Re-read the question one final time before answering',
       'Ask yourself: did I answer what was asked, not what I expected?',
+      "If you're stuck, move on — mark it and return at the end",
       "It's okay to change your answer if you have a clear reason",
       'If you finish early, go back and check all your answers',
     ],

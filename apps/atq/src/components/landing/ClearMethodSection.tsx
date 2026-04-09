@@ -4,8 +4,8 @@ const STEPS = [
   { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath before you start. A calm brain thinks more clearly.' },
   { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question. Then read it again. What is it actually asking?' },
   { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out answers that are obviously wrong. Fewer choices = better thinking.' },
-  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'Now pick your answer — with confidence, not panic.' },
-  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Read your answer back against the question. Does it match what was asked?' },
+  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'Having eliminated the wrong answers, select the one that best fits what the question asked.' },
+  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Check your answer against the question. If you\u2019re stuck, move on and come back at the end.' },
 ];
 
 export function ClearMethodSection() {

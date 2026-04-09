@@ -49,7 +49,7 @@ export function SocialProofSection() {
               {
                 icon: Shield,
                 title: 'Calm & focused exam habits',
-                body: 'Built-in breathing exercises and the CLEAR Method™ help your child stay calm under pressure and think before they answer.',
+                body: 'Built-in breathing exercises and the CLEAR Method help your child stay calm under pressure and think before they answer.',
               },
             ].map((item, i) => (
               <motion.div

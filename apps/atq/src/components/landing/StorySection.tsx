@@ -9,7 +9,7 @@ export function StorySection() {
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.6 }}
       >
-        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-white/30 max-w-xl mx-auto">
+        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-white/30 max-w-2xl mx-auto">
 
           <p className="text-gray-600 font-display text-sm leading-relaxed mb-4">
             Then one afternoon, working through an English comprehension, she hit this question:
