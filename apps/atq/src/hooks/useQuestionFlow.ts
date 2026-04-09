@@ -88,15 +88,20 @@ export function useQuestionFlow(question: Question | null, weekConfig: WeekConfi
           : [];
         const shouldExtractNumbers = numberWordIdxs.length > 0 && weekConfig.scaffoldingLevel !== 'light';
 
-        // If question has no defined key words, show answers button immediately without forcing highlights
+        // If question has no defined key words, skip highlighting entirely
         const noKeyWords = !question?.keyWordIndices?.length;
+        const nextState = shouldExtractNumbers
+          ? 'NUMBER_EXTRACTION'
+          : noKeyWords
+            ? 'SHOWING_ANSWERS'
+            : 'HIGHLIGHTING';
         return {
           ...prev,
-          state: shouldExtractNumbers ? 'NUMBER_EXTRACTION' : 'HIGHLIGHTING',
+          state: nextState,
           readCount: 2,
           readingTimeMs: totalReadingTime,
           numberWordIndices: numberWordIdxs,
-          canAdvance: !shouldExtractNumbers && noKeyWords,
+          canAdvance: false,
         };
       }
       return prev;
@@ -123,9 +128,10 @@ export function useQuestionFlow(question: Question | null, weekConfig: WeekConfi
   const advanceFromNumberExtraction = useCallback(() => {
     setData(prev => {
       if (prev.state !== 'NUMBER_EXTRACTION') return prev;
-      return { ...prev, state: 'HIGHLIGHTING', canAdvance: false };
+      const noKeyWords = !question?.keyWordIndices?.length;
+      return { ...prev, state: noKeyWords ? 'SHOWING_ANSWERS' : 'HIGHLIGHTING', canAdvance: false };
     });
-  }, []);
+  }, [question]);
 
   const toggleHighlight = useCallback((wordIndex: number) => {
     setData(prev => {
