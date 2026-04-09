@@ -26,23 +26,13 @@ export function PricingSection() {
             &pound;29.99. That&rsquo;s it.
           </h2>
 
-          {/* Price card */}
-          <div className="max-w-md mx-auto bg-gradient-to-br from-purple-50 via-fuchsia-50 to-pink-50 rounded-2xl p-8 border border-purple-200/50 text-center mb-8">
-            <p className="font-display font-extrabold text-6xl text-fuchsia-600">
-              &pound;29.99
-            </p>
-            <p className="font-display text-base text-gray-500 mt-2 font-medium">
-              One-time payment
-            </p>
-          </div>
-
           {/* Anchor */}
           <p className="font-display text-base text-gray-500 text-center max-w-md mx-auto mb-8 leading-relaxed">
             One payment. Full 12-week programme. No subscription.
             <br />
             <span className="text-gray-700 font-medium">Far less than a single tutoring session.</span>
             <br />
-            And it teaches the skill that makes every practice paper count.
+            And it makes all of those hours of study count.
           </p>
 
           {/* Features */}
