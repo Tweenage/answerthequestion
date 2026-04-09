@@ -218,13 +218,10 @@ export function QuestionFeedback({ isCorrect, techniqueScore, question, selected
           transition={{ delay: 0.3 }}
           className="rounded-card p-4 bg-white border-2 border-celebrate-orange/40"
         >
-          <div className="flex items-start gap-2 mb-2">
-            <span className="text-lg">🦉</span>
-            <div>
-              <p className="font-display font-bold text-sm text-celebrate-orange">
-                {getTrapLabel(wrongInsight)}
-              </p>
-            </div>
+          <div className="mb-2">
+            <p className="font-display font-bold text-sm text-celebrate-orange">
+              💡 {getTrapLabel(wrongInsight)}
+            </p>
           </div>
           <p className="text-sm text-gray-700">{wrongInsight}</p>
           <p className="text-xs text-gray-500 mt-2 font-display italic">

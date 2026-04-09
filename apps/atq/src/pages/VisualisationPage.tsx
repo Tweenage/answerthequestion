@@ -240,8 +240,8 @@ export function VisualisationPage() {
     return (
       <div className="space-y-6 py-2">
         <div className="text-center">
-          <h2 className="font-display text-2xl font-bold text-purple-700">Calm &amp; Focus</h2>
-          <p className="text-purple-400 mt-1 font-display">
+          <h2 className="font-display text-2xl font-bold text-white drop-shadow-md">Calm &amp; Focus</h2>
+          <p className="text-white/70 mt-1 font-display">
             Choose an exercise to settle your mind before you begin
           </p>
         </div>
@@ -261,7 +261,7 @@ export function VisualisationPage() {
                 <p className="text-sm text-gray-600">
                   A one-minute breathing technique to calm your body and sharpen your focus.
                 </p>
-                <p className="text-xs text-purple-400 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   ~1 minute &middot; 4 cycles &middot; in, hold, out, hold
                 </p>
               </div>
@@ -282,9 +282,11 @@ export function VisualisationPage() {
                 {script.emoji}
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-lg text-gray-800">{script.title}</p>
-                <p className="text-sm text-gray-600">{script.description}</p>
-                <p className="text-xs text-purple-400 mt-1">
+                <p className="font-display font-bold text-lg text-gray-800">Exam Day Visualisation</p>
+                <p className="text-sm text-gray-600">
+                  A guided mental rehearsal of your exam day — arriving calm, sitting down, and answering with confidence.
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
                   {script.durationMinutes} minutes &middot; with audio
                 </p>
               </div>
@@ -303,7 +305,7 @@ export function VisualisationPage() {
         <div className="flex items-center justify-between">
           <button
             onClick={handleBack}
-            className="text-sm text-purple-500 font-display font-semibold flex items-center gap-1"
+            className="text-sm text-white/80 font-display font-semibold flex items-center gap-1"
           >
             <ChevronLeft className="w-4 h-4" />
             Back
@@ -315,12 +317,12 @@ export function VisualisationPage() {
             🌅
           </div>
 
-          <h2 className="font-display text-xl font-bold text-purple-700 mb-1">
-            {script.title}
+          <h2 className="font-display text-xl font-bold text-gray-800 mb-1">
+            Exam Day Visualisation
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-4">
-            {script.durationMinutes} min &middot; guided visualisation &middot; with audio
+          <p className="text-gray-500 font-display text-sm mb-4">
+            {script.durationMinutes} min &middot; guided mental rehearsal &middot; with audio
           </p>
 
           <div className="bg-purple-50 rounded-2xl p-4 w-full text-left shadow-sm mb-4 border border-purple-100">
@@ -332,7 +334,7 @@ export function VisualisationPage() {
           </div>
 
           <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
-            <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
+            <p className="font-display font-semibold text-gray-800 text-sm mb-2">Before you start:</p>
             <ul className="space-y-1.5 text-sm text-gray-700 font-display">
               <li className="flex items-start gap-2"><span>🪑</span> Sit somewhere comfortable and quiet</li>
               <li className="flex items-start gap-2"><span>🎧</span> Headphones are ideal but not essential</li>
@@ -360,7 +362,7 @@ export function VisualisationPage() {
         <div className="flex items-center justify-between">
           <button
             onClick={handleBack}
-            className="text-sm text-purple-500 font-display font-semibold flex items-center gap-1"
+            className="text-sm text-white/80 font-display font-semibold flex items-center gap-1"
           >
             <ChevronLeft className="w-4 h-4" />
             Back
@@ -372,11 +374,11 @@ export function VisualisationPage() {
             <Wind className="w-8 h-8 text-violet-500" />
           </div>
 
-          <h2 className="font-display text-xl font-bold text-purple-700 mb-1">
+          <h2 className="font-display text-xl font-bold text-gray-800 mb-1">
             Box Breathing
           </h2>
 
-          <p className="text-purple-400 font-display text-sm mb-4">
+          <p className="text-gray-500 font-display text-sm mb-4">
             4 cycles &middot; about 1 minute &middot; in &ndash; hold &ndash; out &ndash; hold
           </p>
 
@@ -389,7 +391,7 @@ export function VisualisationPage() {
           </div>
 
           <div className="bg-white rounded-2xl p-4 w-full text-left shadow-sm mb-5">
-            <p className="font-display font-semibold text-purple-700 text-sm mb-2">Before you start:</p>
+            <p className="font-display font-semibold text-gray-800 text-sm mb-2">Before you start:</p>
             <ul className="space-y-1.5 text-sm text-gray-700 font-display">
               <li className="flex items-start gap-2"><span>🪑</span> Sit comfortably, both feet on the floor</li>
               <li className="flex items-start gap-2"><span>🙌</span> Rest your hands in your lap</li>
@@ -723,7 +725,7 @@ const BREATHING_CYCLES = 4;
 
 function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConfig; onComplete: () => void }) {
   const [phase, setPhase] = useState<BreathPhase>('inhale');
-  const [countdown, setCountdown] = useState(config.inhaleSeconds);
+  const [, setCountdown] = useState(config.inhaleSeconds);
   const [cycles, setCycles] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const sound = useBreathingSound();
@@ -838,15 +840,8 @@ function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConf
               duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
               ease: 'easeInOut',
             }}
-            className="w-24 h-24 rounded-full bg-blue-400/40 flex items-center justify-center"
-          >
-            <span className="font-display font-black text-3xl text-white/25">
-              {(phase === 'inhale' ? config.inhaleSeconds :
-                phase === 'hold-in' ? config.holdInSeconds :
-                phase === 'exhale' ? config.exhaleSeconds :
-                config.holdOutSeconds) - countdown + 1}
-            </span>
-          </motion.div>
+            className="w-24 h-24 rounded-full bg-blue-400/40"
+          />
         </motion.div>
       </motion.div>
 
