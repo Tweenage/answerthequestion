@@ -913,7 +913,7 @@ export const verbalReasoningQuestions: Question[] = [
       'At', 'the', 'science', 'fair,', 'first', 'place', 'went', 'to', 'Mia', 'for', 'her',
       'volcano', 'project.', 'Aiden', 'came', 'second', 'with', 'his', 'solar', 'system',
       'model.', 'In', 'third', 'place', 'was', 'Zara', 'with', 'her', 'plant', 'growth',
-      'experiment.', "Raj's", 'robot', "didn\'t", 'win', 'a', 'prize', 'but', 'everyone', 'loved',
+      'experiment.', "Raj's", 'robot', "didn't", 'win', 'a', 'prize', 'but', 'everyone', 'loved',
       'it.', 'The', 'judges', 'said', "Mia's", 'project', 'showed', 'the', 'most', 'creativity.',
       'Who', 'won', 'second', 'place?',
     ],
