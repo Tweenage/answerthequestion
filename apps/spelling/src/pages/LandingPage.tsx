@@ -388,7 +388,7 @@ export function LandingPage() {
             {/* CTA */}
             <div className="text-center">
               <Link
-                to="/signup"
+                to="/checkout"
                 className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
               >
                 Get Spelling Bees &mdash; &pound;19.99

@@ -69,7 +69,7 @@ export default function CheckoutPage() {
       <BeeChar
         mood="encouraging"
         size="lg"
-        message="Unlock all 500+ words for just £19.99!"
+        message="Unlock all 624 words for just £19.99!"
         showSpeechBubble
         animate
       />
@@ -84,7 +84,7 @@ export default function CheckoutPage() {
           <div className="bg-white/80 rounded-xl p-4 space-y-2 border border-slate-200">
             <p className="text-sm font-semibold text-slate-700">What you get:</p>
             <ul className="text-sm text-slate-600 space-y-1">
-              <li>✅ 500+ words (statutory + 11+ vocabulary)</li>
+              <li>✅ 624 words (statutory + 11+ vocabulary)</li>
               <li>✅ Full Spelling Bee ritual</li>
               <li>✅ Drill & test modes</li>
               <li>✅ Bingo grid progress tracking</li>

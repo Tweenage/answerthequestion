@@ -62,7 +62,7 @@ export default function PaymentSuccessPage() {
           <div className="text-center">
             <h2 className="text-2xl font-display font-bold text-slate-800">Payment Successful!</h2>
             <p className="text-sm text-slate-500 mt-2">
-              You now have access to all 500+ words.
+              You now have access to all 624 words.
             </p>
           </div>
 
