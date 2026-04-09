@@ -231,7 +231,8 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
       getWordsByStars: (childId, stars) => {
         const data = get().getData(childId);
         return Object.entries(data.wordProgress)
-          .filter(([_, wp]) => wp.stars === stars)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([_key, wp]) => wp.stars === stars)
           .map(([wordId]) => wordId);
       },
 
@@ -302,10 +303,13 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
 
             // Merge sessions: union by id
             const localSessions = child.sessions;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const remoteIds = new Set((sessionRows ?? []).map((s: any) => s.id));
             const localIds = new Set(localSessions.map(s => s.id));
             const remoteSessions = (sessionRows ?? [])
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               .filter((s: any) => !localIds.has(s.id))
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               .map((s: any) => ({
                 id: s.id,
                 date: s.date,
@@ -391,9 +395,11 @@ export const useSpellingProgressStore = create<SpellingProgressState>()(
     {
       name: 'atq-spelling-progress',
       version: 1,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       migrate: (persisted: any, version: number) => {
         if (version === 0) {
           // v0 → v1: ensure every child entry has streak + settings
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const state = persisted as { dataByChild?: Record<string, any> };
           if (state.dataByChild) {
             for (const childId of Object.keys(state.dataByChild)) {

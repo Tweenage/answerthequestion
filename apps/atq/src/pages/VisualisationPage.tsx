@@ -742,6 +742,7 @@ function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConf
     let stepIdx = 0;
     let secondsLeft = order[0].dur;
     let cycleCount = 0;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional initialisation before interval starts
     setPhase(order[0].phase);
     setCountdown(order[0].dur);
     setIsComplete(false);
@@ -784,7 +785,7 @@ function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConf
       clearInterval(interval);
       sound.stopAll();
     };
-  }, [config, sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [config, sound]);
 
   const circleScale = (phase === 'inhale' || phase === 'hold-in') ? 2.0 : 0.5;
   const phaseDuration =

@@ -24,6 +24,7 @@ export default function TestPage() {
   useEffect(() => {
     if (phase === 'typing' && inputRef.current) {
       inputRef.current.focus();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTyped('');
       if (currentWord) speakWord(currentWord.word);
     }

@@ -7,7 +7,7 @@ export default function PaymentSuccessPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [claiming, setClaiming] = useState(true);
-  const [_claimed, setClaimed] = useState(false);
+  const [, setClaimed] = useState(false);
 
   useEffect(() => {
     const claimPayment = async () => {

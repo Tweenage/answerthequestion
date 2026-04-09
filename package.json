@@ -23,6 +23,9 @@
   },
   "devDependencies": {
     "@prerenderer/renderer-puppeteer": "^1.2.4",
-    "@prerenderer/rollup-plugin": "^0.3.12"
+    "@prerenderer/rollup-plugin": "^0.3.12",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "typescript-eslint": "^8.58.1"
   }
 }

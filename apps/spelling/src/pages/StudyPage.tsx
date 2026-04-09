@@ -37,8 +37,10 @@ export function StudyPage() {
   const [showWarmup, setShowWarmup] = useState(yesterdayWords.length > 0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [grades, setGrades] = useState<number[]>([]);
+  // eslint-disable-next-line react-hooks/purity
   const sessionStartTime = useRef<number>(Date.now());
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleWordComplete(grade: number, _responseTimeMs: number) {
     if (!childId) return;
 

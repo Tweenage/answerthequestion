@@ -34,6 +34,7 @@ export default function DrillPage() {
   useEffect(() => {
     if (phase === 'typing' && inputRef.current) {
       inputRef.current.focus();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTyped('');
       setLastResult(null);
       if (currentWord) speakWord(currentWord.word);

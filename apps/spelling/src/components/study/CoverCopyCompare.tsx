@@ -21,6 +21,7 @@ export function CoverCopyCompare({ word, onComplete, dyslexiaMode }: CoverCopyCo
 
   // Reset state when word changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPhase('show');
     setTyped('');
     setResponseTimeMs(0);

@@ -67,7 +67,7 @@ export function PaymentSuccessPage() {
     }
   }, [isGuest, sessionId]);
 
-  const [_downloadError, setDownloadError] = useState(false);
+  const [, setDownloadError] = useState(false);
 
   const handleDownloadCribSheet = async () => {
     setDownloading(true);

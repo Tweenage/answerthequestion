@@ -105,7 +105,7 @@ export function PracticePage() {
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSessionComplete(true);
-  }, [results, questions, currentUser, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue, updateCategoryMastery, mistakeQuestionIds]);
+  }, [results, questions, currentUser, saveSession, updateStreak, addXp, addToMistakeQueue, updateMistakeQueue, updateCategoryMastery, mistakeQuestionIds, totalWeeks]);
 
   const handleQuestionComplete = useCallback((result: QuestionResult) => {
     setResults(prev => {

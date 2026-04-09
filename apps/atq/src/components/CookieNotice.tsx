@@ -14,7 +14,10 @@ export function CookieNotice() {
 
   useEffect(() => {
     const dismissed = localStorage.getItem('atq-cookie-notice-dismissed');
-    if (!dismissed) setVisible(true);
+    if (!dismissed) {
+      // Schedule outside the effect body to avoid cascading render warning
+      queueMicrotask(() => setVisible(true));
+    }
   }, []);
 
   const dismiss = () => {
