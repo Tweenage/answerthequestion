@@ -59,32 +59,32 @@ export function StorySection() {
           </div>
 
           {/* Revelation */}
-          <div className="bg-purple-50 border border-purple-100 rounded-xl px-5 py-4 mb-6">
-            <p className="text-purple-900 font-display font-semibold text-base leading-relaxed">
+          <div className="bg-purple-50 border border-purple-100 rounded-xl px-5 py-3 mb-4">
+            <p className="text-purple-900 font-display font-semibold text-sm leading-relaxed">
               She knew it all along. She just hadn&rsquo;t read the question.
             </p>
           </div>
 
           {/* Callouts */}
-          <div className="space-y-2.5 mb-6">
+          <div className="space-y-1 mb-4">
             {[
               { emoji: '🧠', text: 'Not a knowledge gap. A focus challenge.' },
               { emoji: '🔍', text: 'I searched for a tool to fix it. Found nothing.' },
               { emoji: '🛠️', text: 'So I did the research and built the system myself.' },
               { emoji: '📈', text: 'Marks went up. Frustration came down.' },
             ].map(({ emoji, text }) => (
-              <div key={text} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5">
-                <span className="text-lg shrink-0">{emoji}</span>
-                <span className="font-display text-sm text-gray-700 font-medium">{text}</span>
+              <div key={text} className="flex items-center gap-2.5 px-1 py-0.5">
+                <span className="text-sm shrink-0">{emoji}</span>
+                <span className="font-display text-sm text-gray-700">{text}</span>
               </div>
             ))}
           </div>
 
-          <p className="font-display font-semibold text-base text-gray-700 mb-4">
+          <p className="font-display font-semibold text-sm text-gray-700 mb-1">
             Built to help my child. Now here to help yours.
           </p>
 
-          <p className="font-display font-bold text-base text-purple-700">
+          <p className="font-display font-bold text-sm text-purple-700">
             &mdash; Rebecca, Tweenage Founder
           </p>
         </div>
