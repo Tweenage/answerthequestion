@@ -52,7 +52,7 @@ const slides: OnboardingSlide[] = [
   {
     hootMood: 'teaching',
     title: 'L — Look',
-    body: "Read the whole question — all the way to the end — before you look at any answers. Then tap to highlight the key words: what is it actually asking? Always highlight danger words: NOT, except, least, never, only. In your real exam, underline with your pencil!",
+    body: "Read the whole question — all the way to the end — before you look at any answers. Then tap to highlight the key words: what is it actually asking? Always highlight danger words: not, except, least, never, only. In your real exam, underline them with your pencil!",
     highlight: 'danger words',
   },
   {
@@ -66,15 +66,15 @@ const slides: OnboardingSlide[] = [
     title: 'A — Answer & R — Review',
     body: "Once you've eliminated, lock in your answer with confidence. Then review — top students check their work and it's OK to change your answer if you spot a mistake!",
     tips: [
-      { emoji: '⏭️', text: 'Stuck? Dot it and move on' },
+      { emoji: '⏭️', text: 'Stuck? Dot it and move on — come back to it later' },
       { emoji: '⏱️', text: 'Go through the paper and answer all of the easy questions before returning to ones you find hard' },
-      { emoji: '🔄', text: 'Change your answer ONLY if you have good reason to' },
+      { emoji: '🔄', text: 'Change your answer only if you have a good reason to do so' },
     ],
   },
   {
     hootMood: 'thinking',
     title: '⏱️ Your Time Challenge',
-    body: "In Week 1 you have up to 90 seconds per question — that's around 15 minutes for 10 questions. By Week 12 you'll answer each question in under a minute — just like a real exam! The timer gets shorter each week as you build confidence. That's not scary — that's how you get brilliant!",
+    body: "In Week 1 you have up to 90 seconds per question — that's around 15 minutes for 10 questions. By Week 12 you'll answer each question in under a minute — just like a real exam! The timer just gets shorter each week as you build confidence towards the exam.",
     tips: [
       { emoji: '🌱', text: 'Week 1: ~15 minutes total — take all the time you need' },
       { emoji: '🔥', text: 'Week 6: 15 minutes — technique is becoming a habit' },
