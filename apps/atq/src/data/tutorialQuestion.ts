@@ -7,6 +7,8 @@ import type { Question } from '../types/question';
  * - Multiple named characters all mentioned in the passage (plausible traps)
  * - A busy week creates distraction — the unusual week obscures the usual routine
  * - Key danger word "usually" appears in both the passage AND the question
+ * - The question asks about a day NOT described in the passage ("next Tuesday"),
+ *   forcing the child to DEDUCE from the usual routine rather than read the answer off
  * - Only one wild card answer (older sister — not mentioned at all)
  * - Requires genuine inference, not surface-level reading
  */
@@ -15,7 +17,7 @@ export const TUTORIAL_QUESTION: Question = {
   subject: 'english',
   difficulty: 2,
   questionText:
-    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. Who does Amir usually walk to school with?",
+    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. On Tuesday next week, who does Amir usually walk to school with?",
   questionTokens: [
     'Amir', ' ', 'usually', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
     'with', ' ', 'his', ' ', 'best', ' ', 'friend', ' ', 'Jake.', ' ',
@@ -29,21 +31,22 @@ export const TUTORIAL_QUESTION: Question = {
     'Priya', ' ', 'and', ' ', 'Amir', ' ', 'walked', ' ', 'together.', ' ',
     'On', ' ', 'Friday,', ' ', 'Jake', ' ', 'came', ' ', 'back', ' ',
     'and', ' ', 'walked', ' ', 'with', ' ', 'Amir.', ' ',
-    'Who', ' ', 'does', ' ', 'Amir', ' ', 'usually', ' ', 'walk', ' ',
+    'On', ' ', 'Tuesday', ' ', 'next', ' ', 'week,', ' ',
+    'who', ' ', 'does', ' ', 'Amir', ' ', 'usually', ' ', 'walk', ' ',
     'to', ' ', 'school', ' ', 'with?',
   ],
-  // "usually" at index 2 (passage) and index 116 (question)
-  keyWordIndices: [2, 116],
+  // "usually" at index 2 (passage) and index 124 (question)
+  keyWordIndices: [2, 124],
   options: [
     {
       text: 'Priya',
       isEliminatable: true,
-      eliminationReason: 'Priya walked with Amir this week — but the passage says this week was different. Look back at the very first sentence.',
+      eliminationReason: 'Priya only walked with Amir this week because Jake was away. The passage says this week was different — next week is back to normal.',
     },
     {
       text: "Amir's mum",
       isEliminatable: true,
-      eliminationReason: "Amir's mum drove him on Tuesday because of the rain — that was an exception, not his usual routine.",
+      eliminationReason: "Amir's mum drove him ONCE this Tuesday because it was raining — that was a one-off, not his usual routine.",
     },
     {
       text: 'Jake',
@@ -57,7 +60,7 @@ export const TUTORIAL_QUESTION: Question = {
   ],
   correctOptionIndex: 2,
   explanation:
-    'The passage says Amir "usually walks to school with his best friend Jake." The danger word "usually" appears in both the passage and the question — that\'s the connection. Priya only walked with him because this week was different. His mum drove him once. Jake is the usual answer.',
+    'This question asks about NEXT Tuesday — a day not described in the passage. You have to deduce the answer. The danger word "usually" appears in both the passage and the question — that\'s your connection. The passage says "this week was different", so next week is back to normal, which means Amir\'s usual routine. The first sentence tells you the usual routine: walking with his best friend Jake.',
   category: 'comprehension-inference',
   trickType: 'exception-as-rule',
 };

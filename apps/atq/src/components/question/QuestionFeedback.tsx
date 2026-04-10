@@ -85,7 +85,7 @@ const TRICK_TYPE_LABELS: Record<string, { label: string; tip: string }> = {
   },
   'two-step': {
     label: '2️⃣ Two-Step Trick!',
-    tip: "This question needed two steps, not one. Don't stop after the first calculation!",
+    tip: "Watch out for the \u2018halfway answer\u2019 trap \u2014 two-step questions often list your first calculation as an answer choice. Next time, re-read the final phrase of the question (\u2018how many more\u2019, \u2018how many are left\u2019, \u2018what is the difference\u2019) before you pick.",
   },
   'unit-shift': {
     label: '📏 Unit Trap!',
