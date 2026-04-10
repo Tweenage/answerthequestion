@@ -237,7 +237,7 @@ export function SignupPage() {
                   className={`mt-1 w-5 h-5 rounded border-2 ${brand.checkboxColor} shrink-0`}
                 />
                 <span className="text-sm text-gray-600 font-display leading-snug">
-                  I'd like to hear about new products and resources from {brand.name}
+                  Tick this box if you'd like occasional tips, study ideas, and news from {brand.name}. We'll only email you if you opt in, and you can unsubscribe anytime.
                 </span>
               </label>
             </motion.div>
