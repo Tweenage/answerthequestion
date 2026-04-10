@@ -6,9 +6,12 @@ import type { Question } from '../types/question';
  * Design principles:
  * - Multiple named characters all mentioned in the passage (plausible traps)
  * - A busy week creates distraction — the unusual week obscures the usual routine
- * - Key danger word "usually" appears in both the passage AND the question
- * - The question asks about a day NOT described in the passage ("next Tuesday"),
- *   forcing the child to DEDUCE from the usual routine rather than read the answer off
+ * - Danger words "usually" (passage) and "normal" (question) MEAN the same thing
+ *   but LOOK different — teaches children that danger-word matching can be
+ *   conceptual, not just literal
+ * - The question asks about a week NOT described in the passage ("if next week
+ *   is a normal week"), forcing the child to DEDUCE from the usual routine rather
+ *   than read the answer off
  * - Only one wild card answer (older sister — not mentioned at all)
  * - Requires genuine inference, not surface-level reading
  */
@@ -17,7 +20,7 @@ export const TUTORIAL_QUESTION: Question = {
   subject: 'english',
   difficulty: 2,
   questionText:
-    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. On Tuesday next week, who will Amir usually walk to school with?",
+    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. If next week is a normal week, who will Amir walk to school with?",
   questionTokens: [
     'Amir', ' ', 'usually', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
     'with', ' ', 'his', ' ', 'best', ' ', 'friend', ' ', 'Jake.', ' ',
@@ -31,22 +34,23 @@ export const TUTORIAL_QUESTION: Question = {
     'Priya', ' ', 'and', ' ', 'Amir', ' ', 'walked', ' ', 'together.', ' ',
     'On', ' ', 'Friday,', ' ', 'Jake', ' ', 'came', ' ', 'back', ' ',
     'and', ' ', 'walked', ' ', 'with', ' ', 'Amir.', ' ',
-    'On', ' ', 'Tuesday', ' ', 'next', ' ', 'week,', ' ',
-    'who', ' ', 'will', ' ', 'Amir', ' ', 'usually', ' ', 'walk', ' ',
+    'If', ' ', 'next', ' ', 'week', ' ', 'is', ' ', 'a', ' ', 'normal', ' ', 'week,', ' ',
+    'who', ' ', 'will', ' ', 'Amir', ' ', 'walk', ' ',
     'to', ' ', 'school', ' ', 'with?',
   ],
-  // "usually" at index 2 (passage) and index 124 (question)
-  keyWordIndices: [2, 124],
+  // "usually" at passage index 2 and "normal" at question index 120.
+  // Conceptually matched danger words — different word, same meaning.
+  keyWordIndices: [2, 120],
   options: [
     {
       text: 'Priya',
       isEliminatable: true,
-      eliminationReason: 'Priya only walked with Amir this week because Jake was away. The passage says this week was different — next week is back to normal.',
+      eliminationReason: 'Priya only walked with Amir this week because Jake was away. The passage says this week was different — a normal week means things are back to his usual routine.',
     },
     {
       text: "Amir's mum",
       isEliminatable: true,
-      eliminationReason: "Amir's mum drove him ONCE this Tuesday because it was raining — that was a one-off, not his usual routine.",
+      eliminationReason: "Amir's mum drove him ONCE this Tuesday because it was raining — that was a one-off, not his normal routine.",
     },
     {
       text: 'Jake',
@@ -60,7 +64,7 @@ export const TUTORIAL_QUESTION: Question = {
   ],
   correctOptionIndex: 2,
   explanation:
-    'This question asks about NEXT Tuesday — a day not described in the passage. You have to deduce the answer. The danger word "usually" appears in both the passage and the question — that\'s your connection. The passage says "this week was different", so next week is back to normal, which means Amir\'s usual routine. The first sentence tells you the usual routine: walking with his best friend Jake.',
+    'This question asks about a NORMAL week — a week not described in the passage. You have to deduce the answer. The passage says Amir "usually walks to school with his best friend Jake" — "usually" and "normal" mean the same thing. "This week was different", so Priya and his mum were exceptions. In a normal week, Amir is back to his usual routine: walking with Jake.',
   category: 'comprehension-inference',
   trickType: 'exception-as-rule',
 };
@@ -95,7 +99,7 @@ export const TUTORIAL_STEPS = [
     id: 'key-words',
     hootMood: 'teaching' as const,
     title: 'L — Key Words',
-    message: '"Usually" — danger word. It appears in the passage AND the question. That\'s what connects them. In your exam, underline it. In the app, tap to highlight.',
+    message: 'Spot the danger words: "usually" in the passage and "normal" in the question. Different words — same meaning. That\'s your connection. In your exam, underline them. In the app, tap to highlight.',
     showQuestion: true,
     showAnswers: false,
     highlightKeyWords: true,
