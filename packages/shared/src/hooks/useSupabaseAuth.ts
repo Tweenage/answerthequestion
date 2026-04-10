@@ -4,6 +4,36 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../stores/useAuthStore';
 
 /**
+ * Verifies that the cached currentChildId still exists in Supabase for this parent.
+ * If the child has been deleted (e.g. purged from the DB), clears the stale
+ * persisted Zustand state so route guards redirect back to /select-child.
+ *
+ * Safe to call on every auth change — it's a no-op if no child is cached.
+ */
+async function reconcileCurrentChild(parentId: string) {
+  const { currentChildId } = useAuthStore.getState();
+  if (!currentChildId) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('child_profiles')
+      .select('id')
+      .eq('id', currentChildId)
+      .eq('parent_id', parentId)
+      .maybeSingle();
+
+    // PGRST116 = no rows; data === null also means the child is gone.
+    if (error && error.code !== 'PGRST116') return; // transient error, leave state alone
+    if (!data) {
+      // Stale cache — the child no longer exists in the DB. Clear it.
+      useAuthStore.setState({ children: [], currentChildId: null });
+    }
+  } catch {
+    // Network/offline — don't clobber cached state on transient failures.
+  }
+}
+
+/**
  * Hook that listens to Supabase auth state changes and syncs with the auth store.
  * Should be mounted once at the top level (e.g. in App).
  */
@@ -23,6 +53,10 @@ export function useSupabaseAuth() {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setParentSession(session);
+      // Reconcile cached child against DB truth on every app load.
+      if (session) {
+        reconcileCurrentChild(session.user.id);
+      }
     }).catch((err) => {
       console.warn('Failed to get initial session:', err);
       setParentSession(null);
@@ -47,6 +81,8 @@ export function useSupabaseAuth() {
           // if the corresponding payment table has no unclaimed payments.
           supabase.functions.invoke('claim-payment').catch(() => {});
           supabase.functions.invoke('claim-spelling-payment').catch(() => {});
+          // Reconcile cached child against DB truth on fresh sign-in.
+          reconcileCurrentChild(session.user.id);
         }
       }
     );
