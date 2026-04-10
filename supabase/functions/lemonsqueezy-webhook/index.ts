@@ -181,28 +181,26 @@ async function sendPaymentConfirmationEmail(customerEmail: string): Promise<void
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function sendCribSheetEmail(customerEmail: string, supabaseAdmin: any): Promise<void> {
+// The crib sheet is bundled as a public static asset with the ATQ site at
+// https://answerthequestion.co.uk/CLEAR-Method-Crib-Sheet.pdf. Fetch it from
+// there rather than Supabase Storage — that way there is ONE source of truth
+// (the checked-in file in apps/atq/public/) and no signed-URL / bucket-permission
+// failure modes.
+const CRIB_SHEET_PDF_URL = 'https://answerthequestion.co.uk/CLEAR-Method-Crib-Sheet.pdf';
+
+async function sendCribSheetEmail(customerEmail: string): Promise<void> {
   let pdfAttachment: { filename: string; content: Uint8Array; contentType: string } | undefined;
   try {
-    const { data: signedData, error: signedError } = await supabaseAdmin.storage
-      .from('assets')
-      .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 60);
-
-    if (signedError || !signedData?.signedUrl) {
-      console.error('Failed to create signed URL for crib sheet:', signedError);
+    const pdfResponse = await fetch(CRIB_SHEET_PDF_URL);
+    if (pdfResponse.ok) {
+      const pdfBuffer = await pdfResponse.arrayBuffer();
+      pdfAttachment = {
+        filename: 'CLEAR-Method-Crib-Sheet.pdf',
+        content: new Uint8Array(pdfBuffer),
+        contentType: 'application/pdf',
+      };
     } else {
-      const pdfResponse = await fetch(signedData.signedUrl);
-      if (pdfResponse.ok) {
-        const pdfBuffer = await pdfResponse.arrayBuffer();
-        pdfAttachment = {
-          filename: 'CLEAR-Method-Crib-Sheet.pdf',
-          content: new Uint8Array(pdfBuffer),
-          contentType: 'application/pdf',
-        };
-      } else {
-        console.error(`Failed to fetch crib sheet PDF (${pdfResponse.status})`);
-      }
+      console.error(`Failed to fetch crib sheet PDF (${pdfResponse.status})`);
     }
   } catch (err) {
     console.error('Error fetching crib sheet PDF:', err);
@@ -345,7 +343,7 @@ serve(async (req) => {
           await sendPaymentConfirmationEmail(customerEmail);
           console.log(`Payment confirmation email sent to ${customerEmail}`);
           if (includeCribSheet) {
-            await sendCribSheetEmail(customerEmail, supabase);
+            await sendCribSheetEmail(customerEmail);
             console.log(`Crib sheet email sent to ${customerEmail}`);
           }
         } catch (emailErr) {

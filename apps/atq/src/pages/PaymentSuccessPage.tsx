@@ -68,20 +68,14 @@ export function PaymentSuccessPage() {
 
   const [, setDownloadError] = useState(false);
 
-  const handleDownloadCribSheet = async () => {
+  const handleDownloadCribSheet = () => {
     setDownloading(true);
     setDownloadError(false);
     try {
-      // Use signed URL — assets bucket is private
-      const { data, error } = await supabase.storage
-        .from('assets')
-        .createSignedUrl('crib-sheet/CLEAR-Method-Crib-Sheet.pdf', 120);
-      if (!error && data?.signedUrl) {
-        window.open(data.signedUrl, '_blank');
-      } else {
-        console.error('Failed to create signed URL:', error);
-        setDownloadError(true);
-      }
+      // Crib sheet is bundled as a public asset with the app — no auth, no signed URLs.
+      // Using window.open with target=_blank opens in a new tab (most browsers will
+      // preview the PDF inline; user can save from there).
+      window.open('/CLEAR-Method-Crib-Sheet.pdf', '_blank');
     } catch (err) {
       console.error('Crib sheet download error:', err);
       setDownloadError(true);
