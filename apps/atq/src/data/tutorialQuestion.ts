@@ -20,7 +20,7 @@ export const TUTORIAL_QUESTION: Question = {
   subject: 'english',
   difficulty: 2,
   questionText:
-    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. If next week is a normal week, who will Amir walk to school with on Tuesday?",
+    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. If next week is a normal week, who will Amir go to school with on Tuesday?",
   questionTokens: [
     'Amir', ' ', 'usually', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
     'with', ' ', 'his', ' ', 'best', ' ', 'friend', ' ', 'Jake.', ' ',
@@ -35,7 +35,7 @@ export const TUTORIAL_QUESTION: Question = {
     'On', ' ', 'Friday,', ' ', 'Jake', ' ', 'came', ' ', 'back', ' ',
     'and', ' ', 'walked', ' ', 'with', ' ', 'Amir.', ' ',
     'If', ' ', 'next', ' ', 'week', ' ', 'is', ' ', 'a', ' ', 'normal', ' ', 'week,', ' ',
-    'who', ' ', 'will', ' ', 'Amir', ' ', 'walk', ' ',
+    'who', ' ', 'will', ' ', 'Amir', ' ', 'go', ' ',
     'to', ' ', 'school', ' ', 'with', ' ', 'on', ' ', 'Tuesday?',
   ],
   // "usually" at passage index 2 and "normal" at question index 120.
