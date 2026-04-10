@@ -20,7 +20,7 @@ export const TUTORIAL_QUESTION: Question = {
   subject: 'english',
   difficulty: 2,
   questionText:
-    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. If next week is a normal week, who will Amir walk to school with?",
+    "Amir usually walks to school with his best friend Jake. This week was different. On Monday, Jake was away, so Amir walked with his neighbour Priya instead. On Tuesday, Amir's mum drove him because of the rain. On Wednesday and Thursday, Priya and Amir walked together. On Friday, Jake came back and walked with Amir. If next week is a normal week, who will Amir walk to school with on Tuesday?",
   questionTokens: [
     'Amir', ' ', 'usually', ' ', 'walks', ' ', 'to', ' ', 'school', ' ',
     'with', ' ', 'his', ' ', 'best', ' ', 'friend', ' ', 'Jake.', ' ',
@@ -36,7 +36,7 @@ export const TUTORIAL_QUESTION: Question = {
     'and', ' ', 'walked', ' ', 'with', ' ', 'Amir.', ' ',
     'If', ' ', 'next', ' ', 'week', ' ', 'is', ' ', 'a', ' ', 'normal', ' ', 'week,', ' ',
     'who', ' ', 'will', ' ', 'Amir', ' ', 'walk', ' ',
-    'to', ' ', 'school', ' ', 'with?',
+    'to', ' ', 'school', ' ', 'with', ' ', 'on', ' ', 'Tuesday?',
   ],
   // "usually" at passage index 2 and "normal" at question index 120.
   // Conceptually matched danger words — different word, same meaning.
@@ -64,7 +64,7 @@ export const TUTORIAL_QUESTION: Question = {
   ],
   correctOptionIndex: 2,
   explanation:
-    'This question asks about a NORMAL week — a week not described in the passage. You have to deduce the answer. The passage says Amir "usually walks to school with his best friend Jake" — "usually" and "normal" mean the same thing. "This week was different", so Priya and his mum were exceptions. In a normal week, Amir is back to his usual routine: walking with Jake.',
+    'This question asks about a NORMAL week — a week not described in the passage. You have to deduce the answer. The passage says Amir "usually walks to school with his best friend Jake" — "usually" and "normal" mean the same thing. "This week was different", so Priya and his mum were exceptions. It\'s tempting to pick "Amir\'s mum" because she drove him on Tuesday this week — but that was a one-off because of the rain. In a normal week, Amir is back to his usual routine: walking with Jake.',
   category: 'comprehension-inference',
   trickType: 'exception-as-rule',
 };
