@@ -8,35 +8,6 @@ interface PreSessionBreathingProps {
 
 const TOTAL_CYCLES = 4;
 
-const affirmations = [
-  "I am calm, focused, and ready.",
-  "I read carefully and think before I answer.",
-  "Mistakes help me learn.",
-  "I take my time — that is how I succeed.",
-  "I trust my brain.",
-  "Every question is a chance to show what I can do.",
-  "I breathe. I focus. I succeed.",
-  "I don't rush — I use my CLEAR Method.",
-  "I am getting better every single day.",
-  "I stay calm even when questions are tricky.",
-  "My best is always good enough.",
-  "I can do hard things.",
-  "I learn something new every time I practise.",
-  "I read the question twice — every time.",
-  "I am proud of how hard I've worked.",
-  "Tricky questions don't scare me — they challenge me.",
-  "A slow breath gives my brain time to think.",
-  "I notice the key words because I read with purpose.",
-  "Every session makes me stronger.",
-  "I am focused.",
-  "I choose my answers carefully.",
-  "I've got this — one question at a time.",
-  "I eliminate the wrong answers first.",
-  "When I slow down, I get more right.",
-  "I feel calm, focused, and ready.",
-  "Today I will show what I can do.",
-];
-
 type BreathPhase = 'inhale' | 'holdIn' | 'exhale' | 'holdOut';
 
 const phaseLabels: Record<BreathPhase, string> = {
@@ -62,20 +33,11 @@ const phaseScale: Record<BreathPhase, number> = {
   holdOut: 1.0,
 };
 
-function getDailyAffirmation(): string {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = now.getTime() - start.getTime();
-  const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
-  return affirmations[dayOfYear % affirmations.length];
-}
-
 export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
   const [phase, setPhase] = useState<BreathPhase>('inhale');
   const [cycle, setCycle] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [started, setStarted] = useState(false);
-  const affirmation = getDailyAffirmation();
   const circleGradient = 'radial-gradient(circle at 35% 35%, rgba(147,197,253,0.95) 0%, rgba(59,130,246,0.75) 45%, rgba(29,78,216,0.55) 100%)';
   const glowBase = 'rgba(59,130,246,0.5)';
 
@@ -175,21 +137,15 @@ export function PreSessionBreathing({ onComplete }: PreSessionBreathingProps) {
         Skip
       </button>
 
-      {/* Header + Affirmation */}
-      <motion.div
-        className="relative z-10 text-center px-8 mb-10 max-w-md space-y-3"
-        initial={{ opacity: 0, y: -20 }}
+      {/* Header */}
+      <motion.p
+        className="relative z-10 text-center px-8 mb-12 text-white/50 text-sm font-display font-semibold tracking-wide uppercase"
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
-        <p className="text-white/50 text-sm font-display font-semibold tracking-wide uppercase">
-          Before every session
-        </p>
-        <p className="text-white/60 text-lg mb-1">✨</p>
-        <p className="text-white/90 text-xl sm:text-2xl font-display font-bold leading-relaxed">
-          <em>"{affirmation}"</em>
-        </p>
-      </motion.div>
+        Clear your mind. Find your focus.
+      </motion.p>
 
       {/* Breathing circle */}
       <div className="relative z-10 flex flex-col items-center">
