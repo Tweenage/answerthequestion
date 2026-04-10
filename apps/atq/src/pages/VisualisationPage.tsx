@@ -317,18 +317,17 @@ export function VisualisationPage() {
             🌅
           </div>
 
-          <h2 className="font-display text-xl font-bold text-gray-800 mb-1">
+          <h2 className="font-display text-xl font-bold text-white drop-shadow-md mb-1">
             Exam Day Visualisation
           </h2>
 
-          <p className="text-gray-500 font-display text-sm mb-4">
+          <p className="text-white/80 font-display text-sm mb-4">
             {script.durationMinutes} min &middot; guided mental rehearsal &middot; with audio
           </p>
 
           <div className="bg-purple-50 rounded-2xl p-4 w-full text-left shadow-sm mb-4 border border-purple-100">
             <p className="text-sm text-gray-600 font-display leading-relaxed">
-              A guided visualisation is a mental rehearsal. You&rsquo;ll be talked through your exam day &mdash; arriving calm, sitting down, reading the questions carefully. Research shows that mentally
-              rehearsing a situation improves how you actually perform in it. The more times you listen,
+              Olympic athletes, top surgeons, and world-class musicians all use mental rehearsal &mdash; imagining the moment step by step to stay calm and perform at their best. This guided visualisation walks you through your exam day: arriving calm, sitting down, reading each question carefully. The more times you listen,
               the more familiar exam day will feel.
             </p>
           </div>
@@ -374,11 +373,11 @@ export function VisualisationPage() {
             <Wind className="w-8 h-8 text-violet-500" />
           </div>
 
-          <h2 className="font-display text-xl font-bold text-gray-800 mb-1">
+          <h2 className="font-display text-xl font-bold text-white drop-shadow-md mb-1">
             Box Breathing
           </h2>
 
-          <p className="text-gray-500 font-display text-sm mb-4">
+          <p className="text-white/80 font-display text-sm mb-4">
             4 cycles &middot; about 1 minute &middot; in &ndash; hold &ndash; out &ndash; hold
           </p>
 
@@ -472,7 +471,7 @@ export function VisualisationPage() {
             </p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex w-full">
             <BoxBreathingExercise config={boxBreathingConfig} onComplete={handleBack} />
           </div>
         </div>
@@ -641,65 +640,71 @@ function VisualisationPlayer({
         </p>
 
         {/* Central breathing visual */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-6">
+        <div className="flex-1 flex flex-col items-center">
           {finished ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center"
-            >
-              <p className="text-5xl mb-4">✨</p>
-              <h3 className="font-display text-2xl font-bold text-white mb-2">Well done</h3>
-              <p className="font-display text-white/60 text-base">
-                You&rsquo;re calm, focused, and ready
-              </p>
-              <button
-                onClick={onBack}
-                className="mt-8 px-8 py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 transition-all shadow-lg"
+            <div className="flex-1 flex items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center"
               >
-                Continue
-              </button>
-            </motion.div>
+                <p className="text-5xl mb-4">✨</p>
+                <h3 className="font-display text-2xl font-bold text-white mb-2">Well done</h3>
+                <p className="font-display text-white/60 text-base">
+                  You&rsquo;re calm, focused, and ready
+                </p>
+                <button
+                  onClick={onBack}
+                  className="mt-8 px-8 py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 transition-all shadow-lg"
+                >
+                  Continue
+                </button>
+              </motion.div>
+            </div>
           ) : (
             <>
-              {/* Breathing circle */}
-              <motion.div
-                animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-              >
+              {/* Breathing circle — centered in the available space */}
+              <div className="flex-1 flex items-center justify-center">
                 <motion.div
-                  animate={{ scale: circleScale }}
-                  transition={{
-                    duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.4 : phaseDuration,
-                    ease: 'easeInOut',
-                  }}
-                  className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
-                  style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
+                  animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   <motion.div
-                    animate={{ scale: circleScale * 0.5 }}
+                    animate={{ scale: circleScale }}
                     transition={{
                       duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.4 : phaseDuration,
                       ease: 'easeInOut',
                     }}
-                    className="w-24 h-24 rounded-full bg-blue-400/40"
-                  />
+                    className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
+                    style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
+                  >
+                    <motion.div
+                      animate={{ scale: circleScale * 0.5 }}
+                      transition={{
+                        duration: breathPhase === 'hold-in' || breathPhase === 'hold-out' ? 0.4 : phaseDuration,
+                        ease: 'easeInOut',
+                      }}
+                      className="w-24 h-24 rounded-full bg-blue-400/40"
+                    />
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+              </div>
 
-              {/* Phase label */}
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={breathPhase}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-2xl font-display font-bold text-white"
-                >
-                  {breathLabel}
-                </motion.p>
-              </AnimatePresence>
+              {/* Phase label — pinned to the bottom so it doesn't crowd the circle */}
+              <div className="pb-6 min-h-[2.5rem] flex items-center">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={breathPhase}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-2xl font-display font-bold text-white"
+                  >
+                    {breathLabel}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </>
           )}
         </div>
@@ -820,63 +825,69 @@ function BoxBreathingExercise({ config, onComplete }: { config: BoxBreathingConf
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 w-full">
-      {/* Breathing circle — hue-rotate cycles blue → indigo → fuchsia → pink */}
-      <motion.div
-        animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      >
+    <div className="flex flex-col items-center w-full flex-1">
+      {/* Breathing circle — centered in the available space */}
+      <div className="flex-1 flex items-center justify-center w-full">
         <motion.div
-          animate={{ scale: circleScale }}
-          transition={{
-            duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
-            ease: 'easeInOut',
-          }}
-          className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
-          style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
+          animate={{ filter: ['hue-rotate(0deg)', 'hue-rotate(105deg)', 'hue-rotate(0deg)'] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         >
           <motion.div
-            animate={{ scale: circleScale * 0.5 }}
+            animate={{ scale: circleScale }}
             transition={{
               duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
               ease: 'easeInOut',
             }}
-            className="w-24 h-24 rounded-full bg-blue-400/40"
-          />
+            className="w-40 h-40 rounded-full bg-blue-400/20 flex items-center justify-center"
+            style={{ boxShadow: '0 0 80px rgba(59,130,246,0.6), 0 0 160px rgba(59,130,246,0.25)' }}
+          >
+            <motion.div
+              animate={{ scale: circleScale * 0.5 }}
+              transition={{
+                duration: phase === 'hold-in' || phase === 'hold-out' ? 0.4 : phaseDuration,
+                ease: 'easeInOut',
+              }}
+              className="w-24 h-24 rounded-full bg-blue-400/40"
+            />
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Phase label */}
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={phase}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          className="text-2xl font-display font-bold text-white"
-        >
-          {PHASE_LABELS[phase]}
-        </motion.p>
-      </AnimatePresence>
+      {/* Phase label + cycle pills — pinned to the bottom so they don't crowd the circle */}
+      <div className="flex flex-col items-center gap-4 pb-6">
+        <div className="min-h-[2.5rem] flex items-center">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={phase}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="text-2xl font-display font-bold text-white"
+            >
+              {PHASE_LABELS[phase]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
 
-      {/* Cycle progress pills */}
-      <div className="flex gap-2 items-center">
-        {Array.from({ length: BREATHING_CYCLES }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="rounded-full transition-all duration-500"
-            style={{
-              width: i === cycles ? 28 : 8,
-              height: 8,
-              background: i < cycles
-                ? 'rgba(255,255,255,0.85)'
-                : i === cycles
-                ? 'rgba(255,255,255,0.45)'
-                : 'rgba(255,255,255,0.15)',
-            }}
-          />
-        ))}
+        {/* Cycle progress pills */}
+        <div className="flex gap-2 items-center">
+          {Array.from({ length: BREATHING_CYCLES }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="rounded-full transition-all duration-500"
+              style={{
+                width: i === cycles ? 28 : 8,
+                height: 8,
+                background: i < cycles
+                  ? 'rgba(255,255,255,0.85)'
+                  : i === cycles
+                  ? 'rgba(255,255,255,0.45)'
+                  : 'rgba(255,255,255,0.15)',
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -39,8 +39,8 @@ export function BadgesPage() {
       />
 
       <div className="text-center">
-        <h2 className="font-display text-2xl font-bold text-focus-800">Badge Collection</h2>
-        <p className="text-gray-500 mt-1 font-display">
+        <h2 className="font-display text-2xl font-bold text-white drop-shadow-md">Badge Collection</h2>
+        <p className="text-white/80 mt-1 font-display">
           {earnedIds.size} of {badgeDefinitions.length} earned
         </p>
       </div>
@@ -49,7 +49,7 @@ export function BadgesPage() {
         const badges = badgeDefinitions.filter(b => b.category === category);
         return (
           <div key={category}>
-            <h3 className="font-display font-bold text-focus-700 mb-2">{categoryLabels[category]}</h3>
+            <h3 className="font-display font-bold text-white drop-shadow-sm mb-2">{categoryLabels[category]}</h3>
             <div className="grid grid-cols-3 gap-2.5">
               {badges.map((badge, i) => {
                 const isEarned = earnedIds.has(badge.id);
