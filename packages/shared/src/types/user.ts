@@ -22,8 +22,8 @@ export interface User {
 export const AVATAR_CHARACTERS = ['cat', 'owl', 'robot', 'unicorn', 'dragon', 'fox'] as const;
 
 export const AVATAR_COLOURS = [
-  '#3b82f6', '#22c55e', '#f97316', '#8b5cf6',
-  '#ef4444', '#eab308', '#f472b6', '#06b6d4',
+  '#3b82f6', '#06b6d4', '#f97316', '#8b5cf6',
+  '#ef4444', '#eab308', '#f472b6',
 ] as const;
 
 export const AVATAR_BACKGROUNDS = [
