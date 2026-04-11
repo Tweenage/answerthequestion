@@ -45,7 +45,7 @@ function getTrapTip(reason: string): string {
   const lower = reason.toLowerCase();
 
   if (/\b(not|never|except|without|unless)\b/.test(lower)) {
-    return 'Tip: Always underline words like NOT, never, and except. They change everything!';
+    return 'Tip: Always underline words like not, never, and except. They change everything!';
   }
   if (/mix up|confuse|wrong (person|name|one)|pick .* because (he|she|they|it) (is|are) (the first|mentioned)/.test(lower)) {
     return 'Tip: When there are similar names or details, go back and check which one the question is really asking about.';
@@ -81,7 +81,7 @@ const TRICK_TYPE_LABELS: Record<string, { label: string; tip: string }> = {
   },
   'reverse-logic': {
     label: '🔄 Reverse Logic Trick!',
-    tip: 'Did you spot the NOT or OPPOSITE? These words flip the whole question around!',
+    tip: 'Did you spot the "not" or the opposite word? These words flip the whole question around!',
   },
   'two-step': {
     label: '2️⃣ Two-Step Trick!',
@@ -97,7 +97,7 @@ const TRICK_TYPE_LABELS: Record<string, { label: string; tip: string }> = {
   },
   'negation-trap': {
     label: '🚫 Negation Trap!',
-    tip: 'Words like NOT, never, and except change everything. Always circle them!',
+    tip: 'Words like not, never, and except change everything. Always circle them!',
   },
   'question-at-end': {
     label: '📄 Question-at-End Trick!',
