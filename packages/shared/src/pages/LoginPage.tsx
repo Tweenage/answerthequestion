@@ -40,8 +40,8 @@ export function LoginPage() {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+    if (password.length < 10) {
+      setError('Password must be at least 10 characters');
       return;
     }
 
@@ -115,8 +115,8 @@ export function LoginPage() {
       setError("Passwords don't match");
       return;
     }
-    if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters');
+    if (newPassword.length < 10) {
+      setError('Password must be at least 10 characters');
       return;
     }
     if (!/[a-zA-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
@@ -249,9 +249,9 @@ export function LoginPage() {
                   type="password"
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
-                  placeholder="At least 8 characters"
+                  placeholder="At least 10 characters"
                   required
-                  minLength={8}
+                  minLength={10}
                   className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                   autoFocus
                 />
@@ -265,7 +265,7 @@ export function LoginPage() {
                   onChange={e => setConfirmNewPassword(e.target.value)}
                   placeholder="Type password again"
                   required
-                  minLength={8}
+                  minLength={10}
                   className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                 />
               </div>
@@ -388,9 +388,9 @@ export function LoginPage() {
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    placeholder="At least 8 characters"
+                    placeholder="At least 10 characters"
                     required
-                    minLength={8}
+                    minLength={10}
                     className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
                   />
                 </div>

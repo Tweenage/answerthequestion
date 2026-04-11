@@ -277,6 +277,11 @@ serve(async (req) => {
     const event = JSON.parse(body);
     const eventName = event?.meta?.event_name;
 
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
     if (eventName === 'order_created') {
       const order = event.data;
       const orderId = String(order.id);
@@ -296,10 +301,26 @@ serve(async (req) => {
         });
       }
 
-      const supabase = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-      );
+      // ── Idempotency guard ───────────────────────────────────────
+      // LemonSqueezy retries failed webhook deliveries. Without this check, a
+      // replayed order_created would re-run the update (harmless due to the
+      // status='pending' filter) but would also re-send the welcome + crib
+      // sheet emails — which customers notice and dislike. Query by the unique
+      // lemonsqueezy_order_id column (see migration 004) and bail early if
+      // we've already marked this order completed.
+      const { data: existingOrder } = await supabase
+        .from('payments')
+        .select('id, status')
+        .eq('lemonsqueezy_order_id', orderId)
+        .maybeSingle();
+
+      if (existingOrder && existingOrder.status === 'completed') {
+        console.log(`Order ${orderId} already processed — skipping (idempotency)`);
+        return new Response(
+          JSON.stringify({ received: true, skipped: 'already processed' }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
 
       // Update or insert payment record
       if (parentId) {
@@ -352,6 +373,93 @@ serve(async (req) => {
       } else {
         console.error('No customer email on order — skipping emails');
       }
+    }
+
+    // ── Refund handler ────────────────────────────────────────────
+    // Fires when a refund is issued from the LemonSqueezy dashboard (full or
+    // partial). For compliance with a paid children's product, we must flip
+    // the parent's access back off when payment is reversed — otherwise the
+    // parent could refund, keep access, and we'd be in breach of the purchase
+    // contract. Safe because the protect_has_paid trigger only blocks
+    // has_paid changes from authenticated users (auth.uid() NOT NULL), and
+    // this function uses the service role (auth.uid() IS NULL), so writes go
+    // through.
+    if (eventName === 'order_refunded') {
+      const order = event.data;
+      const orderId = String(order.id);
+
+      // Find the payment by its LemonSqueezy order ID (unique, indexed).
+      const { data: payment, error: findError } = await supabase
+        .from('payments')
+        .select('id, parent_id, customer_email, status')
+        .eq('lemonsqueezy_order_id', orderId)
+        .maybeSingle();
+
+      if (findError) {
+        console.error(`Refund: lookup failed for order ${orderId}:`, findError);
+        return new Response(
+          JSON.stringify({ received: true, error: 'lookup failed' }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      if (!payment) {
+        // Payment not in our DB — possible race (order_refunded arrived before
+        // order_created was processed) or a refund for an order we never saw.
+        // Either way, nothing to do; return 200 so LS doesn't retry forever.
+        console.error(`Refund: no payment found for order ${orderId}`);
+        return new Response(
+          JSON.stringify({ received: true, skipped: 'payment not found' }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Idempotency: if already refunded, no-op.
+      if (payment.status === 'refunded') {
+        console.log(`Order ${orderId} already refunded — skipping`);
+        return new Response(
+          JSON.stringify({ received: true, skipped: 'already refunded' }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Flip payment row to refunded.
+      const { error: updateError } = await supabase
+        .from('payments')
+        .update({ status: 'refunded' })
+        .eq('id', payment.id);
+
+      if (updateError) {
+        console.error(`Refund: failed to update payment ${payment.id}:`, updateError);
+        return new Response(
+          JSON.stringify({ error: 'Failed to update payment' }),
+          { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Revoke access on all child profiles for this parent. Guest checkouts
+      // that were never claimed have parent_id = NULL and own no profiles, so
+      // this is a no-op for them (correct behaviour).
+      if (payment.parent_id) {
+        const { error: childError } = await supabase
+          .from('child_profiles')
+          .update({ has_paid: false })
+          .eq('parent_id', payment.parent_id);
+
+        if (childError) {
+          // Log but don't fail the webhook — the payments row is authoritative
+          // for audit, and leaving has_paid stale is recoverable via manual
+          // fix; rejecting the webhook would cause LS to retry forever.
+          console.error(
+            `Refund: failed to revoke has_paid for parent ${payment.parent_id}:`,
+            childError
+          );
+        }
+      }
+
+      console.log(
+        `Order ${orderId} refunded. parentId=${payment.parent_id ?? 'guest'}, email=${payment.customer_email}`
+      );
     }
 
     return new Response(JSON.stringify({ received: true }), {

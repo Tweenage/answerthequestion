@@ -38,8 +38,8 @@ export function SignupPage() {
       setError("Passwords don't match");
       return;
     }
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+    if (password.length < 10) {
+      setError('Password must be at least 10 characters');
       return;
     }
     if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
@@ -188,9 +188,9 @@ export function SignupPage() {
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="At least 8 characters"
+                placeholder="At least 10 characters"
                 required
-                minLength={8}
+                minLength={10}
                 className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
               />
             </div>
@@ -204,7 +204,7 @@ export function SignupPage() {
                 onChange={e => setConfirmPassword(e.target.value)}
                 placeholder="Type password again"
                 required
-                minLength={8}
+                minLength={10}
                 className={`w-full px-4 py-3 rounded-button border border-gray-300 text-lg font-display focus:outline-none focus:ring-2 ${brand.focusRing}`}
               />
             </motion.div>
