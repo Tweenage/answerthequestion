@@ -6,7 +6,6 @@ import { GapSection } from '../components/landing/GapSection';
 import { ClearMethodSection } from '../components/landing/ClearMethodSection';
 import { JourneySection } from '../components/landing/JourneySection';
 import { PricingSection } from '../components/landing/PricingSection';
-import { SocialProofSection } from '../components/landing/SocialProofSection';
 import { FaqSection } from '../components/landing/FaqSection';
 import { FinalCtaSection } from '../components/landing/FinalCtaSection';
 import { EmailCaptureSection } from '../components/landing/EmailCaptureSection';
@@ -23,7 +22,6 @@ export function LandingPage() {
       <ClearMethodSection />
       <JourneySection />
       <PricingSection />
-      <SocialProofSection />
       <FaqSection />
       <FinalCtaSection />
       <EmailCaptureSection />
