@@ -12,7 +12,7 @@ import { checkRateLimit, getClientIp } from '../_shared/rate-limit.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const LS_STORE_ID = '326946';
-const LS_VARIANT_ID = '1470778'; // £29.99 main product
+const LS_VARIANT_ID = '1518479'; // £29.99 main product (live mode)
 const LS_API_URL = 'https://api.lemonsqueezy.com/v1/checkouts';
 
 const PRICE_MAIN_PENCE = 2999;       // £29.99
