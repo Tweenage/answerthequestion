@@ -17,7 +17,7 @@ export function PrivacyPolicyPage() {
       <div className="bg-white/95 backdrop-blur-sm rounded-card p-6 shadow-sm border border-white/30 space-y-6">
         <div>
           <h1 className="font-display text-2xl font-bold text-gray-800">Privacy Policy</h1>
-          <p className="text-sm text-gray-500 font-display mt-1">Last updated: 8 April 2026</p>
+          <p className="text-sm text-gray-500 font-display mt-1">Last updated: 11 April 2026</p>
         </div>
 
         <Section title="1. Who We Are">
@@ -53,16 +53,32 @@ export function PrivacyPolicyPage() {
           </p>
         </Section>
 
-        <Section title="4. Children's Data">
+        <Section title="4. Children's Data & the Age Appropriate Design Code">
           <p>
-            The App is designed for children aged 9–11 preparing for the 11+ exam. The account
-            holder is always a parent or guardian — children do not create accounts or provide
-            any personal data directly. We store only a first name and practice session data
-            (question responses, technique scores, timestamps) under the parent's account.
-            We do not collect children's email addresses, dates of birth, schools, or any
-            other identifying information. Because no child data is collected or processed
-            independently of the parent account, the Children's Code (Age Appropriate Design
-            Code) does not apply.
+            The App is designed for children aged 9–11 preparing for the 11+ exam, so the UK ICO's
+            Age Appropriate Design Code (the "Children's Code") applies. We have designed the App
+            to comply with the Code as follows:
+          </p>
+          <ul className="list-disc list-inside space-y-1 mt-2 text-gray-600">
+            <li><strong>Parent-managed accounts:</strong> the account holder is always a parent or guardian. Children do not create accounts, provide email addresses, or submit any personal data directly.</li>
+            <li><strong>Data minimisation:</strong> we store only a first name (which can be a nickname or character name) and a chosen avatar. We do not collect surnames, dates of birth, schools, addresses, photographs, or any other identifying information about the child.</li>
+            <li><strong>Practice data:</strong> we store question responses, technique scores, timestamps, streak counts, and badge progress so the App can track progress and adapt the learning experience. This data is linked to the child profile's pseudonymous ID, not to any real-world identifier.</li>
+            <li><strong>High privacy by default:</strong> all child data is private to the parent account. Row-level security in our database ensures parents can only ever access their own family's data — there is no way for one family to see another.</li>
+            <li><strong>No profiling for manipulation:</strong> we do not use profiling, behavioural advertising, or any automated decision-making that could affect the child. The learning profile is used solely to provide educational feedback.</li>
+            <li><strong>No nudges or dark patterns:</strong> there are no countdown timers, fabricated scarcity, autoplay, or features designed to extend engagement beyond what is pedagogically useful.</li>
+            <li><strong>No geolocation:</strong> we do not collect or use the child's location.</li>
+            <li><strong>No child-to-child contact:</strong> there are no leaderboards, messaging, forums, shared content, or any way for children to interact with other users.</li>
+            <li><strong>Parental controls:</strong> parents can view all of their child's practice data, edit settings, and delete the child's profile and all associated data at any time.</li>
+          </ul>
+          <p className="mt-2">
+            If you have any concerns about how your child's data is handled, please contact us at{' '}
+            <a href="mailto:hello@answerthequestion.co.uk" className="text-purple-600 underline">
+              hello@answerthequestion.co.uk
+            </a>{' '}
+            or use our{' '}
+            <a href="/data-complaint" className="text-purple-600 underline">
+              data protection complaints form
+            </a>.
           </p>
         </Section>
 
