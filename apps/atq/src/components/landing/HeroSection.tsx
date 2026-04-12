@@ -4,8 +4,15 @@ import { motion } from 'framer-motion';
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden">
+      {/* Flag strip */}
+      <div className="bg-white/10 backdrop-blur-sm border-b border-white/10">
+        <p className="max-w-3xl mx-auto px-5 py-2 text-center font-display text-xs md:text-sm text-white/80">
+          Exam technique and calm, focused thinking for 11+, SATs and independent school exams
+        </p>
+      </div>
+
       {/* Nav */}
-      <div className="max-w-3xl mx-auto px-5 pt-5 pb-2 flex items-center justify-between">
+      <div className="max-w-3xl mx-auto px-5 pt-4 pb-2 flex items-center justify-between">
         <span className="font-display font-extrabold text-base text-white tracking-tight">
           🦉 AnswerTheQuestion!
         </span>
@@ -17,50 +24,35 @@ export function HeroSection() {
         </Link>
       </div>
 
-      <div className="max-w-3xl mx-auto px-5 pt-6 pb-14 text-center">
+      {/* Hero content */}
+      <div className="max-w-3xl mx-auto px-5 pt-8 pb-14 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Empathy hook — parent recognises themselves before the bold claim */}
-          <p className="font-display font-semibold text-white/90 text-base md:text-lg leading-relaxed mb-6 max-w-lg mx-auto">
-            Worried your child won&rsquo;t do themselves justice on exam day? That the
-            pressure of SATs, 11+ or entrance exams will stop them showing what they really know?
-          </p>
-
-          <h1 className="font-display font-extrabold text-[2rem] leading-[1.15] md:text-5xl md:leading-[1.15] text-white drop-shadow-lg mb-5 max-w-2xl mx-auto">
-            Your child knew the answer. They just didn&rsquo;t{' '}
-            <span className="text-fuchsia-300">read the question.</span>
+          <h1 className="font-display font-extrabold text-[1.75rem] leading-[1.2] md:text-[2.75rem] md:leading-[1.15] text-white drop-shadow-lg mb-5 max-w-2xl mx-auto">
+            Worried exam nerves will stop your child showing what they really know?
           </h1>
 
-          <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-6">
-            <p className="text-white font-display font-bold text-lg md:text-xl leading-relaxed">
-              AnswerTheQuestion! trains children to use the{' '}
-              <strong className="text-fuchsia-200">CLEAR Method</strong> &mdash; a five-step
-              exam technique that turns careless mistakes into confident, correct
-              answers. Built for 11+, independent school entrance, and beyond.
-            </p>
-            <p className="text-white/80 font-display text-sm md:text-base leading-relaxed mt-3">
-              The only 11+ programme that builds exam technique <em>and</em> exam composure
-              &mdash; so your child walks in confident, not just prepared.
-            </p>
-          </div>
+          <p className="text-white/85 font-display text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
+            Help your child stay calm, read questions properly, and use what they
+            already know &mdash; with a structured, research-informed system.
+          </p>
 
           <Link
             to="/checkout"
             className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
           >
-            Start the 12-week programme &mdash; &pound;29.99
+            Start the 10-minute daily system
           </Link>
 
-          <p className="text-white/70 font-display text-sm font-medium mt-3 mb-6">
-            One-time payment &middot; 7-day money-back guarantee
+          <p className="text-white/70 font-display text-sm font-medium mt-3">
+            One-time payment &middot; &pound;29.99 &middot; 7-day money-back guarantee
           </p>
 
-          <p className="text-white/80 font-display text-sm md:text-base leading-relaxed max-w-md mx-auto">
-            Because watching your child lose marks on questions they know the answer to is one of
-            the most frustrating things in 11+ preparation. We built this to fix exactly that.
+          <p className="text-white/60 font-display text-xs mt-4 max-w-sm mx-auto">
+            Designed to work alongside tutoring &mdash; not replace it
           </p>
         </motion.div>
       </div>

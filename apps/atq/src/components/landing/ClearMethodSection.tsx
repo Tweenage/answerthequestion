@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const STEPS = [
-  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'Take a breath before you start. A calm brain thinks more clearly.' },
-  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the whole question. Then read it again. What is it actually asking?' },
-  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Cross out answers that are obviously wrong. Fewer choices = better thinking.' },
-  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'Having eliminated the wrong answers, select the one that best fits what the question asked.' },
-  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Check your answer against the question. If you\u2019re stuck, move on and come back at the end.' },
+  { letter: 'C', bg: 'bg-blue-500', name: 'Calm', description: 'A short breathing pause to reduce anxiety and improve focus.' },
+  { letter: 'L', bg: 'bg-violet-500', name: 'Look', description: 'Read the question carefully and identify key words.' },
+  { letter: 'E', bg: 'bg-pink-500', name: 'Eliminate', description: 'Rule out incorrect answers before choosing.' },
+  { letter: 'A', bg: 'bg-amber-500', name: 'Answer', description: 'Select the best answer based on remaining evidence.' },
+  { letter: 'R', bg: 'bg-emerald-500', name: 'Review', description: 'Check the answer matches the question.' },
 ];
 
 export function ClearMethodSection() {
@@ -19,15 +19,11 @@ export function ClearMethodSection() {
           transition={{ duration: 0.6 }}
           className="max-w-xl mx-auto text-center"
         >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 mb-6 leading-tight">
-            The CLEAR Method
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 mb-3 leading-tight">
+            A simple method they use on every question
           </h2>
-
-          <p className="text-gray-600 font-display text-base md:text-lg leading-relaxed mb-10">
-            The CLEAR Method is grounded in metacognition research &mdash; thinking about
-            how you think. The Education Endowment Foundation identifies metacognitive
-            strategies as having high impact relative to cost. Your child learns the method
-            in week one. They use it automatically by week twelve.
+          <p className="text-gray-500 font-display text-sm mb-8">
+            Designed to become automatic under exam conditions.
           </p>
 
           {/* Letter circles */}
@@ -69,6 +65,10 @@ export function ClearMethodSection() {
               </motion.div>
             ))}
           </div>
+
+          <p className="font-display text-sm text-gray-600 mt-8 font-semibold">
+            Over time, this becomes instinct &mdash; not effort.
+          </p>
         </motion.div>
       </div>
     </section>
