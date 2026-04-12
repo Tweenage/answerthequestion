@@ -32,7 +32,7 @@ export function HeroSection() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="font-display font-extrabold text-[1.75rem] leading-[1.2] md:text-[2.75rem] md:leading-[1.15] text-white drop-shadow-lg mb-5 max-w-2xl mx-auto">
-            Worried exam nerves will stop your child showing what they really know?
+            Worried exam nerves will stop your child from performing at their best on the day?
           </h1>
 
           <p className="text-white/85 font-display text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
