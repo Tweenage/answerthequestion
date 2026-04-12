@@ -20,6 +20,7 @@ const PORT = 4173;
 
 const ROUTES = [
   '/',
+  '/research',
   '/privacy-policy',
   '/terms',
   '/refund-policy',
