@@ -1,16 +1,16 @@
 import { motion } from 'framer-motion';
 
 const PARENT_QUOTES = [
-  '\u201cYou didn\u2019t read the question properly\u201d',
-  '\u201cYou rushed that\u201d',
-  '\u201cYou knew this at home\u2026\u201d',
+  { text: 'You didn\u2019t read the question properly', emoji: '😩' },
+  { text: 'You rushed that', emoji: '😤' },
+  { text: 'You knew this at home\u2026', emoji: '😔' },
 ];
 
 const EXAM_SKILLS = [
-  'Read and interpret questions under pressure',
-  'Manage their time without rushing',
-  'Make careful decisions, not impulsive ones',
-  'Check their work before moving on',
+  { icon: '📖', skill: 'Read and interpret questions under pressure' },
+  { icon: '⏱️', skill: 'Manage their time without rushing' },
+  { icon: '🎯', skill: 'Make careful decisions, not impulsive ones' },
+  { icon: '✅', skill: 'Check their work before moving on' },
 ];
 
 export function ProblemSection() {
@@ -31,49 +31,52 @@ export function ProblemSection() {
             But they still get it wrong.
           </h2>
 
-          <p className="font-display text-gray-700 text-lg text-center mb-6">
+          <p className="font-display text-gray-600 text-lg text-center mb-6">
             If you&rsquo;ve ever said:
           </p>
 
-          <div className="bg-purple-50 rounded-2xl p-8 mb-10 border border-purple-100/50">
-            <ul className="space-y-4">
-              {PARENT_QUOTES.map((text, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="font-display text-xl md:text-2xl text-purple-800 font-bold italic text-center"
-                >
-                  {text}
-                </motion.li>
-              ))}
-            </ul>
-          </div>
-
-          <p className="font-display text-gray-700 text-lg text-center mb-6">
-            You&rsquo;re not alone. In exams, children aren&rsquo;t just tested on knowledge &mdash;
-            they&rsquo;re tested on whether they can:
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-3 mb-10">
-            {EXAM_SKILLS.map((text, i) => (
+          {/* Parent quotes as individual cards */}
+          <div className="space-y-3 mb-10">
+            {PARENT_QUOTES.map((q, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-3 bg-gray-50 rounded-xl p-4 border border-gray-100"
+                transition={{ delay: i * 0.12 }}
+                className="bg-gradient-to-r from-purple-50 to-fuchsia-50 rounded-xl p-5 border border-purple-100/60 flex items-center gap-4"
               >
-                <span className="shrink-0 w-2.5 h-2.5 rounded-full bg-fuchsia-500" />
-                <p className="font-display text-base font-medium text-gray-800">{text}</p>
+                <span className="text-2xl shrink-0">{q.emoji}</span>
+                <p className="font-display text-lg md:text-xl text-purple-800 font-bold italic">
+                  &ldquo;{q.text}&rdquo;
+                </p>
               </motion.div>
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-fuchsia-500 to-purple-600 rounded-2xl p-6">
+          <p className="font-display text-gray-600 text-base text-center mb-6 max-w-lg mx-auto leading-relaxed">
+            You&rsquo;re not alone. In exams, children aren&rsquo;t just tested on knowledge &mdash;
+            they&rsquo;re tested on whether they can:
+          </p>
+
+          {/* Skills as icon cards */}
+          <div className="grid grid-cols-2 gap-3 mb-10">
+            {EXAM_SKILLS.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="bg-white rounded-xl p-5 border border-gray-200/80 shadow-sm text-center"
+              >
+                <span className="text-3xl block mb-2">{s.icon}</span>
+                <p className="font-display text-sm font-semibold text-gray-800 leading-snug">{s.skill}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-fuchsia-500 to-purple-600 rounded-2xl p-6 shadow-lg">
             <p className="font-display font-bold text-lg md:text-xl text-white text-center">
               Without a clear process, even capable children can underperform.
             </p>
