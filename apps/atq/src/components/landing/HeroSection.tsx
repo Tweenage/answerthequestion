@@ -7,7 +7,7 @@ export function HeroSection() {
       {/* Flag strip */}
       <div className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-400">
         <p className="max-w-3xl mx-auto px-5 py-2.5 text-center font-display font-semibold text-xs md:text-sm text-white tracking-wide">
-          Exam technique and calm, focused thinking for 11+, SATs and independent school exams
+          Help your child build exam technique and calm, focused thinking for 11+, SATs and independent school exams
         </p>
       </div>
 
