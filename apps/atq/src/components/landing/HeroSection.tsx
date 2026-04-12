@@ -37,7 +37,7 @@ export function HeroSection() {
 
           <p className="text-white/85 font-display text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
             Help your child stay calm, read questions properly, and use what they
-            already know &mdash; with a structured, research-informed system.
+            already know &mdash; with a structured, research-informed 12-week programme.
           </p>
 
           <Link
