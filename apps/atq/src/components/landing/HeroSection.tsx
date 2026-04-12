@@ -38,6 +38,7 @@ export function HeroSection() {
           <p className="text-white/85 font-display text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
             Help your child stay calm, read questions properly, and use what they
             already know &mdash; with a structured, research-informed 12-week programme.
+            Designed to work alongside schoolwork and tutoring &mdash; not replace it.
           </p>
 
           <Link
@@ -49,10 +50,6 @@ export function HeroSection() {
 
           <p className="text-white/70 font-display text-sm font-medium mt-3">
             One-time payment &middot; &pound;49.99 &middot; 7-day money-back guarantee
-          </p>
-
-          <p className="text-white/60 font-display text-xs mt-4 max-w-sm mx-auto">
-            Designed to work alongside schoolwork / tutoring &mdash; not replace it
           </p>
         </motion.div>
       </div>
