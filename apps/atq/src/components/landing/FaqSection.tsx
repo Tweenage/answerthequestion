@@ -3,6 +3,16 @@ import { motion } from 'framer-motion';
 
 const FAQ_ITEMS = [
   {
+    question: 'What age group is this for?',
+    answer:
+      'Ages 8\u201311. It\u2019s designed for any child preparing for 11+, independent school entrance exams, or SATs \u2014 basically any exam where they need to slow down, read properly, and show what they actually know.',
+  },
+  {
+    question: 'What type of questions does it use?',
+    answer:
+      'Multiple-choice questions covering Maths, English, and Reasoning \u2014 so the format closely mirrors 11+ style papers. The focus isn\u2019t on teaching content but on building the exam technique habits that stop children losing marks on questions they can already answer.',
+  },
+  {
     question: 'We\u2019ve already got a tutor, books, and flashcards. What does this add?',
     answer:
       'AnswerTheQuestion! does something completely different. Tutors, books, and flashcards teach your child what to know. This programme teaches them how to apply that knowledge under exam conditions \u2014 staying calm, reading properly, and thinking methodically. The two are designed to work together.',
