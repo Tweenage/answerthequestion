@@ -17,34 +17,35 @@ export function HeroSection() {
         </Link>
       </div>
 
-      <div className="max-w-3xl mx-auto px-5 pt-10 pb-14 text-center">
+      <div className="max-w-3xl mx-auto px-5 pt-6 pb-14 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          {/* Empathy hook — parent recognises themselves before the bold claim */}
+          <p className="font-display font-semibold text-white/90 text-base md:text-lg leading-relaxed mb-6 max-w-lg mx-auto">
+            Worried your child won&rsquo;t do themselves justice on exam day? That the
+            pressure of SATs, 11+ or entrance exams will stop them showing what they really know?
+          </p>
+
           <h1 className="font-display font-extrabold text-[2rem] leading-[1.15] md:text-5xl md:leading-[1.15] text-white drop-shadow-lg mb-5 max-w-2xl mx-auto">
             Your child knew the answer. They just didn&rsquo;t{' '}
             <span className="text-fuchsia-300">read the question.</span>
           </h1>
 
-          <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-10">
+          <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 max-w-xl mx-auto mb-6">
             <p className="text-white font-display font-bold text-lg md:text-xl leading-relaxed">
               AnswerTheQuestion! trains children to use the{' '}
-              <strong className="text-fuchsia-200">CLEAR Method</strong> — a five-step exam
-              technique that turns careless mistakes into confident, correct answers. Built
-              for 11+, independent school entrance, and every exam beyond.
+              <strong className="text-fuchsia-200">CLEAR Method</strong> &mdash; a five-step
+              exam technique that turns careless mistakes into confident, correct
+              answers. Built for 11+, independent school entrance, and beyond.
             </p>
             <p className="text-white/80 font-display text-sm md:text-base leading-relaxed mt-3">
               The only 11+ programme that builds exam technique <em>and</em> exam composure
               &mdash; so your child walks in confident, not just prepared.
             </p>
           </div>
-
-          <p className="text-white/90 font-display text-sm md:text-base leading-relaxed mb-8 max-w-md mx-auto">
-            Because watching your child lose marks on questions they know the answer to is one of
-            the most frustrating things in 11+ preparation. We built this to fix exactly that.
-          </p>
 
           <Link
             to="/checkout"
@@ -53,8 +54,13 @@ export function HeroSection() {
             Start the 12-week programme &mdash; &pound;29.99
           </Link>
 
-          <p className="text-white/70 font-display text-sm font-medium mt-4">
+          <p className="text-white/70 font-display text-sm font-medium mt-3 mb-6">
             One-time payment &middot; 7-day money-back guarantee
+          </p>
+
+          <p className="text-white/80 font-display text-sm md:text-base leading-relaxed max-w-md mx-auto">
+            Because watching your child lose marks on questions they know the answer to is one of
+            the most frustrating things in 11+ preparation. We built this to fix exactly that.
           </p>
         </motion.div>
       </div>
