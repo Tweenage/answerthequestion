@@ -5,9 +5,9 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden">
       {/* Flag strip */}
-      <div className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-400">
-        <p className="max-w-3xl mx-auto px-5 py-2.5 text-center font-display font-semibold text-xs md:text-sm text-white tracking-wide">
-          Help your child build exam technique and calm, focused thinking for 11+, SATs and independent school exams
+      <div className="bg-white/15 border-b border-white/10">
+        <p className="max-w-3xl mx-auto px-5 py-2 text-center font-display font-medium text-xs md:text-sm text-white/90 tracking-wide">
+          Help your child build exam technique and focus for 11+, SATs and independent school exams
         </p>
       </div>
 
