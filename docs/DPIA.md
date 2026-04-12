@@ -196,8 +196,8 @@ Each risk is assessed for **likelihood** (L–M–H) and **impact** (L–M–H) 
 | R7 | Breach of Supabase account | L × H | 2FA enabled on Supabase account; service role key stored only in Supabase Edge Functions, never in frontend; secret rotation documented | L × H |
 | R8 | Stale data after account deletion | M × M | Deletion cascades via FK on parent_id; 30-day purge window documented in privacy policy; **action: schedule weekly cron to verify no orphans** | L × L |
 | R9 | Dev/prod data co-mingling | M × M | Separate Supabase environments documented in `docs/environment-separation.md`; **action: verify no prod data ever in dev project** | L × L |
-| R10 | LemonSqueezy refund not reflected in ATQ `has_paid` | H × M | **OPEN — P0 action: implement `order_refunded` webhook handler** | L × M |
-| R11 | Webhook replay attack | L × M | Webhook body verified by HMAC signature; **action: add idempotency on LemonSqueezy order_id to prevent duplicate writes on replay** | L × L |
+| R10 | LemonSqueezy refund not reflected in ATQ `has_paid` | H × M | **CLOSED** — `order_refunded` webhook handler shipped (`4d20fd8`) and live-tested 12 Apr 2026; refund correctly sets `has_paid = false` via service-role bypass of `protect_has_paid` trigger | L × M |
+| R11 | Webhook replay attack | L × M | **CLOSED** — Webhook body verified by HMAC signature; idempotency guard on `lemonsqueezy_order_id` prevents duplicate writes on replay (`4d20fd8`) | L × L |
 | R12 | Analytics cookies used without consent | L × L | Under DUAA 2025 s.87, statistical-purposes analytics are exempt from the consent requirement; GA4 is configured for statistical purposes only | L × L |
 | R13 | Browser-side secrets leaked | L × M | Only the anon key ships in the browser bundle; service role key server-side only; `.env.local` gitignored and verified absent from git history | L × L |
 
@@ -249,8 +249,8 @@ These are cross-referenced with the integrated launch-gate remediation plan.
 
 | # | Action | Owner | Priority | Status |
 |---|---|---|---|---|
-| A1 | Implement `order_refunded` webhook handler in `lemonsqueezy-webhook/index.ts` | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
-| A2 | Add idempotency guard on LemonSqueezy `order_id` in webhook handler | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
+| A1 | Implement `order_refunded` webhook handler in `lemonsqueezy-webhook/index.ts` | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8`; live refund tested 12 Apr 2026 — access correctly revoked |
+| A2 | Add idempotency guard on LemonSqueezy `order_id` in webhook handler | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8`; proven in production 12 Apr 2026 |
 | A3 | Raise password minimum length 8 → 10 across `SignupPage.tsx` / `LoginPage.tsx` | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
 | A4 | Verify `ALLOW_LOCALHOST` is not set on production Supabase Edge Functions | Rebecca | P0 | ✅ Verified absent (12 Apr 2026) |
 | A5 | Confirm Supabase plan tier supports production workload and DPA | Rebecca | P0 | ✅ Upgraded to Pro (12 Apr 2026) |
