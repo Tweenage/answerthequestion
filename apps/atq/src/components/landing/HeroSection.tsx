@@ -52,7 +52,7 @@ export function HeroSection() {
           </p>
 
           <p className="text-white/60 font-display text-xs mt-4 max-w-sm mx-auto">
-            Designed to work alongside tutoring &mdash; not replace it
+            Designed to work alongside schoolwork / tutoring &mdash; not replace it
           </p>
         </motion.div>
       </div>
