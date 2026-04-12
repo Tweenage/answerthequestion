@@ -14,19 +14,18 @@ const INCLUDES = [
 
 export function PricingSection() {
   return (
-    <section className="bg-white/95 backdrop-blur-sm">
-      <div className="max-w-3xl mx-auto px-5 py-14">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-          className="max-w-md mx-auto text-center"
-        >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 mb-2 leading-tight">
+    <section className="max-w-3xl mx-auto px-5 py-14">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md mx-auto text-center"
+      >
+          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-md mb-2 leading-tight">
             Simple, one-time access
           </h2>
-          <p className="font-display text-gray-500 text-sm mb-8">
+          <p className="font-display text-white/70 text-sm mb-8">
             Less than one tutoring session.
           </p>
 
@@ -45,7 +44,7 @@ export function PricingSection() {
                   key={i}
                   className="flex items-center gap-2 font-display text-sm text-gray-700"
                 >
-                  <span className="text-purple-500 shrink-0">&check;</span>
+                  <span className="text-purple-500 shrink-0">✓</span>
                   {item}
                 </li>
               ))}
@@ -73,8 +72,7 @@ export function PricingSection() {
               </Link>
             </p>
           </div>
-        </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
