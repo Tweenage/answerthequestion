@@ -20,10 +20,10 @@ export function ClearMethodSection() {
           className="max-w-xl mx-auto text-center"
         >
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-purple-900 mb-3 leading-tight">
-            A simple method they use on every question
+            A simple method that works for every question
           </h2>
           <p className="text-gray-500 font-display text-sm mb-8">
-            Designed to become automatic under exam conditions.
+            Covering Maths, English and Reasoning. Designed to become automatic under exam conditions.
           </p>
 
           {/* Letter circles */}
