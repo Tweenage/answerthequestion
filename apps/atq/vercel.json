@@ -1,8 +1,26 @@
 {
   "rewrites": [
-    { "source": "/((?!assets/|sitemap\\.xml|robots\\.txt|og-image\\.png|favicon\\.).*)", "destination": "/index.html" }
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/og-image.png", "destination": "/og-image.png" },
+    { "source": "/manifest.json", "destination": "/manifest.json" },
+    { "source": "/favicon.png", "destination": "/favicon.png" },
+    { "source": "/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
