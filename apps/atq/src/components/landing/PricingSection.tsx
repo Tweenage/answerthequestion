@@ -14,20 +14,28 @@ const INCLUDES = [
 
 export function PricingSection() {
   return (
-    <section className="max-w-3xl mx-auto px-5 py-14">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.6 }}
-        className="max-w-md mx-auto text-center"
-      >
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-md mb-2 leading-tight">
-            Simple, one-time access
-          </h2>
-          <p className="font-display text-white/70 text-sm mb-8">
-            Less than one tutoring session.
+    <section className="bg-white/95 backdrop-blur-sm">
+      <div className="max-w-3xl mx-auto px-5 py-14">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6 }}
+          className="max-w-md mx-auto text-center"
+        >
+          {/* Problem intro → flows into offer */}
+          <p className="font-display text-gray-500 text-sm mb-4 leading-relaxed">
+            😩 &ldquo;You didn&rsquo;t read it properly&rdquo; &nbsp;&middot;&nbsp;
+            😤 &ldquo;You rushed that&rdquo; &nbsp;&middot;&nbsp;
+            😔 &ldquo;You knew this at home&hellip;&rdquo;
           </p>
+
+          <h2 className="font-display font-extrabold text-xl md:text-2xl text-purple-900 mb-8 leading-tight">
+            If you&rsquo;re looking for a way to help your child do their best
+            on exam day &mdash;{' '}
+            <span className="text-fuchsia-600">AnswerTheQuestion!</span> is for
+            you.
+          </h2>
 
           {/* Price card */}
           <div className="bg-gradient-to-b from-purple-50 to-white rounded-2xl p-6 md:p-8 border border-purple-200/50 shadow-sm mb-6">
@@ -65,14 +73,15 @@ export function PricingSection() {
           {/* Guarantee */}
           <div className="bg-green-50 rounded-xl p-4 border border-green-200/50">
             <p className="font-display text-sm text-green-800 leading-relaxed">
-              <span className="font-bold">Try for 7 days.</span> Full refund if it&rsquo;s
-              not right for your child. No forms. No questions.{' '}
+              <span className="font-bold">Try for 7 days.</span> Full refund if
+              it&rsquo;s not right for your child. No forms. No questions.{' '}
               <Link to="/refunds" className="underline text-green-700">
                 Refund policy
               </Link>
             </p>
           </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,9 +1,7 @@
 import { HeroSection } from '../components/landing/HeroSection';
 import { ClearMethodSection } from '../components/landing/ClearMethodSection';
-import { ProblemSection } from '../components/landing/ProblemSection';
-import { PricingSection } from '../components/landing/PricingSection';
 import { HowItWorksSection } from '../components/landing/HowItWorksSection';
-import { ObjectionSection } from '../components/landing/ObjectionSection';
+import { PricingSection } from '../components/landing/PricingSection';
 import { ForParentsSection } from '../components/landing/ForParentsSection';
 import { FaqSection } from '../components/landing/FaqSection';
 import { FinalCtaSection } from '../components/landing/FinalCtaSection';
@@ -15,15 +13,13 @@ export function LandingPage() {
     <div className="min-h-screen">
       {/* 1. gradient  */} <HeroSection />
       {/* 2. white     */} <ClearMethodSection />
-      {/* 3. gradient  */} <ProblemSection />
+      {/* 3. gradient  */} <HowItWorksSection />
       {/* 4. white     */} <PricingSection />
-      {/* 5. gradient  */} <HowItWorksSection />
-      {/* 6. white     */} <ObjectionSection />
-      {/* 7. gradient  */} <ForParentsSection />
-      {/* 8. white     */} <FaqSection />
-      {/* 9. gradient  */} <FinalCtaSection />
-      {/* 10. gradient */} <EmailCaptureSection />
-      {/* 11. gradient */} <LandingFooter />
+      {/* 5. gradient  */} <ForParentsSection />
+      {/* 6. white     */} <FaqSection />
+      {/* 7. gradient  */} <FinalCtaSection />
+      {/* 8. gradient  */} <EmailCaptureSection />
+      {/* 9. gradient  */} <LandingFooter />
     </div>
   );
 }

@@ -5,7 +5,7 @@ const FAQ_ITEMS = [
   {
     question: 'We\u2019ve already got a tutor, books, and flashcards. What does this add?',
     answer:
-      'AnswerTheQuestion! does something completely different. Tutors, books, and flashcards teach your child what to know. This teaches the habit of staying calm, reading the question properly, and getting marks for the knowledge they already have. It works alongside everything else \u2014 it fills the gap that content prep leaves.',
+      'AnswerTheQuestion! does something completely different. Tutors, books, and flashcards teach your child what to know. This programme teaches them how to apply that knowledge under exam conditions \u2014 staying calm, reading properly, and thinking methodically. The two are designed to work together.',
   },
   {
     question: 'My child is dyslexic. Will this work for them?',
@@ -15,7 +15,7 @@ const FAQ_ITEMS = [
   {
     question: 'Only a few weeks left \u2014 is it worth starting?',
     answer:
-      'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and the app automatically adapts the programme to fit the time you have. The price is still \u00a329.99 regardless of how many weeks are left \u2014 it\u2019s already priced to be accessible.',
+      'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and the app automatically adapts the programme to fit the time you have.',
   },
   {
     question: 'What if my child doesn\u2019t stick with it?',

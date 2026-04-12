@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 
 const OUTCOMES = [
-  { icon: '📖', text: 'They slow down and read questions properly' },
-  { icon: '✅', text: 'Fewer avoidable mistakes' },
-  { icon: '🧠', text: 'More structured, methodical thinking' },
-  { icon: '💪', text: 'Greater confidence in timed conditions' },
+  { icon: '📖', text: 'They slow down and learn to read questions properly' },
+  { icon: '🧠', text: 'More structured, methodical thinking under pressure' },
+  { icon: '✅', text: 'Fewer careless mistakes with consistent practice' },
+  { icon: '💪', text: 'Greater confidence on exam day' },
 ];
 
 export function ForParentsSection() {

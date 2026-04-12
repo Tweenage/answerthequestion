@@ -13,7 +13,7 @@ export function LandingFooter() {
         <Link to="/login" className="hover:text-white transition-colors">Sign In</Link>
       </div>
       <p className="text-white/50 font-display text-xs">
-        A <span className="font-semibold text-white/70">Tweenage</span> product &middot; Made with 🦉 by a working mum
+        A <span className="font-semibold text-white/70">Tweenage</span> product
       </p>
     </footer>
   );
