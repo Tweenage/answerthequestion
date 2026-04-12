@@ -129,7 +129,7 @@ All communication to and from the browser is encrypted in transit (TLS 1.3). All
 
 | Processor | Purpose | Data disclosed | Location | Transfer safeguard | DPA |
 |---|---|---|---|---|---|
-| Supabase (Supabase Inc.) | Database, Auth, Edge Functions, Storage | All parent + child data | Frankfurt (DE) for data; US for corporate | SCCs + UK IDTA; EU hosting | [supabase.com/dpa](https://supabase.com/dpa) |
+| Supabase (Supabase Inc.) | Database, Auth, Edge Functions, Storage | All parent + child data | Frankfurt (DE) for data; US for corporate | SCCs + UK IDTA; EU hosting; **Pro tier** (daily backups, no auto-pause, DPA covered) | [supabase.com/dpa](https://supabase.com/dpa) |
 | Vercel (Vercel Inc.) | Frontend hosting, edge CDN, Web Vitals | IP, user agent, page paths | Global edge; origin US | SCCs + UK IDTA | [vercel.com/legal/dpa](https://vercel.com/legal/dpa) |
 | LemonSqueezy (Lemon Squeezy LLC) | Payment processing, merchant of record | Parent email, billing name, card details (we never see) | US | SCCs + UK IDTA | [lemonsqueezy.com/dpa](https://www.lemonsqueezy.com/dpa) |
 | Resend (Resend Inc.) | Transactional email delivery | Parent email, message content | EU/US | SCCs + UK IDTA | [resend.com/legal/dpa](https://resend.com/legal/dpa) |
@@ -247,17 +247,17 @@ All requests are logged in an internal spreadsheet (not stored alongside custome
 
 These are cross-referenced with the integrated launch-gate remediation plan.
 
-| # | Action | Owner | Priority | Target |
+| # | Action | Owner | Priority | Status |
 |---|---|---|---|---|
-| A1 | Implement `order_refunded` webhook handler in `lemonsqueezy-webhook/index.ts` | Rebecca + Claude | P0 | Pre-launch |
-| A2 | Add idempotency guard on LemonSqueezy `order_id` in webhook handler | Rebecca + Claude | P0 | Pre-launch |
-| A3 | Raise password minimum length 8 → 10 across `SignupPage.tsx` / `LoginPage.tsx` | Rebecca + Claude | P0 | Pre-launch |
-| A4 | Verify `ALLOW_LOCALHOST` is not set on production Supabase Edge Functions | Rebecca | P0 | Pre-launch |
-| A5 | Confirm Supabase plan tier supports production workload and DPA | Rebecca | P0 | Pre-launch |
-| A6 | Manual cross-account RLS verification with two test parents | Rebecca | P0 | Pre-launch |
-| A7 | GA4 configuration review: IP anonymisation on, child routes excluded, 14-month retention set | Rebecca | P0 | Pre-launch |
-| A8 | Verify exam-date UI stores only month granularity (no DOB-like inference) | Rebecca | P1 | Pre-launch |
-| A9 | Weekly cron to verify no orphaned child_profiles or payments after deletion | Claude | P1 | First month post-launch |
+| A1 | Implement `order_refunded` webhook handler in `lemonsqueezy-webhook/index.ts` | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
+| A2 | Add idempotency guard on LemonSqueezy `order_id` in webhook handler | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
+| A3 | Raise password minimum length 8 → 10 across `SignupPage.tsx` / `LoginPage.tsx` | Rebecca + Claude | P0 | ✅ Shipped `4d20fd8` (12 Apr 2026) |
+| A4 | Verify `ALLOW_LOCALHOST` is not set on production Supabase Edge Functions | Rebecca | P0 | ✅ Verified absent (12 Apr 2026) |
+| A5 | Confirm Supabase plan tier supports production workload and DPA | Rebecca | P0 | ✅ Upgraded to Pro (12 Apr 2026) |
+| A6 | Manual cross-account RLS verification with two test parents | Rebecca | P0 | Pending — code audit passed, manual test recommended |
+| A7 | GA4 configuration review: IP anonymisation on, child routes excluded, 14-month retention set | Rebecca | P1 | Pending — GA4 IP anonymisation is on by default since 2023; retention and route exclusion are dashboard-only settings |
+| A8 | Exam date stored at full-date granularity (YYYY-MM-DD) — justified because 11+ exam dates are published at LA/school level and are public knowledge; no DOB-like inference risk | Rebecca | P1 | ✅ Accepted — no code change needed |
+| A9 | Weekly cron to verify no orphaned child_profiles or payments after deletion | Claude | P1 | Post-launch |
 | A10 | Annual DPIA review | Rebecca | — | 11 April 2027 |
 
 ---
