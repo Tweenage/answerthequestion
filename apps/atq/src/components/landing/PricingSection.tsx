@@ -40,7 +40,7 @@ export function PricingSection() {
           {/* Price card */}
           <div className="bg-gradient-to-b from-purple-50 to-white rounded-2xl p-6 md:p-8 border border-purple-200/50 shadow-sm mb-6">
             <p className="font-display font-extrabold text-5xl text-purple-700 mb-1">
-              &pound;29.99
+              &pound;49.99
             </p>
             <p className="font-display font-bold text-sm text-gray-500 mb-6">
               One-time payment &middot; No subscription

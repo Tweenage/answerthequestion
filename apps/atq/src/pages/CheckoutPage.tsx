@@ -13,7 +13,7 @@ export function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const basePrice = 29.99;
+  const basePrice = 49.99;
   const cribSheetPrice = 4.99;
   const total = basePrice + (includeCribSheet ? cribSheetPrice : 0);
 

@@ -428,7 +428,7 @@ export function ResearchPage() {
             to="/checkout"
             className="inline-block py-3 px-8 rounded-2xl font-display font-bold text-white bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-500 hover:from-purple-700 hover:via-fuchsia-700 hover:to-pink-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
-            Start the 12-week programme &mdash; &pound;29.99
+            Start the 12-week programme &mdash; &pound;49.99
           </Link>
           <p className="font-display text-white/70 text-sm mt-3">
             One-time payment &middot; 7-day money-back guarantee

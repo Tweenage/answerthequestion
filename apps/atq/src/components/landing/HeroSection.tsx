@@ -48,7 +48,7 @@ export function HeroSection() {
           </Link>
 
           <p className="text-white/70 font-display text-sm font-medium mt-3">
-            One-time payment &middot; &pound;29.99 &middot; 7-day money-back guarantee
+            One-time payment &middot; &pound;49.99 &middot; 7-day money-back guarantee
           </p>
 
           <p className="text-white/60 font-display text-xs mt-4 max-w-sm mx-auto">
