@@ -70,16 +70,12 @@ export function PricingSection() {
             </p>
           </div>
 
-          {/* Guarantee */}
-          <div className="bg-green-50 rounded-xl p-4 border border-green-200/50">
-            <p className="font-display text-sm text-green-800 leading-relaxed">
-              <span className="font-bold">Try for 7 days.</span> Full refund if
-              it&rsquo;s not right for your child. No forms. No questions.{' '}
-              <Link to="/refunds" className="underline text-green-700">
-                Refund policy
-              </Link>
-            </p>
-          </div>
+          <p className="font-display text-xs text-gray-400 mt-2 leading-relaxed">
+            Try for 7 days. Full refund if it&rsquo;s not right for your child.{' '}
+            <Link to="/refunds" className="underline hover:text-gray-500">
+              Refund policy
+            </Link>
+          </p>
         </motion.div>
       </div>
     </section>

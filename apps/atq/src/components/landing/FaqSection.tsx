@@ -17,11 +17,6 @@ const FAQ_ITEMS = [
     answer:
       'Yes. The core skill is visible from Week 1. Enter your child\u2019s exam date and the app automatically adapts the programme to fit the time you have.',
   },
-  {
-    question: 'What if my child doesn\u2019t stick with it?',
-    answer:
-      'Sessions are just 10 minutes \u2014 designed for consistency over intensity. Most children find the structure and the guided prompts keep them engaged. And if it\u2019s not right, you have a full 7-day refund window.',
-  },
 ];
 
 export function FaqSection() {

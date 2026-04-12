@@ -21,7 +21,7 @@ export function ForParentsSection() {
           What parents notice
         </h2>
         <p className="font-display text-white/80 text-sm text-center mb-8 max-w-md mx-auto">
-          Children complete sessions independently. No teaching required.
+          After 10 minutes a day of consistent practice.
         </p>
 
         <div className="grid grid-cols-2 gap-3 mb-8">

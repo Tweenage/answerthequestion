@@ -10,15 +10,18 @@ export function FinalCtaSection() {
       transition={{ duration: 0.6 }}
       className="max-w-3xl mx-auto px-5 py-16 text-center"
     >
-      <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-md mb-6 leading-tight max-w-xl mx-auto">
-        Help your child show what they really know
+      <h2 className="font-display font-extrabold text-2xl md:text-3xl text-white drop-shadow-md mb-3 leading-tight max-w-xl mx-auto">
+        Every mark lost to rushing or nerves is a mark they already earned.
       </h2>
+      <p className="font-display text-white/80 text-base mb-8 max-w-md mx-auto">
+        Give them the method to keep those marks.
+      </p>
 
       <Link
         to="/checkout"
-        className="inline-block w-full max-w-md py-5 rounded-2xl font-display font-extrabold text-white text-xl bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
+        className="inline-block w-full max-w-sm py-4 rounded-2xl font-display font-extrabold text-white text-lg bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 hover:from-fuchsia-600 hover:via-purple-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
       >
-        Start today &mdash; &pound;29.99
+        Sign up &mdash; &pound;29.99
       </Link>
 
       <p className="text-white/70 font-display text-sm mt-3">
