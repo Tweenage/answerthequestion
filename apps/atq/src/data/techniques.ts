@@ -35,9 +35,9 @@ export const CORE_STEPS: CoreStep[] = [
     inTheApp:
       'The app makes you read twice before showing the answers. This trains your brain to do it automatically!',
     parentDescription:
-      'Re-reading is the most impactful exam technique. Children lose marks not from lack of knowledge, but from misreading.',
-    researchStat: 'Up to 7 extra months of progress',
-    researchSource: 'EEF',
+      'A proportion of incorrect exam responses reflect attention slips and misreading rather than lack of knowledge. Re-reading tackles this directly.',
+    researchStat: 'Reading comprehension strategies: several months of additional progress',
+    researchSource: 'EEF Teaching & Learning Toolkit',
   },
   {
     id: 'key-words',
@@ -556,28 +556,22 @@ export interface ResearchPoint {
 
 export const RESEARCH_POINTS: ResearchPoint[] = [
   {
-    stat: '7 months',
-    context: 'extra progress',
+    stat: 'High impact',
+    context: 'for low cost',
     source: 'EEF Teaching & Learning Toolkit',
-    detail: 'Children who read questions carefully before answering gain the equivalent of 7 extra months of academic progress. This is the foundation of the AnswerTheQuestion! method.',
+    detail: 'Metacognition and self-regulated learning are identified by the EEF as having high impact relative to cost. The CLEAR Method builds these habits into every question.',
   },
   {
-    stat: '3 months',
-    context: 'extra progress',
-    source: 'EEF Metacognition & Self-Regulation',
-    detail: 'Children who use structured "stop-and-think" routines — like the 5-step technique in this app — gain 3 extra months of progress. Daily practice makes the technique automatic.',
+    stat: 'Several months',
+    context: 'additional progress',
+    source: 'EEF Reading Comprehension Strategies',
+    detail: 'Teaching reading comprehension strategies is associated with several months of additional progress. Re-reading and active engagement with questions are at the heart of the CLEAR Method.',
   },
   {
     stat: '1 in 5',
     context: 'mistakes caught',
     source: 'Assessment & Evaluation in Higher Education',
     detail: 'Students who check their answers catch approximately 1 in 5 mistakes. In a competitive 11+ exam, this can be the difference between passing and missing out.',
-  },
-  {
-    stat: '30%',
-    context: 'of errors are misreads',
-    source: 'NFER Analysis of 11+ Performance',
-    detail: 'Nearly a third of errors in selective entrance exams come not from lack of knowledge, but from misreading the question. This app targets that specific gap.',
   },
   {
     stat: '2 in 3',
@@ -589,7 +583,7 @@ export const RESEARCH_POINTS: ResearchPoint[] = [
     stat: 'Proven',
     context: 'breathing helps 10–11-year-olds',
     source: 'Khng (2017), Primary 5 RCT',
-    detail: 'A controlled trial with 10–11-year-olds found that deep breathing before a test significantly reduced anxiety and improved performance — exactly our age group, exactly our approach.',
+    detail: 'A controlled trial with 10–11-year-olds found that deep breathing before a timed task significantly reduced anxiety and improved performance — exactly our age group, exactly our approach.',
   },
 ];
 
@@ -690,11 +684,11 @@ export const CORE_HABITS: CoreHabit[] = [
     childSummary:
       'Always read the question TWO times before looking at the answers. Cover the answers first — no peeking! This stops you getting tricked.',
     parentExplanation:
-      'Nearly a third of errors in 11+ exams come from misreading, not lack of knowledge. The "read twice" habit forces metacognitive engagement — processing the question first for understanding, then for analysis.',
-    researchStat: '30% of exam errors come from misreading.',
-    researchSource: 'NFER Analysis of 11+ Performance',
+      'A proportion of incorrect exam responses reflect attention slips, misreading, or execution errors rather than lack of knowledge (Binks et al., 2022). The "read twice" habit forces metacognitive engagement — processing the question first for understanding, then for analysis.',
+    researchStat: 'Reading comprehension strategies: several months of additional progress.',
+    researchSource: 'EEF Teaching & Learning Toolkit',
     whyItMatters:
-      'This is the highest-impact habit. Reading carefully twice eliminates a large proportion of avoidable errors before answering even begins.',
+      'This is the highest-impact habit. Reading carefully twice reduces avoidable errors before answering even begins.',
   },
   {
     id: 'eliminate',
@@ -704,9 +698,9 @@ export const CORE_HABITS: CoreHabit[] = [
     childSummary:
       'Cross out the wrong answers one by one. Tip: answers with "absolute" words like "always" or "never" are often wrong! Cross them out first, then work through the rest.',
     parentExplanation:
-      'Process of elimination transforms guessing from a 25% chance (1 in 4) to at least 50% (1 in 2) when one option is removed. More importantly, it forces systematic evaluation rather than impulsive selection — a bias known as satisficing, where students pick the first plausible answer. Answers with absolute words (always, never, all, none) are also more likely to be incorrect, giving children a practical starting point.',
-    researchStat: 'Elimination can double accuracy on uncertain questions.',
-    researchSource: 'Journal of Educational Psychology',
+      'Process of elimination improves guessing odds (removing one option from four raises the chance from 25% to 33%; removing two raises it to 50%). More importantly, it forces systematic evaluation rather than impulsive selection — a bias known as satisficing, where students pick the first plausible answer. Answers with absolute words (always, never, all, none) are also more likely to be incorrect, giving children a practical starting point.',
+    researchStat: 'Elimination improves guessing odds arithmetically.',
+    researchSource: 'Basic probability',
     whyItMatters:
       'In a competitive 11+ exam, even questions a child is unsure about can become correct answers through disciplined elimination. This habit turns "I do not know" into "I can work it out".',
   },
@@ -719,8 +713,8 @@ export const CORE_HABITS: CoreHabit[] = [
       'Do the easy questions first and come back to the hard ones. If you are stuck, put a dot next to it and move on. Do not waste time on one tricky question!',
     parentExplanation:
       'The "two-pass strategy" — answering easier questions first, then returning to harder ones — maximises marks per minute. Students who spend too long on one difficult question often run out of time and miss easier marks later. Knowing when to move on is as important as knowing how to answer.',
-    researchStat: 'Poor pacing can cost 15–20% of available marks.',
-    researchSource: 'Cambridge Assessment research on exam performance',
+    researchStat: 'Two-pass strategy maximises marks per minute.',
+    researchSource: 'General exam technique principle',
     whyItMatters:
       'Speed comes from technique, not rushing. As the 5 steps become automatic, children naturally get faster while making fewer errors.',
   },
@@ -772,9 +766,9 @@ export const EXAM_STRATEGY_RESEARCH: ExamStrategyResearch[] = [
     emoji: '⏭️',
     question: 'How long should a child spend on a question before moving on?',
     finding:
-      'Research on timed assessments shows that the optimal strategy is the "two-pass" approach: answer all the questions you can do quickly first, then return to more difficult ones. Students who spend more than 1.5× the average time per question on a single item show diminishing returns — the chance of getting it right does not increase proportionally. Meanwhile, they risk missing easier marks later.',
-    stat: 'After 1.5× average time, returns diminish sharply',
-    source: 'Cambridge Assessment research on timed exams',
+      'The optimal strategy for timed assessments is the "two-pass" approach: answer all the questions you can do quickly first, then return to more difficult ones. Spending too long on one difficult question risks missing easier marks later. The principle is straightforward — maximise marks per minute by doing the accessible questions first.',
+    stat: 'Two-pass strategy maximises marks per minute',
+    source: 'General exam technique principle',
     implication:
       'In the 11+, there is no negative marking. This means children should always choose an answer, even if they are unsure. A best guess still gives them a chance of gaining a mark. The app trains time awareness through progressively shorter limits. Children learn to recognise when they are stuck, move on, and return later — without leaving questions unanswered.',
   },
@@ -784,9 +778,9 @@ export const EXAM_STRATEGY_RESEARCH: ExamStrategyResearch[] = [
     emoji: '✅',
     question: 'What is the most effective way to check answers?',
     finding:
-      'Simply re-reading your answer is far less effective than re-reading the original question. The best strategy is to re-read the question as if seeing it for the first time, then check whether your answer truly matches what was asked.',
-    stat: 'Re-reading the question catches 3× more errors than re-reading the answer',
-    source: 'NFER Assessment Research Programme',
+      'Simply re-reading your answer is less effective than re-reading the original question. The best strategy is to re-read the question as if seeing it for the first time, then check whether your answer truly matches what was asked.',
+    stat: 'Re-read the question, not just the answer',
+    source: 'General exam technique principle',
     implication:
       'The app teaches this in the "Lock Your Answer" step — focusing on the question, not just the chosen option.',
   },
@@ -808,9 +802,9 @@ export const EXAM_STRATEGY_RESEARCH: ExamStrategyResearch[] = [
     emoji: '⏱️',
     question: 'How should children manage their time?',
     finding:
-      'Poor time management is a major cause of lost marks. High-performing students typically start answering immediately, skip difficult questions and return later, check the clock halfway through, and never leave a multiple-choice question blank.',
-    stat: '15–20% of marks lost to poor pacing',
-    source: 'Cambridge Assessment; QCA analysis',
+      'Effective time management is a key feature of high-performing exam technique. High-performing students typically start answering immediately, skip difficult questions and return later, check the clock halfway through, and never leave a multiple-choice question blank.',
+    stat: 'Pacing is a learnable skill',
+    source: 'General exam technique principle',
     implication:
       'The app gradually reduces time per question to build pace naturally, while reinforcing these strategies.',
   },
@@ -820,9 +814,9 @@ export const EXAM_STRATEGY_RESEARCH: ExamStrategyResearch[] = [
     emoji: '✂️',
     question: 'How much does elimination help?',
     finding:
-      'Eliminating even one option improves the odds of guessing correctly. Eliminating two raises the chance to 50%. More importantly, evaluating each option engages deeper thinking, often helping the correct answer become clear.',
-    stat: 'Eliminating two options doubles accuracy',
-    source: 'Journal of Educational Psychology; EEF guidance',
+      'Eliminating even one option improves the odds of guessing correctly (from 25% to 33% with four options). Eliminating two raises the chance to 50%. More importantly, evaluating each option engages deeper thinking, often helping the correct answer become clear.',
+    stat: 'Each elimination improves the odds',
+    source: 'Basic probability',
     implication:
       'The app makes elimination a scored habit, helping children practise it until it becomes automatic.',
   },
